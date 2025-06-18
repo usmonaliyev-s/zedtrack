@@ -200,13 +200,16 @@
                     </div>
                         <div class="" style="overflow: auto; height: 410px">
                     <div class="card-body card-item-right">
-
-                        {% for k in kam %}
+                        {% for student in students %}
                             <div class="d-flex align-items-top">
                             <div class="style-text text-left">
-                                <h5 class="mb-2">{{ k.name }}</h5>
-                                <p class="mb-2">Code : {{ k.code }}</p>
-                                <p class="mb-0">Quantity : {{ k.quantity }}</p>
+                                <h5 class="mb-2">{{ student.name }}</h5>
+                                <p class="mb-2">Course : {{ student.course }}</p>
+                                <p class="mb-0">Attendance : {{ student.total_lessons }}</p>
+                                <p class="mb-0">Absence: {{ student.absent }}</p>
+
+
+
                             </div>
                         </div><hr>
                         {% endfor %}
