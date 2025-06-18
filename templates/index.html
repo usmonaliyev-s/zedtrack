@@ -124,7 +124,7 @@
                                     </div>
                                     <div>
                                         <p class="mb-2" style="color: white">Students</p>
-                                        <h4 style="color: white">{{ number_of_students }}</h4>
+                                        <h4 style="color: white">{{ students.count }}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -139,7 +139,7 @@
                                     </div>
                                     <div>
                                         <p class="mb-2" style="color: white">Teachers</p>
-                                        <h4 style="color: white">{{ number_of_teachers }}</h4>
+                                        <h4 style="color: white">{{ teachers.count }}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -154,7 +154,7 @@
                                     </div>
                                     <div>
                                         <p class="mb-2" style="color: white">Available Courses</p>
-                                        <h4 style="color: white">{{ courses }}</h4>
+                                        <h4 style="color: white">{{ courses.count }}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -169,7 +169,7 @@
                                     </div>
                                     <div>
                                         <p class="mb-2" style="color: white">Absent Students</p>
-                                        <h4 style="color: white">{{ absent_students }}</h4>
+                                        <h4 style="color: white">{{ absent_students.count }}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -181,7 +181,7 @@
                 <div class="card card-block card-stretch">
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Chart</h4>
+                            <h4 class="card-title">Total Students</h4>
                         </div>
                     </div>
                     <div class="card-body">
@@ -195,7 +195,7 @@
                 <div class="card card-block card-stretch">
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">10 tadan kam qolgan tovarlar</h4>
+                            <h4 class="card-title">Students</h4>
                         </div>
                     </div>
                         <div class="" style="overflow: auto; height: 410px">
@@ -220,7 +220,7 @@
                 <div class="card card-block card-stretch">
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Top 5</h4>
+                            <h4 class="card-title">Top Students</h4>
                         </div>
                     </div>
                     <div class="card-body">
@@ -287,7 +287,7 @@ $(function() {
     </script>
     <script>
         // Retrieve the data points from the Django template context
-        var dataPoints = {{ data_points|safe }};
+        var dataPoints = {{ data|safe }};
 
         // Get the canvas element
         var ctx = document.getElementById('lineChart').getContext('2d');
