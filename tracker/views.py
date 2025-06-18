@@ -14,7 +14,7 @@ def index(request):
     ).filter(
         total__gt=0,
         # absent__lt=2
-    ).order_by('absent', '-present')
+    ).order_by('absent', '-present')[:5]
 
     gender_counts = Student.objects.values('gender').annotate(count=Count('id'))
 
@@ -31,22 +31,39 @@ def index(request):
     ).filter(
         absents_today__gt=0
     )
+
+    present_student = Student.objects.annotate(
+        absents_today=Count('attendance', filter=Q(
+            attendance__status=True,
+            attendance__time__date=date.today()
+        ))
+    ).filter(
+        absents_today__gt=0
+    )
+
     attendance_trends = (
         Attendance.objects
-        .filter(status=True)  # only students who were present
-        .annotate(date=TruncDate('time'))  # extract date part
+        .filter(status=True)
+        .annotate(date=TruncDate('time'))
         .values('date')
-        .annotate(count=Count('id'))  # count present students per day
+        .annotate(count=Count('id'))
         .order_by('date')
     )
 
     dates = [record["date"].strftime("%Y-%m-%d") for record in attendance_trends]
     counts = [record["count"] for record in attendance_trends]
 
+    todays_courses = 0
+    today = date.today().strftime("%a")
+    for i in Course.objects.all():
+        if today in i.days:
+            todays_courses += 1
     line_chart_data = {
         "labels": dates,
         "values": counts
     }
+
+    attendance_rate = (Attendance.objects.filter(status=True).count() / Attendance.objects.count()) * 100
 
     data = {
         "students": Student.objects.all(),
@@ -57,5 +74,8 @@ def index(request):
         "lessons": Attendance.objects.all(),
         "gender_data": gender_data,
         "line_chart_data":line_chart_data,
+        "attendance_rate": attendance_rate,
+        "todays_courses": todays_courses,
+        "present_student": present_student,
     }
     return render(request, 'index.html', data)

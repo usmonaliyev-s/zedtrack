@@ -1,4 +1,6 @@
 from django.db import models
+from multiselectfield import MultiSelectField
+
 
 # Create your models here.
 class Teacher(models.Model):
@@ -10,9 +12,19 @@ class Teacher(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 class Course(models.Model):
+    DAYS_OF_WEEK = (
+        ('Mon', 'Monday'),
+        ('Tue', 'Tuesday'),
+        ('Wed', 'Wednesday'),
+        ('Thu', 'Thursday'),
+        ('Fri', 'Friday'),
+        ('Sat', 'Saturday'),
+        ('Sun', 'Sunday'),
+    )
     course_name = models.CharField(max_length=100)
     course_teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     course_time = models.TimeField()
+    days = MultiSelectField(choices=DAYS_OF_WEEK)
     description = models.TextField()
 
     def __str__(self):
