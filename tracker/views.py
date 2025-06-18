@@ -1,4 +1,5 @@
 from django.db.models import Count, Q
+from django.db.models.functions import TruncDate
 from django.shortcuts import render
 from datetime import date
 
@@ -30,6 +31,22 @@ def index(request):
     ).filter(
         absents_today__gt=0
     )
+    attendance_trends = (
+        Attendance.objects
+        .filter(status=True)  # only students who were present
+        .annotate(date=TruncDate('time'))  # extract date part
+        .values('date')
+        .annotate(count=Count('id'))  # count present students per day
+        .order_by('date')
+    )
+
+    dates = [record["date"].strftime("%Y-%m-%d") for record in attendance_trends]
+    counts = [record["count"] for record in attendance_trends]
+
+    line_chart_data = {
+        "labels": dates,
+        "values": counts
+    }
 
     data = {
         "students": Student.objects.all(),
@@ -39,5 +56,6 @@ def index(request):
         "absent_students": absent_students,
         "lessons": Attendance.objects.all(),
         "gender_data": gender_data,
+        "line_chart_data":line_chart_data,
     }
     return render(request, 'index.html', data)
