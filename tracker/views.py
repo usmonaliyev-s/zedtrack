@@ -12,8 +12,15 @@ def index(request):
         present=Count('attendance', filter=Q(attendance__status=True))
     ).filter(
         total__gt=0,
-        absent__lt=2
-    )
+        # absent__lt=2
+    ).order_by('absent', '-present')
+
+    gender_counts = Student.objects.values('gender').annotate(count=Count('id'))
+
+    gender_data = {
+        "labels": [("Male" if g["gender"] == "M" else "Female") for g in gender_counts],
+        "values": [g["count"] for g in gender_counts]
+    }
 
     absent_students = Student.objects.annotate(
         absents_today=Count('attendance', filter=Q(
@@ -25,10 +32,12 @@ def index(request):
     )
 
     data = {
-        "students": students,  # Already annotated
+        "students": Student.objects.all(),
+        "top_students": students,
         "teachers": Teacher.objects.all(),
         "courses": Course.objects.all(),
         "absent_students": absent_students,
-        "lessons": Attendance.objects.all(),  # or .filter(...) if needed
+        "lessons": Attendance.objects.all(),
+        "gender_data": gender_data,
     }
     return render(request, 'index.html', data)

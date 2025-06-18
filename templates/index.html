@@ -195,21 +195,18 @@
                 <div class="card card-block card-stretch">
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Students</h4>
+                            <h4 class="card-title">Top Students</h4>
                         </div>
                     </div>
                         <div class="" style="overflow: auto; height: 410px">
                     <div class="card-body card-item-right">
-                        {% for student in students %}
+                        {% for student in top_students %}
                             <div class="d-flex align-items-top">
                             <div class="style-text text-left">
-                                <h5 class="mb-2">{{ student.name }}</h5>
+                                <h5 class="mb-2">{{ student.first_name }} {{ student.last_name }}</h5>
                                 <p class="mb-2">Course : {{ student.course }}</p>
                                 <p class="mb-0">Attendance : {{ student.total_lessons }}</p>
                                 <p class="mb-0">Absence: {{ student.absent }}</p>
-
-
-
                             </div>
                         </div><hr>
                         {% endfor %}
@@ -223,7 +220,7 @@
                 <div class="card card-block card-stretch">
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Top Students</h4>
+                            <h4 class="card-title">Students</h4>
                         </div>
                     </div>
                     <div class="card-body">
@@ -270,7 +267,7 @@ $(function() {
 
     <script>
         // Retrieve data passed from the view
-        var data = {{ data|safe }};
+        var data = {{ gender_data|safe }};
 
         // Get the canvas element
         var canvas = document.getElementById('pieChart');

@@ -19,11 +19,13 @@ class Course(models.Model):
         return self.course_name
 
 class Student(models.Model):
-    name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    gender = models.CharField(max_length=10, choices=[('M', 'Male'), ('F', 'Female')])
 
     def __str__(self):
-        return self.name
+        return self.first_name + " " + self.last_name
 
 class Attendance(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
@@ -32,4 +34,4 @@ class Attendance(models.Model):
     status = models.BooleanField(verbose_name='Attence status', default=False)
 
     def __str__(self):
-        return f"{self.student.name} - {self.time} - {self.course} - {self.status}"
+        return f"{self.student.first_name} {self.student.last_name} - {self.time} - {self.course} - {self.status}"
