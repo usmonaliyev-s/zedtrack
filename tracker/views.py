@@ -98,3 +98,12 @@ def students_list(request):
         "students": students,
     }
     return render(request, "students_list.html", data)
+
+def teachers_list(request):
+    teachers = Teacher.objects.annotate(
+    num_students=Count('course__student', distinct=True)
+)
+    data = {
+        "teachers": teachers,
+    }
+    return render(request, "teachers_list.html", data)
