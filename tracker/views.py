@@ -1,4 +1,5 @@
-from django.db.models import Count, Q
+from django.db.models import Count, Q, ExpressionWrapper, F
+from django.db.models.fields import FloatField
 from django.db.models.functions import TruncDate
 from django.shortcuts import render
 from datetime import date
@@ -79,3 +80,21 @@ def index(request):
         "present_student": present_student,
     }
     return render(request, 'index.html', data)
+
+def students_list(request):
+
+    students = Student.objects.annotate(
+        total=Count('attendance'),
+        present=Count('attendance', filter=Q(attendance__status=True)),
+    ).annotate(
+        attendance_rate=ExpressionWrapper(
+            100.0 * F('present') / F('total'),
+            output_field=FloatField()
+        )
+    ).filter(
+        total__gt=0  # Avoid division by zero
+    )
+    data = {
+        "students": students,
+    }
+    return render(request, "students_list.html", data)
