@@ -8,4 +8,5 @@ urlpatterns = [
     path('', index),
     path('students/', students_list),
     path('teachers/', teachers_list),
+    path('courses/', courses_list),
 ]

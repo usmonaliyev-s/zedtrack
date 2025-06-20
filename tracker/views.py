@@ -107,3 +107,10 @@ def teachers_list(request):
         "teachers": teachers,
     }
     return render(request, "teachers_list.html", data)
+
+def courses_list(request):
+    courses = Course.objects.all()
+    data = {
+        "courses": courses,
+    }
+    return render(request, "courses_list.html", data)
