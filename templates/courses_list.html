@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>ZEDTRACK | Courses</title>
+      <title>ZEDTRACK | Teachers</title>
 
       <!-- Favicon -->
       <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}" />
@@ -117,6 +117,7 @@
                         <tr class="ligth ligth-data">
                             <th>Course</th>
                             <th>Teacher</th>
+                            <th>Students</th>
                             <th> </th>
                         </tr>
                     </thead>
@@ -126,6 +127,7 @@
 
                                 <td>{{ course.course_name }}</td>
                                 <td>{{ course.course_teacher }}</td>
+                                <td>{{ course.num_students }}</td>
                                 <td>
                                        <a href="/students/{{ student.id }}/edit/" style="display: inline">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--main-color)" class="bi bi-pen" viewBox="0 0 16 16">
