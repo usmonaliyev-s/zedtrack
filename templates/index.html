@@ -29,8 +29,7 @@
               </a>
               <div class="iq-menu-bt-sidebar ml-0">
                 <i class=" wrapper-menu"><?xml version="1.0" ?><svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6H20M4 12H20M4 18H20" stroke="#4A5568" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg></i>
-
-          </div>
+              </div>
           </div>
           <div class="data-scrollbar" data-scroll="1">
               <nav class="iq-sidebar-menu">
@@ -82,23 +81,30 @@
 
         <div class="iq-top-navbar">
           <div class="iq-navbar-custom">
-              <nav class="navbar navbar-expand-lg navbar-light p-0">
-                  <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
-                      <i class=" wrapper-menu"><?xml version="1.0" ?><svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6H20M4 12H20M4 18H20" stroke="var(--main-color)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg></i>
-                      <a href="/" class="header-logo">
-                          <img src="{% static 'zed.png' %}" class="img-fluid rounded-normal" alt="logo">
-                          <h5 class="logo-title ml-3">ZEDTRACK</h5>
-
-                      </a>
-                  </div>
-              </nav>
-
+            <nav class="navbar navbar-expand-lg navbar-light p-0 d-flex align-items-center justify-content-between">
+                <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
+                    <i class="wrapper-menu">
+                        <?xml version="1.0" ?>
+                        <svg fill="none" height="24" viewBox="0 0 24 24" width="24"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 6H20M4 12H20M4 18H20"
+                                  stroke="var(--main-color)"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"/>
+                        </svg>
+                    </i>
+                    <a href="/" class="header-logo d-flex align-items-center">
+                        <img src="{% static 'zed.png' %}" class="img-fluid rounded-normal" alt="logo">
+                        <h5 class="logo-title ml-3">ZEDTRACK</h5>
+                    </a>
+                </div>
+                <h5 style="margin-top: 1.4%;">{{ date }}</h5>
+            </nav>
           </div>
-
       </div>
       <div class="content-page">
      <div class="container-fluid">
-
          <div class="card-header-toolbar d-flex align-items-center">
         </div>
         <div class="row">
@@ -159,7 +165,7 @@
                                     </div>
                                     <div>
                                         <p class="mb-2" style="color: white">Attendance Records</p>
-                                        <h4 style="color: white">{{ absent_students.count }}</h4>
+                                        <h4 style="color: white">{{ attendance_rate|floatformat:2 }}%</h4>
                                     </div>
                                 </div>
                             </div>
@@ -204,7 +210,7 @@
                                     </div>
                                     <div>
                                         <p class="mb-2" style="color: black">Attendance Rate (Today)</p>
-                                        <h4 style="color: black">{{ attendance_rate|floatformat:2 }}%</h4>
+                                        <h4 style="color: black">{{ attendance_rate_today|floatformat:2 }}%</h4>
                                     </div>
                                 </div>
                             </div>
@@ -233,13 +239,13 @@
                 <div class="card card-block card-stretch">
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Total Students</h4>
+                            <h4 class="card-title">Attendace Records</h4>
                         </div>
                     </div>
                     <div class="card-body">
                         <div>
-  <canvas id="lineChart"></canvas>
-</div>
+                          <canvas id="lineChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>

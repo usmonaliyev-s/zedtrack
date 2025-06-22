@@ -65,8 +65,18 @@ def index(request):
         "values": counts
     }
 
-    attendance_rate = (Attendance.objects.filter(status=True).count() / Attendance.objects.count()) * 100
+    attendance_rate = (
+        Attendance.objects.filter(status=True).count() /
+        Attendance.objects.count()
+        ) * 100 if Attendance.objects.exists() else 0
 
+    present_today = Attendance.objects.filter(status=True, time__date=date.today()).count()
+    total_today = Attendance.objects.filter(time__date=date.today()).count()
+
+    attendance_rate_today = (
+        (present_today / total_today) * 100
+        if total_today > 0 else 0
+    )
     data = {
         "students": Student.objects.all(),
         "top_students": students,
@@ -77,8 +87,10 @@ def index(request):
         "gender_data": gender_data,
         "line_chart_data":line_chart_data,
         "attendance_rate": attendance_rate,
+        "attendance_rate_today": attendance_rate_today,
         "todays_courses": todays_courses,
         "present_student": present_student,
+        "date": date.today()
     }
     return render(request, 'index.html', data)
 
