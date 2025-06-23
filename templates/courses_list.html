@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>ZEDTRACK | Teachers</title>
+      <title>ZEDTRACK | Courses</title>
 
       <!-- Favicon -->
       <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}" />
@@ -104,7 +104,7 @@
                     <div>
                         <h4 class="mb-3">Courses List</h4>
                     </div>
-                    <a href="/course/add/" class="btn btn-primary add-list"><svg width="25" height="25" style="padding-right: 7px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 4C12.5523 4 13 4.44772 13 5V11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H13V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V13H5C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11H11V5C11 4.44772 11.4477 4 12 4Z" fill="#ffffff"></path> </g></svg>
+                    <a href="/courses/add/" class="btn btn-primary add-list"><svg width="25" height="25" style="padding-right: 7px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 4C12.5523 4 13 4.44772 13 5V11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H13V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V13H5C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11H11V5C11 4.44772 11.4477 4 12 4Z" fill="#ffffff"></path> </g></svg>
                     Add Course
                     </a>
 
@@ -128,6 +128,12 @@
                                 <td>{{ course.course_name }}</td>
                                 <td>{{ course.course_teacher }}</td>
                                 <td>{{ course.num_students }}</td>
+                                <td>
+                                    {% for day in course.days %}
+                                        {{ course.day }}
+                                    {% endfor %}
+                                    
+                                </td>
                                 <td>
                                        <a href="/students/{{ student.id }}/edit/" style="display: inline">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--main-color)" class="bi bi-pen" viewBox="0 0 16 16">
