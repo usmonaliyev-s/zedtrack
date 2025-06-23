@@ -143,3 +143,32 @@ def add_student(request):
         return redirect('/students/')
 
     return render(request, "add_student.html", data)
+
+def add_teacher(request):
+    if request.method == "POST":
+        Teacher.objects.create(
+            first_name=request.POST.get('first_name'),
+            last_name=request.POST.get('last_name'),
+            phone_number=request.POST.get('phone_number'),
+        )
+        return redirect('/teachers/')
+
+    return render(request, "add_teacher.html")
+
+def add_course(request):
+    data = {
+        "teachers": Teacher.objects.all(),
+    }
+    if request.method == "POST":
+        Course.objects.create(
+            course_name=request.POST.get('course_name'),
+            course_teacher_id=request.POST.get('teacher'),
+            course_time=request.POST.get('course_time'),
+            days=request.POST.getlist('days'),
+            description=request.POST.getlist('description'),
+        )
+        return redirect('/courses/')
+
+    return render(request, "add_course.html", data)
+
+
