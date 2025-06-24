@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>ZEDTRACK | Students</title>
+      <title>ZEDTRACK | Teachers</title>
 
       <!-- Favicon -->
       <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}" />
@@ -109,56 +109,31 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Edit Student</h4>
+                            <h4 class="card-title">Edit Teacher</h4>
                         </div>
 
                     </div>
                     <div class="card-body">
-                        <form action="/students/{{ student.id }}/edit/" method="post" data-toggle="validator">{% csrf_token %}
+                        <form action="/teachers/{{ teacher.id }}/edit/" method="post" data-toggle="validator">{% csrf_token %}
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>First Name *</label>
-                                        <input value="{{ student.first_name }}" name="first_name" type="text" class="form-control" placeholder="Enter First Name" data-errors="Please Enter Name." required>
+                                        <input value="{{ teacher.first_name }}" name="first_name" type="text" class="form-control" placeholder="Enter First Name" data-errors="Please Enter Name." required>
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Last Name *</label>
-                                        <input value="{{ student.last_name }}" name="last_name" type="text" class="form-control" placeholder="Enter Last Name" data-errors="Please Enter Last Name." required>
+                                        <input value="{{ teacher.last_name }}" name="last_name" type="text" class="form-control" placeholder="Enter Last Name" data-errors="Please Enter Last Name." required>
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Course *</label>
-                                        <select name="gender" class="form-control">
-                                            {% if student.gender == "M" %}
-                                                <option value="M" selected="selected">Male</option>
-                                                <option value="F">Female</option>
-                                            {% else %}
-                                                <option selected="selected" value="F">Female</option>
-                                                <option value="M">Male</option>
-                                            {% endif %}
-                                        </select>
-                                        <div class="help-block with-errors"></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Course *</label>
-                                        <select name="course" class="form-control">
-                                            {% for course in courses %}
-                                                {% if course == student.course %}
-                                                    <option selected="selected" value="{{ course.id }}">{{ course.course_name }}</option>
-                                                {% else %}
-                                                    {% if course != student.course %}
-                                                        <option value="{{ course.id }}">{{ course.course_name }}</option>
-                                                    {% endif %}
-                                                {% endif %}
-                                            {% endfor %}
-                                        </select>
+                                        <label>Phone Number *</label>
+                                        <input value="{{ teacher.phone_number }}" name="phone_number" type="text" class="form-control" placeholder="Enter Phone Number" data-errors="Please Phone Number." required>
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
