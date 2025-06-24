@@ -182,9 +182,20 @@ def edit_student(request, id):
         return redirect('/students/')
     student = Student.objects.get(id=id)
     courses = Course.objects.all()
-    print(student.gender)
+    # print(student.gender)
     data = {
         "student": student,
         "courses": courses,
     }
     return render(request, "edit_student.html", data)
+
+def delete_confirmation_student(request, id):
+    student = Student.objects.get(pk=id)
+    data = {
+        "student": student,
+    }
+    return render(request, "delete_confirmation_student.html", data)
+
+def delete_student(request, id):
+    Student.objects.get(pk=id).delete()
+    return redirect('/students/')
