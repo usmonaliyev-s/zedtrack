@@ -199,3 +199,17 @@ def delete_confirmation_student(request, id):
 def delete_student(request, id):
     Student.objects.get(pk=id).delete()
     return redirect('/students/')
+
+def edit_teacher(request, id):
+    if request.method == "POST":
+        teacher = Teacher.objects.get(pk=id)
+        teacher.first_name = request.POST.get('first_name')
+        teacher.last_name = request.POST.get('last_name')
+        teacher.phone_number = request.POST.get('phone_number')
+        teacher.save()
+        return redirect('/teachers/')
+    teacher = Teacher.objects.get(id=id)
+    data = {
+        "teacher": teacher,
+    }
+    return render(request, "edit_teacher.html", data)

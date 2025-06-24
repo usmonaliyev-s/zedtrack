@@ -13,6 +13,7 @@ urlpatterns = [
     path('teachers/add/', add_teacher),
     path('courses/add/', add_course),
     path('students/<int:id>/edit/', edit_student),
+    path('teachers/<int:id>/edit/', edit_teacher),
     path('students/<int:id>/delete/confirmation/', delete_confirmation_student),
     path('students/<int:id>/delete/', delete_student),
 ]
