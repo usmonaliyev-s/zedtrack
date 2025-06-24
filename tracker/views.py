@@ -171,4 +171,22 @@ def add_course(request):
 
     return render(request, "add_course.html", data)
 
-
+def edit_student(request, id):
+    if request.method == "POST":
+        print(request.POST.get('gender'))
+        student = Student.objects.get(id=id)
+        student = Student.objects.get(pk=id)
+        student.first_name = request.POST.get('first_name')
+        student.last_name = request.POST.get('last_name')
+        student.gender = request.POST.get('gender')
+        student.course_id = request.POST.get('course')
+        student.save()
+        return redirect('/students/')
+    student = Student.objects.get(id=id)
+    courses = Course.objects.all()
+    print(student.gender)
+    data = {
+        "student": student,
+        "courses": courses,
+    }
+    return render(request, "edit_student.html", data)

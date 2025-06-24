@@ -12,4 +12,5 @@ urlpatterns = [
     path('students/add/', add_student),
     path('teachers/add/', add_teacher),
     path('courses/add/', add_course),
+    path('students/<int:id>/edit/', edit_student),
 ]
