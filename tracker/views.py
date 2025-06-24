@@ -173,8 +173,6 @@ def add_course(request):
 
 def edit_student(request, id):
     if request.method == "POST":
-        print(request.POST.get('gender'))
-        student = Student.objects.get(id=id)
         student = Student.objects.get(pk=id)
         student.first_name = request.POST.get('first_name')
         student.last_name = request.POST.get('last_name')
