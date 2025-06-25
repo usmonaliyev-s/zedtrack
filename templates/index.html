@@ -99,7 +99,7 @@
                         <h5 class="logo-title ml-3">ZEDTRACK</h5>
                     </a>
                 </div>
-                <h5 style="margin-top: 1.4%;">{{ date }}</h5>
+                <h5 style="margin-top: 1.4%;" id="clock">Time</h5>
             </nav>
           </div>
       </div>
@@ -282,9 +282,51 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div style="">
+                        <div style="overflow: auto; height: 370px">
                           <canvas id="pieChart"></canvas>
 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12" style="position: relative; top: -20px;">
+                <div class="card card-block card-stretch" style="border-color: var(--main-color)">
+                    <div class="card-header d-flex align-items-center justify-content-between" style="border-color: var(--main-color)">
+                        <div class="header-title">
+                            <h4 class="card-title">Recent Attendance Records</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div style="overflow: auto; height: 370px">
+                            <table class="table ">
+                                <thead class=" ">
+                                    <tr class="ligth ligth-data">
+                                        <th style="text-align: start">Student</th>
+                                        <th>Course</th>
+                                        <th>Course Time</th>
+                                        <th>Record Time</th>
+                                        <th>Teacher</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="ligth-body">
+                                {% for record in attendance_records %}
+                                        <tr>
+                                            <td style="text-align: start">{{ record.student.first_name }} {{ record.student.last_name }}</td>
+                                            <td>{{ record.course }}</td>
+                                            <td>{{ record.course.time }}</td>
+                                            <td>{{ record.time }}</td>
+                                            <td>{{ record.student.course.course_teacher.first_name }} {{ record.student.course.course_teacher.last_name }}</td>
+                                            {% if record.status %}
+                                            <td style="color: green">✅ Present</td>
+                                            {% else %}
+                                            <td style="color: red">❌ Absent</td>
+                                            {% endif %}
+
+                                        </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -373,7 +415,27 @@ $(function() {
             }
         });
     </script>
+  <script>
+    function updateDateTime() {
+      const now = new Date();
 
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+      const year = now.getFullYear();
+
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+
+      const date = `${day}.${month}.${year}`;
+      const time = `${hours}:${minutes}:${seconds} |`;
+
+      document.getElementById('clock').textContent = `${time} ${date}`;
+    }
+
+    updateDateTime(); // Initial call
+    setInterval(updateDateTime, 1000); // Update every second
+  </script>
     <!-- Wrapper End-->
     <!-- Backend Bundle JavaScript -->
     <script src="{% static 'assets/js/backend-bundle.min.js' %}"></script>

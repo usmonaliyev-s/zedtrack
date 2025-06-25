@@ -90,7 +90,8 @@ def index(request):
         "attendance_rate_today": attendance_rate_today,
         "todays_courses": todays_courses,
         "present_student": present_student,
-        "date": date.today()
+        "date": date.today(),
+        "attendance_records": Attendance.objects.all().order_by('-time')[:10],
     }
     return render(request, 'index.html', data)
 
