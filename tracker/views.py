@@ -214,3 +214,15 @@ def edit_teacher(request, id):
         "teacher": teacher,
     }
     return render(request, "edit_teacher.html", data)
+
+def delete_confirmation_teacher(request, id):
+    teacher = Teacher.objects.get(pk=id)
+    data = {
+        "teacher": teacher,
+    }
+    return render(request, "delete_confirmation_teacher.html", data)
+
+def delete_teacher(request, id):
+    Teacher.objects.get(pk=id).delete()
+    return redirect('/teachers/')
+
