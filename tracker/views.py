@@ -256,3 +256,14 @@ def edit_course(request, id):
         "days": course.days,
     }
     return render(request, "courses/edit_course.html", data)
+
+def delete_confirmation_course(request, id):
+    course = Course.objects.get(pk=id)
+    data = {
+        "course": course,
+    }
+    return render(request, "courses/delete_confirmation_course.html", data)
+
+def delete_course(request, id):
+    Course.objects.get(pk=id).delete()
+    return redirect('/courses/')
