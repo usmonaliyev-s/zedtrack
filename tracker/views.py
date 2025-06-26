@@ -246,7 +246,7 @@ def edit_course(request, id):
         course.course_teacher_id = request.POST.get('teacher')
         course.course_time = request.POST.get('time')
         course.days = request.POST.getlist('days')
-        course.description = request.POST.getlist('description')
+        course.description = request.POST.get('description')
         course.save()
         return redirect('/courses/')
     course = Course.objects.get(id=id)
