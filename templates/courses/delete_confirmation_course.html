@@ -29,14 +29,14 @@
               <div class="d-flex align-items-center mb-4 card-total-sale">
                 <div style="text-align: center; margin-top: 30px;">
                   <p class="mb-4" style="color: black; font-size: 20px">
-                    Are you sure you want to delete the teacher <b><i>{{ teacher.first_name }} {{ teacher.last_name }}</i></b>?
+                    Are you sure you want to delete the course <b><i>{{ course.course_name }} at {{ course.course_time }}</i></b>?
                   </p>
 
                   <div style="display: flex; justify-content: center; gap: 20px;">
-                    <a href="/teachers/{{ teacher.id }}/delete/" style="color: white; background-color: red; width: 100px; height: 40px; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
+                    <a href="/courses/{{ course.id }}/delete/" style="color: white; background-color: red; width: 100px; height: 40px; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
                       Yes
                     </a>
-                    <a href="/teachers/" style="color: white; background-color: var(--main-color); width: 100px; height: 40px; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
+                    <a href="/courses/" style="color: white; background-color: var(--main-color); width: 100px; height: 40px; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
                       No
                     </a>
                   </div>
