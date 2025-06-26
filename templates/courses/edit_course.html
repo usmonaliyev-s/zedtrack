@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>ZEDTRACK | Teachers</title>
+      <title>ZEDTRACK | Students</title>
 
       <!-- Favicon -->
       <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}" />
@@ -16,7 +16,30 @@
       <link rel="stylesheet" href="{% static 'assets/vendor/remixicon/fonts/remixicon.css' %}">
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <style>
+        .btn-check:checked + .weekday-btn {
+            background-color: var(--main-color);
+            color: white;
+            border-color: var(--main-color);
+        }
+        .weekday-btn {
+            border: 1px solid var(--main-color);
+            background-color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+        .weekday-btn:hover {
+            background-color: #f0f0f0;
+        }
+        .btn-check {
+            display: none;
+        }
 
+    </style>
 
   </head>
   <body>
@@ -96,63 +119,133 @@
           </div>
 
       </div>
-      <div class="content-page">
-     <div class="container-fluid">
+<div class="content-page">
+
+     <div class="container-fluid add-form-list">
+     {% if messages %}
+      {% for m in messages %}
+      <div class="error">{{m}}</div>
+      {% endfor %}
+      {% endif %}
         <div class="row">
-            <div class="col-lg-12">
-                <div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
-                    <div>
-                        <h4 class="mb-3">Teachers List</h4>
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Edit Course</h4>
+                        </div>
+
                     </div>
-                    <a href="/teachers/add/" class="btn btn-primary add-list"><svg width="25" height="25" style="padding-right: 7px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 4C12.5523 4 13 4.44772 13 5V11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H13V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V13H5C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11H11V5C11 4.44772 11.4477 4 12 4Z" fill="#ffffff"></path> </g></svg>
-                    Add Teacher
-                    </a>
+                    <div class="card-body">
+                        <form action="/courses/{{ course.id }}/edit/" method="post" data-toggle="validator">{% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Course Name *</label>
+                                        <input value="{{ course.course_name }}" name="name" type="text" class="form-control" placeholder="Enter Name" data-errors="Please Enter Name." required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Course Time *</label>
+                                        <input value="{{ course.course_time|time:"H:i" }}" name="time" type="time" class="form-control" data-errors="Please Enter Time." required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Course Teacher *</label>
+                                        <select name="teacher" class="form-control">
+                                            {% for teacher in teachers %}
+                                                {% if teacher == course.teacher %}
+                                                    <option selected="selected" value="{{ teacher.id }}">{{ teacher.first_name }} {{ teacher.last_name }}</option>
+                                                {% else %}
+                                                    {% if teacher != course.teacher %}
+                                                        <option value="{{ teacher.id }}">{{ teacher.first_name }} {{ teacher.last_name }}</option>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Description *</label>
+                                        <textarea name="description" class="form-control" rows="1">{{ course.description }}</textarea>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Select Available Days</label>
+                                        <div class="weekday-selector">
 
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="table-responsive rounded mb-3">
-                <table class="data-table table mb-0 tbl-server-info">
-                    <thead class="bg-white text-uppercase">
-                        <tr class="ligth ligth-data">
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Phone Number</th>
-                            <th>Students</th>
-                            <th> </th>
-                        </tr>
-                    </thead>
-                    <tbody class="ligth-body">
-                    {% for teacher in teachers %}
-                            <tr>
+                                            <input type="checkbox" class="btn-check" id="mon" name="days" value="Mon"
+                                            {% if "Mon" in days %}checked{% endif %}>
+                                            <label class="weekday-btn" for="mon">Mon</label>
 
-                                <td>{{ teacher.first_name }}</td>
-                                <td>{{ teacher.last_name }}</td>
-                                <td>{{ teacher.phone_number }}</td>
-                                <td>{{ teacher.num_students }}</td>
-                                <td>
-                                       <a href="/teachers/{{ teacher.id }}/edit/" style="display: inline">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--main-color)" class="bi bi-pen" viewBox="0 0 16 16">
-                                                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
-                                            </svg>
-                                        </a>
-                                <a href="/teachers/{{ teacher.id }}/delete/confirmation/" style="display: inline">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-archive" viewBox="0 0 16 16">
-                                                <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1V2zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5H2zm13-3H1v2h14V2zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
-                                          </svg>
-                                        </a>
-                                </td>
+                                            <input type="checkbox" class="btn-check" id="tue" name="days" value="Tue"
+                                            {% if "Tue" in days %}checked{% endif %}>
+                                            <label class="weekday-btn" for="tue">Tue</label>
 
-                            </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                                            <input type="checkbox" class="btn-check" id="wed" name="days" value="Wed"
+                                            {% if "Wed" in days %}checked{% endif %}>
+                                            <label class="weekday-btn" for="wed">Wed</label>
+
+                                            <input type="checkbox" class="btn-check" id="thu" name="days" value="Thu"
+                                            {% if "Thu" in days %}checked{% endif %}>
+                                            <label class="weekday-btn" for="thu">Thu</label>
+
+                                            <input type="checkbox" class="btn-check" id="fri" name="days" value="Fri"
+                                            {% if "Fri" in days %}checked{% endif %}>
+                                            <label class="weekday-btn" for="fri">Fri</label>
+
+                                            <input type="checkbox" class="btn-check" id="sat" name="days" value="Sat"
+                                            {% if "Sat" in days %}checked{% endif %}>
+                                            <label class="weekday-btn" for="sat">Sat</label>
+
+                                            <input type="checkbox" class="btn-check" id="sun" name="days" value="Sun"
+                                            {% if "Sun" in days %}checked{% endif %}>
+                                            <label class="weekday-btn" for="sun">Sun</label>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
         <!-- Page end  -->
     </div>
-
+      </div>
+    </div>
+    <!-- Wrapper End-->
+    <footer class="iq-footer">
+            <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item"><a href="privacy-policy.html">Privacy Policy</a></li>
+                                <li class="list-inline-item"><a href="terms-of-service.html">Terms of Use</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6 text-right">
+                            <span class="mr-1"><script>document.write(new Date().getFullYear())</script>©</span> <a href="#" class="">POS Dash</a>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
     <!-- Backend Bundle JavaScript -->
     <script src="{% static 'assets/js/backend-bundle.min.js' %}"></script>
 
