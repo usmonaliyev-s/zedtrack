@@ -9,6 +9,25 @@ Primary style
   box-sizing: border-box;
 }
 
+
+:root {
+  --main-color: #4A5568;
+  --background-color: #ffffff;
+  --text-color: #1a202c;
+}
+
+[data-theme="dark"] {
+  --main-color: #90cdf4;
+  --background-color: #1a202c;
+  --text-color: #f7fafc;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+
 html {
   font-size: 62.5%;
 }
