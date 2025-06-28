@@ -267,3 +267,6 @@ def delete_confirmation_course(request, id):
 def delete_course(request, id):
     Course.objects.get(pk=id).delete()
     return redirect('/courses/')
+
+def marking(request):
+    return render(request, "marking.html")
