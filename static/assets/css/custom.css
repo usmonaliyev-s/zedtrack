@@ -143,11 +143,6 @@ label {
     color: var(--text-color)
 }
 
-
-tr, th {
-    background-color: var(--background-color)
-    color: var(--text-color);
-}
 .error {
   border: 1px solid;
   margin: 10px 0px;
