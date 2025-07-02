@@ -9,7 +9,7 @@
         <!-- Favicon -->
         <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}" />
         <link rel="stylesheet" href="{% static 'assets/css/backend-plugin.min.css' %}" />
-        <link rel="stylesheet" href="{% static 'assets/css/backend.css?v=1.0.0' %}" />
+        <link rel="stylesheet" href="{% static 'assets/css/backend.css' %}" />
         <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}" />
         <link rel="stylesheet" href="{% static 'assets/vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" />
         <link rel="stylesheet" href="{% static 'assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css' %}" />
@@ -22,7 +22,7 @@
             <div class="iq-sidebar sidebar-default" style="display: flex; flex-direction: column; height: 100vh;">
                 <!-- Sidebar logo and toggle -->
                 <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
-                    <a href="/" class="header-logo">
+                    <a href="/static" class="header-logo">
                         <img src="{% static 'zed.png' %}" class="img-fluid rounded-normal light-logo" alt="logo" />
                         <h6 class="logo-title light-logo ml-3" style="color: var(--text-color);">ZEDTRACK</h6>
                     </a>
@@ -40,7 +40,7 @@
                     <nav class="iq-sidebar-menu">
                         <ul id="iq-sidebar-toggle" class="iq-menu">
                             <li class="actives">
-                                <a href="/" class="svg-icon">
+                                <a href="/static" class="svg-icon">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -140,7 +140,7 @@
                                     <path d="M4 6H20M4 12H20M4 18H20" stroke="var(--text-color)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
                                 </svg>
                             </i>
-                            <a href="/" class="header-logo d-flex align-items-center">
+                            <a href="/static" class="header-logo d-flex align-items-center">
                                 <img src="{% static 'zed.png' %}" class="img-fluid rounded-normal" alt="logo" />
                                 <h5 class="logo-title ml-3" style="color: var(--text-color);">ZEDTRACK</h5>
                             </a>
@@ -200,26 +200,29 @@
                         </div>
                         <div class="col-lg-12">
                             <div class="table-responsive rounded mb-3">
-                                <table class=" table mb-0 tbl-server-info">
+                                <table class="data-table table mb-0 tbl-server-info">
                                     <thead class="bg-white text-uppercase">
                                         <tr>
                                             <th>Course</th>
                                             <th>Teacher</th>
                                             <th>Time</th>
+                                            <th>Days</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody class="ligth-body">
                                         {% for course in courses %}
                                         <tr style="background-color: var(--background-color);">
-                                            <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.course_name }}</td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ course.course_name }}</td>
                                             <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.course_teacher }}</td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.num_students }}</td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.course_time }}</td>
                                             <td style="background-color: var(--background-color); color: var(--text-color);">
                                                 {% for day in course.days %} {{ day }}, {% endfor %}
                                             </td>
                                             <td>
-                                                <a href="/courses/{{ course.id }}/edit/" style="display: inline;">Select</a>
+                                                <a href="/marking/course-id={{ course.id }}/" style="display: inline-block; background-color: var(--main-color); width: 65px; height: 30px; border-radius: 8px; color: white">
+                                                    Select
+                                                </a>
                                             </td>
                                         </tr>
                                         {% endfor %}

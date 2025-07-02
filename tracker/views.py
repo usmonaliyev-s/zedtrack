@@ -268,5 +268,15 @@ def delete_course(request, id):
     Course.objects.get(pk=id).delete()
     return redirect('/courses/')
 
-def marking(request):
-    return render(request, "marking.html")
+def select_course(request):
+    data = {
+        "courses": Course.objects.all()
+    }
+    return render(request, "marking-attendance/select_course.html", data)
+
+def marking(request, id):
+    data = {
+        "students": Student.objects.filter(course__id=id),
+        "course": Course.objects.get(pk=id),
+    }
+    return render(request, "marking-attendance/marking.html", data)

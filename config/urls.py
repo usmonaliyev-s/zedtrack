@@ -19,5 +19,6 @@ urlpatterns = [
     path('students/<int:id>/delete/', delete_student),
     path('courses/<int:id>/delete/confirmation/', delete_confirmation_course),
     path('courses/<int:id>/delete/', delete_course),
-    path('marking/', marking),
+    path('marking/', select_course),
+    path('marking/course-id=<int:id>/', marking),
 ]
