@@ -33,9 +33,9 @@
 
 .marking-toggle-wrapper .marking-toggle-btn {
   flex: 1;
-  padding: 6px 12px; /* smaller padding */
-  font-size: 14px;    /* smaller font */
-  margin: 0;
+  padding: 6px 12px;
+  font-size: 14px;
+    margin: 0;
   background-color: white;
   color: var(--main-color);
   cursor: pointer;
@@ -47,7 +47,7 @@
   justify-content: center;
   align-items: center;
   border: none;
-  min-width: 70px;  /* shorter width */
+  min-width: 80px;
 }
 
 .marking-toggle-wrapper .marking-toggle-btn:first-of-type {
@@ -221,26 +221,16 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-12">
+                            <form method="post" action="/marking/course-id={{ course.id }}/">{% csrf_token %}
                             <div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
                                 <div>
                                     <h4 class="mb-3">Course: {{ course.course_name }}</h4>
                                 </div>
-{#                                <a href="/courses/add/" class="btn btn-primary add-list">#}
-{#                                    <svg width="25" height="25" style="padding-right: 7px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">#}
-{#                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>#}
-{#                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>#}
-{#                                        <g id="SVGRepo_iconCarrier">#}
-{#                                            <path#}
-{#                                                fill-rule="evenodd"#}
-{#                                                clip-rule="evenodd"#}
-{#                                                d="M12 4C12.5523 4 13 4.44772 13 5V11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H13V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V13H5C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11H11V5C11 4.44772 11.4477 4 12 4Z"#}
-{#                                                fill="#ffffff"#}
-{#                                            ></path>#}
-{#                                        </g>#}
-{#                                    </svg>#}
-{#                                    Add Course#}
-{#                                </a>#}
+                                <button type="submit" class="btn btn-primary add-list">
+                                    Submit
+                                </button>
                             </div>
+                            </form>
                         </div>
                         <div class="col-lg-12">
                             <div class="table-responsive rounded mb-3">
@@ -248,7 +238,8 @@
                                     <thead class="bg-white text-uppercase">
                                         <tr>
                                             <th>Student</th>
-                                            <th>Status</th>
+                                            <th>Attendance Rate</th>
+                                            <th style="text-align: left">Status</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -256,7 +247,8 @@
                                         {% for student in students %}
                                         <tr style="background-color: var(--background-color);">
                                             <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ student.first_name }} {{ student.last_name }}</td>
-                                            <td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ student.attendance_rate }}</td>
+                                            <td style="text-align: left">
 <div class="marking-toggle-wrapper">
   <input type="radio" name="status-{{ student.id }}" id="absent-{{ student.id }}" value="Absent" class="marking-toggle-input" hidden>
   <label for="absent-{{ student.id }}" class="marking-toggle-btn">Absent</label>

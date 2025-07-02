@@ -275,8 +275,19 @@ def select_course(request):
     return render(request, "marking-attendance/select_course.html", data)
 
 def marking(request, id):
+    if request.method == "POST":
+        print(request.POST.get('status-4'))
+    students = Student.objects.annotate(
+        total=Count('attendance'),
+        present=Count('attendance', filter=Q(attendance__status=True)),
+    ).annotate(
+        attendance_rate=ExpressionWrapper(
+            100.0 * F('present') / NullIf(F('total'), 0),
+            output_field=FloatField()
+        )
+    )
     data = {
-        "students": Student.objects.filter(course__id=id),
+        "students": students.filter(course__id=id),
         "course": Course.objects.get(pk=id),
     }
     return render(request, "marking-attendance/marking.html", data)
