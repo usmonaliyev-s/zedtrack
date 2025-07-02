@@ -1,2 +1,3 @@
 django
 environs
+django-multiselectfield
