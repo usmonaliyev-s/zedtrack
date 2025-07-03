@@ -269,8 +269,19 @@ def delete_course(request, id):
     return redirect('/courses/')
 
 def select_course(request):
+    today = date.today()
+    weekday = today.strftime("%a")
+    courses = Course.objects.filter(days__contains=weekday)
+    marked_courses = []
+    for course in courses:
+        has_attendance = Attendance.objects.filter(course=course, time__date=today).exists()
+        marked_courses.append({
+            "course": course,
+            "status": has_attendance,
+            })
+
     data = {
-        "courses": Course.objects.all(),
+        "courses": marked_courses,
     }
     return render(request, "marking-attendance/select_course.html", data)
 

@@ -207,22 +207,30 @@
                                             <th>Teacher</th>
                                             <th>Time</th>
                                             <th>Days</th>
+                                            <th>Status</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody class="ligth-body">
                                         {% for course in courses %}
                                         <tr style="background-color: var(--background-color);">
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ course.course_name }}</td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.course_teacher }}</td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.course_time }}</td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ course.course.course_name }}</td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.course.course_teacher }}</td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.course.course_time }}</td>
                                             <td style="background-color: var(--background-color); color: var(--text-color);">
-                                                {% for day in course.days %} {{ day }}, {% endfor %}
+                                                {% for day in course.course.days %} {{ day }}, {% endfor %}
                                             </td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.status }}</td>
                                             <td>
-                                                <a href="/marking/course-id={{ course.id }}/" style="display: inline-block; background-color: var(--main-color); width: 65px; height: 30px; border-radius: 8px; color: white">
+                                                {% if course.status %}
+                                                <a href="/marking/course-id={{ course.course.id }}/edit/" style="display: inline-block; background-color: var(--main-color); width: 65px; height: 30px; border-radius: 8px; color: white">
+                                                    Edit
+                                                </a>
+                                                {% else %}
+                                                <a href="/marking/course-id={{ course.course.id }}/" style="display: inline-block; background-color: var(--main-color); width: 65px; height: 30px; border-radius: 8px; color: white">
                                                     Select
                                                 </a>
+                                                {% endif %}
                                             </td>
                                         </tr>
                                         {% endfor %}
