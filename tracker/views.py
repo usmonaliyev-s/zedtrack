@@ -2,7 +2,7 @@ from django.db.models import Count, Q, ExpressionWrapper, F
 from django.db.models.fields import FloatField
 from django.db.models.functions import TruncDate, NullIf
 from django.shortcuts import render, redirect
-from datetime import date
+from datetime import date, datetime
 from django.utils import timezone
 
 from .models import *
@@ -270,13 +270,11 @@ def delete_course(request, id):
 
 def select_course(request):
     data = {
-        "courses": Course.objects.all()
+        "courses": Course.objects.all(),
     }
     return render(request, "marking-attendance/select_course.html", data)
 
 def marking(request, id):
-    if request.method == "POST":
-        print(request.POST.get('status-4'))
     students = Student.objects.annotate(
         total=Count('attendance'),
         present=Count('attendance', filter=Q(attendance__status=True)),
@@ -285,9 +283,24 @@ def marking(request, id):
             100.0 * F('present') / NullIf(F('total'), 0),
             output_field=FloatField()
         )
-    )
+    ).filter(course__id=id)
+    if request.method == "POST":
+        for i in students:
+            status = request.POST.get(f'status-{i.id}')
+            if status == "present":
+                status = True
+            elif status == "absent":
+                status = False
+            attendance = Attendance.objects.create(student_id=i.id, course_id=id, status=status)
+        return redirect("/marking/")
+    attendances = Attendance.objects.filter(course_id=id, time__day=datetime.today().day)
+    if attendances.exists():
+        attendances = attendances
+    else:
+        attendances = None
     data = {
-        "students": students.filter(course__id=id),
+        "students": students,
         "course": Course.objects.get(pk=id),
+        "attendances": attendances,
     }
     return render(request, "marking-attendance/marking.html", data)
