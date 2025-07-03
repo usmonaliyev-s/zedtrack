@@ -268,6 +268,19 @@ def delete_course(request, id):
     Course.objects.get(pk=id).delete()
     return redirect('/courses/')
 
+def course_details(request, id):
+    course = Course.objects.get(pk=id)
+    students = Student.objects.filter(course=course)
+    data = {
+        "course": course,
+        "students": students,
+    }
+    return render(request, "courses/course_details.html", data)
+
+
+"""
+Marking
+"""
 def select_course(request):
     today = date.today()
     weekday = today.strftime("%a")
