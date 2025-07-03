@@ -222,11 +222,13 @@
                             <div class="col-lg-12">
                                 <div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
                                     <div>
-                                        <h4 class="mb-3">Course: {{ course.course_name }}</h4>
+                                        <h4 class="mb-3">Course: {{ course.course_name }} | Date: {{ date }}</h4>
                                     </div>
+                                    {% if not attendances %}
                                     <button type="submit" class="btn btn-primary add-list">
                                         Submit
                                     </button>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="col-lg-12">

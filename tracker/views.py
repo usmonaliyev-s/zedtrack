@@ -293,7 +293,7 @@ def marking(request, id):
                 status = False
             attendance = Attendance.objects.create(student_id=i.id, course_id=id, status=status)
         return redirect("/marking/")
-    attendances = Attendance.objects.filter(course_id=id, time__day=datetime.today().day)
+    attendances = Attendance.objects.filter(course_id=id, time__date=date.today())
     if attendances.exists():
         attendances = attendances
     else:
@@ -302,5 +302,6 @@ def marking(request, id):
         "students": students,
         "course": Course.objects.get(pk=id),
         "attendances": attendances,
+        "date": date.today()
     }
     return render(request, "marking-attendance/marking.html", data)
