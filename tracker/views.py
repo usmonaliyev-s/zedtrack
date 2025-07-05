@@ -270,7 +270,15 @@ def delete_course(request, id):
 
 def course_details(request, id):
     course = Course.objects.get(pk=id)
-    students = Student.objects.filter(course=course)
+    students = Student.objects.annotate(
+        total=Count('attendance'),
+        present=Count('attendance', filter=Q(attendance__status=True)),
+    ).annotate(
+        attendance_rate=ExpressionWrapper(
+            100.0 * F('present') / NullIf(F('total'), 0),
+            output_field=FloatField()
+        )
+    ).filter(course=course)
     data = {
         "course": course,
         "students": students,

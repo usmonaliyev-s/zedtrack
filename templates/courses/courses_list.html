@@ -213,7 +213,11 @@
                                     <tbody class="ligth-body">
                                         {% for course in courses %}
                                         <tr style="background-color: var(--background-color);">
-                                            <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.course_name }}</td>
+                                            <td>
+                                                <a href="/courses/{{ course.id }}/" style="background-color: var(--background-color); color: var(--text-color);" title="Details">
+                                                    {{ course.course_name }}
+                                                </a>
+                                            </td>
                                             <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.course_teacher }}</td>
                                             <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.num_students }}</td>
                                             <td style="background-color: var(--background-color); color: var(--text-color);">
