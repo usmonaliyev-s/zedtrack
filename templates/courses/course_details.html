@@ -14,7 +14,6 @@
         <link rel="stylesheet" href="{% static 'assets/vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" />
         <link rel="stylesheet" href="{% static 'assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css' %}" />
         <link rel="stylesheet" href="{% static 'assets/vendor/remixicon/fonts/remixicon.css' %}" />
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     </head>
     <body>
@@ -29,7 +28,7 @@
                     <div class="iq-menu-bt-sidebar ml-0">
                         <i class="wrapper-menu">
                             <svg fill="var(--text-color)" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4 6H20M4 12H20M4 18H20" stroke="var(--text-color)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                                <path d="M4 6H20M4 12H20M4 18H20" stroke="var(--text-color)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
                             </svg>
                         </i>
                     </div>
@@ -179,22 +178,10 @@
                         <div class="col-lg-12">
                             <div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
                                 <div>
-                                    <h4 class="mb-3">Courses List</h4>
+                                    <h4 class="mb-3">Course: {{ course.course_name }}</h4>
                                 </div>
-                                <a href="/courses/add/" class="btn btn-primary add-list">
-                                    <svg width="25" height="25" style="padding-right: 7px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
-                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                        <g id="SVGRepo_iconCarrier">
-                                            <path
-                                                fill-rule="evenodd"
-                                                clip-rule="evenodd"
-                                                d="M12 4C12.5523 4 13 4.44772 13 5V11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H13V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V13H5C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11H11V5C11 4.44772 11.4477 4 12 4Z"
-                                                fill="#ffffff"
-                                            ></path>
-                                        </g>
-                                    </svg>
-                                    Add Course
+                                <a href="/marking/course-id={{ course.id }}/" class="btn btn-primary add-list">
+                                    Mark Attendance
                                 </a>
                             </div>
                         </div>
