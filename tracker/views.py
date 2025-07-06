@@ -181,7 +181,7 @@ def add_teacher(request):
             last_name=request.POST.get('last_name'),
             phone_number=request.POST.get('phone_number'),
         )
-        return redirect('/teachers/')
+        return redirect('/teacher/list/')
 
     return render(request, "teachers/add_teacher.html")
 
@@ -193,7 +193,7 @@ def edit_teacher(request, id):
         teacher.last_name = request.POST.get('last_name')
         teacher.phone_number = request.POST.get('phone_number')
         teacher.save()
-        return redirect('/teachers/')
+        return redirect('/teacher/list/')
     teacher = Teacher.objects.get(id=id)
     data = {
         "teacher": teacher,
@@ -209,7 +209,7 @@ def delete_confirmation_teacher(request, id):
 
 def delete_teacher(request, id):
     Teacher.objects.get(pk=id).delete()
-    return redirect('/teachers/')
+    return redirect('/teacher/list/')
 
 
 """
@@ -235,7 +235,7 @@ def add_course(request):
             days=request.POST.getlist('days'),
             description=request.POST.get('description'),
         )
-        return redirect('/courses/')
+        return redirect('/course/list/')
 
     return render(request, "courses/add_course.html", data)
 
@@ -248,7 +248,7 @@ def edit_course(request, id):
         course.days = request.POST.getlist('days')
         course.description = request.POST.get('description')
         course.save()
-        return redirect('/courses/')
+        return redirect('/course/list/')
     course = Course.objects.get(id=id)
     data = {
         "course": course,
@@ -266,7 +266,7 @@ def delete_confirmation_course(request, id):
 
 def delete_course(request, id):
     Course.objects.get(pk=id).delete()
-    return redirect('/courses/')
+    return redirect('/course/list/')
 
 def course_details(request, id):
     course = Course.objects.get(pk=id)
