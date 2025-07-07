@@ -7,6 +7,9 @@ from courses.models import Course
 from students.models import Student
 from teachers.models import Teacher
 
+from datetime import date
+import calendar
+
 
 # Create your views here.
 def courses_list(request):
@@ -73,8 +76,41 @@ def course_details(request, id):
             output_field=FloatField()
         )
     ).filter(course=course)
+
+    # Handle days
+    day_map = {
+        'Mon': 0, 'Monday': 0,
+        'Tue': 1, 'Tues': 1, 'Tuesday': 1,
+        'Wed': 2, 'Wednesday': 2,
+        'Thu': 3, 'Thurs': 3, 'Thursday': 3,
+        'Fri': 4, 'Friday': 4,
+        'Sat': 5, 'Saturday': 5,
+        'Sun': 6, 'Sunday': 6,
+    }
+    raw_days = course.days
+    target_weekdays = [day_map[d] for d in raw_days]
+
+    # Get calendar for current month
+    today = date.today()
+    year, month = today.year, today.month
+    cal = calendar.Calendar(firstweekday=0)
+    month_days = list(cal.itermonthdates(year, month))  # Includes days from prev/next month to fill full weeks
+
+    # Build a list of weeks, each week is a list of (date, is_course_day)
+    weeks = []
+    for i in range(0, len(month_days), 7):
+        week = []
+        for day in month_days[i:i+7]:
+            is_course_day = (day.weekday() in target_weekdays and day.month == month)
+            week.append((day, is_course_day))
+        weeks.append(week)
+
     data = {
         "course": course,
         "students": students,
+        "calendar_weeks": weeks,
+        "month_name": today.strftime("%B"),
+        "year": year,
+        "today": today,
     }
     return render(request, "courses/course_details.html", data)
