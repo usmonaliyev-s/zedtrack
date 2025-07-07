@@ -215,7 +215,7 @@
                     </nav>
                 </div>
             </div>
-            <form method="post" action="{% url 'select-course' %}course-id={{ course.id }}/">{% csrf_token %}
+            <form method="post" action="{% url 'selected-course' course.id %}">{% csrf_token %}
                 <div class="content-page">
                     <div class="container-fluid">
                         <div class="row">
@@ -237,9 +237,9 @@
                                         <thead class="bg-white text-uppercase">
                                             <tr class="ligth ligth-data">
                                                 <th style="text-align: left">Student</th>
-                                                <th>Attendance Rate</th>
+                                                <th style="text-align: left">Attendance Rate</th>
                                                 <th style="text-align: left">Status</th>
-                                                <th></th>
+                                                <th style="text-align: left"></th>
                                             </tr>
                                         </thead>
                                         <tbody class="ligth-body">
@@ -265,7 +265,7 @@
                 {% endif %}
             {% endif %}
         {% endfor %}
-        {% elif attendaces == None %}
+        {% else %}
             <input type="radio" name="status-{{ student.id }}" id="absent-{{ student.id }}" value="absent" class="marking-toggle-input" hidden>
             <label for="absent-{{ student.id }}" class="marking-toggle-btn">❌ Absent</label>
             <input type="radio" name="status-{{ student.id }}" id="present-{{ student.id }}" value="present" class="marking-toggle-input" hidden>

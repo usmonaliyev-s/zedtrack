@@ -30,7 +30,7 @@
                                     </p>
 
                                     <div style="display: flex; justify-content: center; gap: 20px;">
-                                        <a href="{% url 'student-list' %}{{ student.id }}/delete/" style="color: white; background-color: red; width: 100px; height: 40px; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
+                                        <a href="{% url 'delete-student' student.id %}" style="color: white; background-color: red; width: 100px; height: 40px; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
                                             Yes
                                         </a>
                                         <a href="{% url 'student-list' %}" style="color: white; background-color: var(--main-color); width: 100px; height: 40px; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
