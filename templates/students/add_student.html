@@ -186,7 +186,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <form action="{% url 'student-list' %}add/" method="post" data-toggle="validator">
+                                    <form action="{% url 'add-student' %}" method="post" data-toggle="validator">
                                         {% csrf_token %}
                                         <div class="row">
                                             <div class="col-md-6">

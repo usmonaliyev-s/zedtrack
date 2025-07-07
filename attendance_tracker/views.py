@@ -133,7 +133,7 @@ def marking(request, id):
             elif status == "absent":
                 status = False
             Attendance.objects.create(student_id=i.id, course_id=id, status=status)
-        return redirect("/marking/")
+        return redirect("select-course")
     attendances = Attendance.objects.filter(course_id=id, time__date=date.today())
     if attendances.exists():
         attendances = attendances
