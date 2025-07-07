@@ -22,6 +22,7 @@ from attendance_tracker.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
+    path('history/', history, name='history'),
     path('courses/', include('courses.urls')),
     path('teachers/', include('teachers.urls')),
     path('students/', include('students.urls')),
