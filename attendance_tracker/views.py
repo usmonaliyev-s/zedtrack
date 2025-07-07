@@ -146,3 +146,6 @@ def marking(request, id):
         "date": date.today()
     }
     return render(request, "marking-attendance/marking.html", data)
+
+def history(request):
+    return render(request, "marking-attendance/history.html")
