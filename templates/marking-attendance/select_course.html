@@ -203,26 +203,26 @@
                                 <table class="data-table table mb-0 tbl-server-info">
                                     <thead class="bg-white text-uppercase">
                                         <tr class="ligth ligth-data">
-                                            <th>Course</th>
-                                            <th>Teacher</th>
-                                            <th>Time</th>
-                                            <th>Days</th>
-                                            <th>Status</th>
-                                            <th></th>
+                                            <th style="text-align: left;">Course</th>
+                                            <th style="text-align: left">Teacher</th>
+                                            <th style="text-align: left">Time</th>
+                                            <th style="text-align: left">Days</th>
+                                            <th style="text-align: left">Status</th>
+                                            <th style="text-align: left"></th>
                                         </tr>
                                     </thead>
                                     <tbody class="ligth-body">
                                         {% for course in courses %}
                                         <tr style="background-color: var(--background-color);">
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ course.course.course_name }}</td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.course.course_teacher }}</td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.course.course_time }}</td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color);">
+                                            <td style="text-align: left"><a style="background-color: var(--background-color); color: var(--text-color); text-align: left" href="{% url 'course-details' course.course.id %}">{{ course.course.course_name }}</a></td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ course.course.course_teacher }}</td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ course.course.course_time }}</td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">
                                                 {% for day in course.course.days %} {{ day }}, {% endfor %}
                                             </td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.status }}</td>
-                                            <td>
-                                                <a href="{% url 'select-course' %}course-id={{ course.course.id }}/" style="display: inline-block; background-color: var(--main-color); width: 65px; height: 30px; border-radius: 8px; color: white">
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ course.status }}</td>
+                                            <td style="text-align: left">
+                                                <a href="{% url 'selected-course' course.course.id %}" style="display: inline-block; background-color: var(--main-color); width: 65px; height: 30px; border-radius: 8px; color: white">
                                                     Select
                                                 </a>
                                             </td>

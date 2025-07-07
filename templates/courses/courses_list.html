@@ -203,27 +203,27 @@
                                 <table class="data-table table mb-0 tbl-server-info">
                                     <thead class="bg-white text-uppercase">
                                         <tr class="ligth ligth-data">
-                                            <th>Course</th>
-                                            <th>Teacher</th>
-                                            <th>Students</th>
-                                            <th>Days</th>
-                                            <th></th>
+                                            <th style="text-align: left">Course</th>
+                                            <th style="text-align: left">Teacher</th>
+                                            <th style="text-align: left">Students</th>
+                                            <th style="text-align: left">Days</th>
+                                            <th style="text-align: left"></th>
                                         </tr>
                                     </thead>
                                     <tbody class="ligth-body">
                                         {% for course in courses %}
                                         <tr style="background-color: var(--background-color);">
-                                            <td>
+                                            <td style="text-align: left">
                                                 <a href="{% url 'course-details' id=course.id %}" style="background-color: var(--background-color); color: var(--text-color);" title="Details">
                                                     {{ course.course_name }}
                                                 </a>
                                             </td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.course_teacher }}</td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color);">{{ course.num_students }}</td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color);">
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ course.course_teacher }}</td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ course.num_students }}</td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">
                                                 {% for day in course.days %} {{ day }}, {% endfor %}
                                             </td>
-                                            <td>
+                                            <td style="text-align: left">
                                                 <a href="{% url 'course-details' course.id %}" style="display: inline;" title="Details">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16"><path fill="var(--main-color)" fill-rule="evenodd" d="M2 3.75A.75.75 0 0 1 2.75 3h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 3.75M2 8a.75.75 0 0 1 .75-.75h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 8m0 4.25a.75.75 0 0 1 .75-.75h10.5a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1-.75-.75" clip-rule="evenodd"></svg>
                                                 </a>
