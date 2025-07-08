@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="{% static 'assets/css/backend.css?v=1.0.0' %}" />
         <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}" />
         <link rel="stylesheet" href="{% static 'assets/vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" />
-        <link rel="stylesheet" href="{% static 'assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css' %}" />
+        
         <link rel="stylesheet" href="{% static 'assets/vendor/remixicon/fonts/remixicon.css' %}" />
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
@@ -65,42 +65,42 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/marking/" class="svg-icon">
+                                <a href="{% url 'select-course' %}" class="svg-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                                         <path
                                             fill="var(--main-color)"
-                                            d="M20 16v-6h2v6a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2h8v2H8v12h12m-9.09-8.92L14 10.17l6.59-6.59L22 5l-8 8l-4.5-4.5l1.41-1.42M16 20v2H4a2 2 0 0 1-2-2V7h2v13h12Z"
-                                        />
+                                            d="M20 16v-6h2v6a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2h8v2H8v12h12m-9.09-8.92L14 10.17l6.59-6.59L22 5l-8 8l-4.5-4.5l1.41-1.42M16 20v2H4a2 2 0 0 1-2-2V7h2v13h12Z">
+                                        </path>
                                     </svg>
                                     <span class="ml-4">Mark Attendance</span>
                                 </a>
                             </li>
                             <li class="active">
-                                <a href="/students/" class="svg-icon">
+                                <a href="{% url 'student-list' %}" class="svg-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 1024 768">
                                         <path
                                             fill="var(--main-color)"
-                                            d="M1024 736q0 13-9.5 22.5T992 768t-22.5-9.5T960 736V315L607 492q-40 20-95 20t-95-20L39 303Q0 283 0 255.5T39 209L417 20q40-20 95-20t95 20l378 189q34 17 38 42q1 1 1 4v481zM639 556l193-97v141q0 43-93.5 73.5T512 704t-226.5-30.5T192 600V459l193 97q40 20 127 20t127-20z"
-                                        />
+                                            d="M1024 736q0 13-9.5 22.5T992 768t-22.5-9.5T960 736V315L607 492q-40 20-95 20t-95-20L39 303Q0 283 0 255.5T39 209L417 20q40-20 95-20t95 20l378 189q34 17 38 42q1 1 1 4v481zM639 556l193-97v141q0 43-93.5 73.5T512 704t-226.5-30.5T192 600V459l193 97q40 20 127 20t127-20z">
+                                        </path>
                                     </svg>
                                     <span class="ml-4">Students</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="/teacher/list/" class="svg-icon">
+                                <a href="{% url 'teachers-list' %}" class="svg-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="var(--main-color)" stroke-width="1" viewBox="0 0 20 20">
                                         <path
                                             fill="var(--main-color)"
-                                            d="M8.75 3.75a2.75 2.75 0 1 0-5.5 0a2.75 2.75 0 0 0 5.5 0Zm-4.5 0a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0ZM2.5 7.5h4.183c-.164.31-.286.646-.358 1H2.5A.5.5 0 0 0 2 9v.5c0 1.26 1.099 2.614 3.096 2.93c-.322.22-.59.513-.781.854C2.205 12.713 1 11.087 1 9.5V9a1.5 1.5 0 0 1 1.5-1.5Zm5.379 0c.504-.61 1.267-1 2.121-1a2.744 2.744 0 0 1 2.646 2a2.753 2.753 0 0 1-3.893 3.202A2.75 2.75 0 0 1 7.88 7.5Zm.54 1a1.75 1.75 0 1 0 3.164 1.5a1.75 1.75 0 0 0-3.165-1.5Zm7.266 4.784a2.513 2.513 0 0 0-.781-.853C16.9 12.114 18 10.759 18 9.5V9a.5.5 0 0 0-.5-.5h-3.825a3.726 3.726 0 0 0-.357-1H17.5A1.5 1.5 0 0 1 19 9v.5c0 1.587-1.206 3.212-3.315 3.784Zm-1.198.087A1.493 1.493 0 0 0 13.5 13h-7A1.496 1.496 0 0 0 5 14.5v.5c0 1.971 1.86 4 5 4c3.14 0 5-2.029 5-4v-.5c0-.45-.198-.854-.513-1.13ZM6 14.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v.5c0 1.438-1.432 3-4 3s-4-1.562-4-3v-.5ZM14 1a2.75 2.75 0 1 1 0 5.5A2.75 2.75 0 0 1 14 1Zm0 1a1.75 1.75 0 1 0 0 3.5A1.75 1.75 0 0 0 14 2Z"
-                                        />
+                                            d="M8.75 3.75a2.75 2.75 0 1 0-5.5 0a2.75 2.75 0 0 0 5.5 0Zm-4.5 0a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0ZM2.5 7.5h4.183c-.164.31-.286.646-.358 1H2.5A.5.5 0 0 0 2 9v.5c0 1.26 1.099 2.614 3.096 2.93c-.322.22-.59.513-.781.854C2.205 12.713 1 11.087 1 9.5V9a1.5 1.5 0 0 1 1.5-1.5Zm5.379 0c.504-.61 1.267-1 2.121-1a2.744 2.744 0 0 1 2.646 2a2.753 2.753 0 0 1-3.893 3.202A2.75 2.75 0 0 1 7.88 7.5Zm.54 1a1.75 1.75 0 1 0 3.164 1.5a1.75 1.75 0 0 0-3.165-1.5Zm7.266 4.784a2.513 2.513 0 0 0-.781-.853C16.9 12.114 18 10.759 18 9.5V9a.5.5 0 0 0-.5-.5h-3.825a3.726 3.726 0 0 0-.357-1H17.5A1.5 1.5 0 0 1 19 9v.5c0 1.587-1.206 3.212-3.315 3.784Zm-1.198.087A1.493 1.493 0 0 0 13.5 13h-7A1.496 1.496 0 0 0 5 14.5v.5c0 1.971 1.86 4 5 4c3.14 0 5-2.029 5-4v-.5c0-.45-.198-.854-.513-1.13ZM6 14.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v.5c0 1.438-1.432 3-4 3s-4-1.562-4-3v-.5ZM14 1a2.75 2.75 0 1 1 0 5.5A2.75 2.75 0 0 1 14 1Zm0 1a1.75 1.75 0 1 0 0 3.5A1.75 1.75 0 0 0 14 2Z">
+                                        </path>
                                     </svg>
                                     <span class="ml-4">Teachers</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="/course/list/" class="svg-icon">
+                                <a href="{% url 'course-list' %}" class="svg-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                        <path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z" />
+                                        <path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z" </path>
                                     </svg>
                                     <span class="ml-4">Courses</span>
                                 </a>
@@ -110,8 +110,8 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="var(--main-color)" stroke-width="1.1" viewBox="0 0 24 24">
                                         <path
                                             fill="var(--main-color)"
-                                            d="M16.727 3.18C12.31.81 6.915 2.103 4 6V3.5a.5.5 0 0 0-1 0v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 0-1H4.522a8.954 8.954 0 0 1 7.411-4A8.967 8.967 0 1 1 3 12c0-.16 0-.312.009-.472A.5.5 0 0 0 2.52 11c-.27-.01-.5.2-.51.472C2 11.652 2 11.82 2 12c.006 5.52 4.48 9.994 10 10a10.005 10.005 0 0 0 8.81-5.273c2.614-4.868.786-10.933-4.083-13.547zM12 8a.5.5 0 0 0-.5.5V12a.5.5 0 0 0 .5.5h2.5a.5.5 0 0 0 0-1h-2v-3A.5.5 0 0 0 12 8z"
-                                        />
+                                            d="M16.727 3.18C12.31.81 6.915 2.103 4 6V3.5a.5.5 0 0 0-1 0v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 0-1H4.522a8.954 8.954 0 0 1 7.411-4A8.967 8.967 0 1 1 3 12c0-.16 0-.312.009-.472A.5.5 0 0 0 2.52 11c-.27-.01-.5.2-.51.472C2 11.652 2 11.82 2 12c.006 5.52 4.48 9.994 10 10a10.005 10.005 0 0 0 8.81-5.273c2.614-4.868.786-10.933-4.083-13.547zM12 8a.5.5 0 0 0-.5.5V12a.5.5 0 0 0 .5.5h2.5a.5.5 0 0 0 0-1h-2v-3A.5.5 0 0 0 12 8z">
+                                        </path>
                                     </svg>
                                     <span class="ml-4">Attendance History</span>
                                 </a>
@@ -187,7 +187,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <form action="/students/{{ student.id }}/edit/" method="post" data-toggle="validator">
+                                    <form action="{% url 'edit-student' student.id %}" method="post" data-toggle="validator">
                                         {% csrf_token %}
                                         <div class="row">
                                             <div class="col-md-6">

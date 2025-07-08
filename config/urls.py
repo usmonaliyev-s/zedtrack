@@ -1,25 +1,30 @@
-from django.contrib import admin
-from django.urls import path
+"""
+URL configuration for config project.
 
-from tracker.views import *
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/5.2/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path, include
+
+from attendance_tracker.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
-    path('students/', students_list),
-    path('teachers/', teachers_list),
-    path('course/list/', courses_list, name="courses-list"),
-    path('students/add/', add_student),
-    path('teachers/add/', add_teacher),
-    path('courses/add/', add_course),
-    path('students/<int:id>/edit/', edit_student),
-    path('teachers/<int:id>/edit/', edit_teacher),
-    path('courses/<int:id>/edit/', edit_course),
-    path('students/<int:id>/delete/confirmation/', delete_confirmation_student),
-    path('students/<int:id>/delete/', delete_student),
-    path('courses/<int:id>/delete/confirmation/', delete_confirmation_course),
-    path('courses/<int:id>/delete/', delete_course),
-    path('courses/<int:id>/', course_details),
-    path('marking/', select_course),
-    path('marking/course-id=<int:id>/', marking),
+    path('history/', history, name='history'),
+    path('courses/', include('courses.urls')),
+    path('teachers/', include('teachers.urls')),
+    path('students/', include('students.urls')),
+    path('marking-attendace/', include('attendance_tracker.urls')),
 ]
