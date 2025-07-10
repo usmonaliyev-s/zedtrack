@@ -77,7 +77,6 @@ def course_details(request, id):
         )
     ).filter(course=course)
 
-    # Handle days
     day_map = {
         'Mon': 0, 'Monday': 0,
         'Tue': 1, 'Tues': 1, 'Tuesday': 1,
@@ -90,7 +89,6 @@ def course_details(request, id):
     raw_days = course.days
     target_weekdays = [day_map[d] for d in raw_days]
 
-    # Get calendar for current month
     today = date.today()
     year, month = today.year, today.month
     cal = calendar.Calendar(firstweekday=0)

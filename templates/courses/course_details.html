@@ -99,7 +99,7 @@
                             <li class="active">
                                 <a href="{% url 'course-list' %}" class="svg-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                        <path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z" </path>
+                                        <path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
                                     </svg>
                                     <span class="ml-4">Courses</span>
                                 </a>
@@ -181,12 +181,12 @@
                                 <div>
                                     <h4 class="mb-3">Course: {{ course.course_name }}</h4>
                                 </div>
-                                <a href="{% url 'select-course' %}course-id={{ course.id }}/" class="btn btn-primary add-list">
+                                <a href="{% url 'selected-course' course.id %}" class="btn btn-primary add-list">
                                     Mark Attendance
                                 </a>
                             </div>
                         </div>
-                    <div class="col-lg-12">
+                        <div class="col-lg-12">
                             <div class="row" style="position: relative; top: -20px;">
                                 <div style="height: 130px;" class="col-lg-4 col-md-3">
                                     <div class="card card-block card-stretch card-height" style="background-color: var(--main-color); border-color: var(--main-color);">
