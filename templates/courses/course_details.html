@@ -181,9 +181,14 @@
                                 <div>
                                     <h4 class="mb-3">Course: {{ course.course_name }}</h4>
                                 </div>
-                                <a href="{% url 'selected-course' course.id %}" class="btn btn-primary add-list">
-                                    Mark Attendance
-                                </a>
+                                <div>
+                                    <a href="{% url 'edit-course' course.id %}" class="btn btn-primary add-list">
+                                        Edit Details
+                                    </a>
+                                    <a href="{% url 'selected-course' course.id %}" class="btn btn-primary add-list">
+                                        Mark Attendance
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-12">
