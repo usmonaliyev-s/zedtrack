@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<title>{{ student.first_name }} {{ student.last_name }}</title>
+
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}" />
+		<link rel="stylesheet" href="{% static 'assets/css/backend-plugin.min.css' %}" />
+		<link rel="stylesheet" href="{% static 'assets/css/backend.css?v=1.0.0' %}" />
+		<link rel="stylesheet" href="{% static 'assets/css/custom.css' %}" />
+		<link rel="stylesheet" href="{% static 'assets/vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" />
+
+		<link rel="stylesheet" href="{% static 'assets/vendor/remixicon/fonts/remixicon.css' %}" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="iq-sidebar sidebar-default" style="display: flex; flex-direction: column; height: 100vh;">
+				<!-- Sidebar logo and toggle -->
+				<div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
+					<a href="/" class="header-logo">
+						<img src="{% static 'zed.png' %}" class="img-fluid rounded-normal light-logo" alt="logo" />
+						<h6 class="logo-title light-logo ml-3" style="color: var(--text-color);">ZEDTRACK</h6>
+					</a>
+					<div class="iq-menu-bt-sidebar ml-0">
+						<i class="wrapper-menu">
+							<svg fill="var(--text-color)" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+								<path d="M4 6H20M4 12H20M4 18H20" stroke="var(--text-color)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+							</svg>
+						</i>
+					</div>
+				</div>
+
+				<!-- Sidebar menu scrollable area -->
+				<div class="data-scrollbar" data-scroll="1" style="flex: 1; overflow-y: auto;">
+					<nav class="iq-sidebar-menu">
+						<ul id="iq-sidebar-toggle" class="iq-menu">
+							<li class="actives">
+								<a href="/" class="svg-icon">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										xmlns:xlink="http://www.w3.org/1999/xlink"
+										x="0px"
+										y="0px"
+										width="20px"
+										height="20px"
+										viewBox="0 0 122.88 122.566"
+										enable-background="new 0 0 122.88 122.566"
+										xml:space="preserve"
+									>
+										<g>
+											<path
+												fill-rule="evenodd"
+												clip-rule="evenodd"
+												d="M3.78,66.082h47.875c2.045,0,3.717,1.988,3.717,4.414v46.479 c0,2.43-1.671,4.416-3.717,4.416H3.78c-2.043,0-3.717-1.986-3.717-4.416V70.496C0.063,68.07,1.737,66.082,3.78,66.082L3.78,66.082z M71.224,0H119.1c2.046,0,3.717,1.986,3.717,4.415v46.479c0,2.429-1.671,4.413-3.717,4.413H71.224 c-2.045,0-3.714-1.984-3.714-4.413V4.415C67.51,1.986,69.179,0,71.224,0L71.224,0z M3.714,0h47.878 c2.045,0,3.717,1.986,3.717,4.415v46.479c0,2.429-1.671,4.413-3.717,4.413H3.714C1.671,55.307,0,53.323,0,50.894V4.415 C0,1.986,1.671,0,3.714,0L3.714,0z M71.287,67.26h47.876c2.043,0,3.717,1.986,3.717,4.416v46.479c0,2.426-1.674,4.412-3.717,4.412 H71.287c-2.045,0-3.717-1.986-3.717-4.412V71.676C67.57,69.246,69.242,67.26,71.287,67.26L71.287,67.26z"
+											></path>
+										</g>
+									</svg>
+									<span class="ml-4">Dashboard</span>
+								</a>
+							</li>
+							<li>
+								<a href="{% url 'select-course' %}" class="svg-icon">
+									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+										<path
+											fill="var(--main-color)"
+											d="M20 16v-6h2v6a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2h8v2H8v12h12m-9.09-8.92L14 10.17l6.59-6.59L22 5l-8 8l-4.5-4.5l1.41-1.42M16 20v2H4a2 2 0 0 1-2-2V7h2v13h12Z"
+										></path>
+									</svg>
+									<span class="ml-4">Mark Attendance</span>
+								</a>
+							</li>
+							<li class="active">
+								<a href="{% url 'student-list' %}" class="svg-icon">
+									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 1024 768">
+										<path
+											fill="var(--main-color)"
+											d="M1024 736q0 13-9.5 22.5T992 768t-22.5-9.5T960 736V315L607 492q-40 20-95 20t-95-20L39 303Q0 283 0 255.5T39 209L417 20q40-20 95-20t95 20l378 189q34 17 38 42q1 1 1 4v481zM639 556l193-97v141q0 43-93.5 73.5T512 704t-226.5-30.5T192 600V459l193 97q40 20 127 20t127-20z"
+										></path>
+									</svg>
+									<span class="ml-4">Students</span>
+								</a>
+							</li>
+							<li>
+								<a href="{% url 'teachers-list' %}" class="svg-icon">
+									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="var(--main-color)" stroke-width="1" viewBox="0 0 20 20">
+										<path
+											fill="var(--main-color)"
+											d="M8.75 3.75a2.75 2.75 0 1 0-5.5 0a2.75 2.75 0 0 0 5.5 0Zm-4.5 0a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0ZM2.5 7.5h4.183c-.164.31-.286.646-.358 1H2.5A.5.5 0 0 0 2 9v.5c0 1.26 1.099 2.614 3.096 2.93c-.322.22-.59.513-.781.854C2.205 12.713 1 11.087 1 9.5V9a1.5 1.5 0 0 1 1.5-1.5Zm5.379 0c.504-.61 1.267-1 2.121-1a2.744 2.744 0 0 1 2.646 2a2.753 2.753 0 0 1-3.893 3.202A2.75 2.75 0 0 1 7.88 7.5Zm.54 1a1.75 1.75 0 1 0 3.164 1.5a1.75 1.75 0 0 0-3.165-1.5Zm7.266 4.784a2.513 2.513 0 0 0-.781-.853C16.9 12.114 18 10.759 18 9.5V9a.5.5 0 0 0-.5-.5h-3.825a3.726 3.726 0 0 0-.357-1H17.5A1.5 1.5 0 0 1 19 9v.5c0 1.587-1.206 3.212-3.315 3.784Zm-1.198.087A1.493 1.493 0 0 0 13.5 13h-7A1.496 1.496 0 0 0 5 14.5v.5c0 1.971 1.86 4 5 4c3.14 0 5-2.029 5-4v-.5c0-.45-.198-.854-.513-1.13ZM6 14.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v.5c0 1.438-1.432 3-4 3s-4-1.562-4-3v-.5ZM14 1a2.75 2.75 0 1 1 0 5.5A2.75 2.75 0 0 1 14 1Zm0 1a1.75 1.75 0 1 0 0 3.5A1.75 1.75 0 0 0 14 2Z"
+										></path>
+									</svg>
+									<span class="ml-4">Teachers</span>
+								</a>
+							</li>
+							<li>
+								<a href="{% url 'course-list' %}" class="svg-icon">
+									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+										<path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
+									</svg>
+									<span class="ml-4">Courses</span>
+								</a>
+							</li>
+							<li>
+								<a href="/history/" class="svg-icon">
+									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="var(--main-color)" stroke-width="1.1" viewBox="0 0 24 24">
+										<path
+											fill="var(--main-color)"
+											d="M16.727 3.18C12.31.81 6.915 2.103 4 6V3.5a.5.5 0 0 0-1 0v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 0-1H4.522a8.954 8.954 0 0 1 7.411-4A8.967 8.967 0 1 1 3 12c0-.16 0-.312.009-.472A.5.5 0 0 0 2.52 11c-.27-.01-.5.2-.51.472C2 11.652 2 11.82 2 12c.006 5.52 4.48 9.994 10 10a10.005 10.005 0 0 0 8.81-5.273c2.614-4.868.786-10.933-4.083-13.547zM12 8a.5.5 0 0 0-.5.5V12a.5.5 0 0 0 .5.5h2.5a.5.5 0 0 0 0-1h-2v-3A.5.5 0 0 0 12 8z"
+										></path>
+									</svg>
+									<span class="ml-4">Attendance History</span>
+								</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+
+				<!-- User info fixed at bottom -->
+				<div class="p-3 border-top" style="background-color: var(--main-color);">
+					<div class="user-profile d-flex align-items-center">
+						<img src="{% static 'assets/images/profile.png' %}" alt="profile" class="img-fluid rounded-circle" width="40" height="40" />
+						<div class="ml-3">
+							<h6 style="color: white;">Salohiddin Usmonaliyev</h6>
+							<small style="color: white;">email@example.com</small>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="iq-top-navbar">
+				<div class="iq-navbar-custom">
+					<nav class="navbar navbar-expand-lg navbar-light p-0 d-flex align-items-center justify-content-between">
+						<div class="iq-navbar-logo d-flex align-items-center justify-content-between">
+							<i class="wrapper-menu">
+								<svg fill="var(--text-color)" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M4 6H20M4 12H20M4 18H20" stroke="var(--text-color)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+								</svg>
+							</i>
+							<a href="/" class="header-logo d-flex align-items-center">
+								<img src="{% static 'zed.png' %}" class="img-fluid rounded-normal" alt="logo" />
+								<h5 class="logo-title ml-3" style="color: var(--text-color);">ZEDTRACK</h5>
+							</a>
+						</div>
+						<!-- Right Side: Theme Toggle Button -->
+						<div class="d-flex align-items-center" style="margin-left: auto; margin-top: 12px;">
+							<a id="theme-toggle" style="position: absolute; top: 4px; right: 20px; cursor: pointer; z-index: 1000;">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 122.88" width="26" height="26" fill="var(--text-color)">
+									<style>
+										.st0 {
+										    fill-rule: evenodd;
+										    clip-rule: evenodd;
+										}
+									</style>
+									<path
+										class="st0"
+										d="M122.88,61.44c0,8.47-1.5,16.34-4.5,23.58c-0.49,1.19-1.02,2.35-1.59,3.49
+        c-2.92,5.89-6.89,11.35-11.92,16.36c-1.67,1.68-3.4,3.24-5.17,4.68c-1.78,1.45-3.61,2.78-5.48,3.98
+        c-9.65,6.23-20.58,9.34-32.78,9.34c-8.47,0-16.33-1.5-23.58-4.5c-1.19-0.49-2.35-1.02-3.49-1.59
+        c-5.89-2.92-11.35-6.89-16.36-11.92c-1.68-1.67-3.24-3.4-4.68-5.17c-1.45-1.78-2.78-3.61-3.98-5.48
+        C3.11,84.58,0,73.64,0,61.44c0-8.47,1.5-16.33,4.5-23.58c0.49-1.19,1.02-2.35,1.59-3.49c2.92-5.89,6.89-11.35,11.92-16.36
+        c1.67-1.68,3.4-3.24,5.17-4.68c1.78-1.45,3.61-2.78,5.48-3.98C38.3,3.11,49.24,0,61.44,0c8.47,0,16.33,1.5,23.58,4.5
+        c1.19,0.49,2.35,1.02,3.49,1.59c5.89,2.92,11.35,6.89,16.36,11.92c1.68,1.67,3.24,3.4,4.68,5.17c1.45,1.78,2.78,3.61,3.98,5.48
+        C119.77,38.3,122.88,49.24,122.88,61.44z M61.44,10.96v100.96c-27.88,0-50.48-22.6-50.48-50.48C10.96,33.56,33.56,10.96,61.44,10.96z"
+									></path>
+								</svg>
+							</a>
+						</div>
+					</nav>
+				</div>
+			</div>
+
+			<div class="content-page">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
+								<div>
+									<h4 class="mb-3">Student: {{ student.first_name }} {{ student.last_name }}</h4>
+								</div>
+								<a href="{% url 'edit-student' student.id %}" class="btn btn-primary add-list">
+									Edit Details
+								</a>
+							</div>
+						</div>
+						<div class="col-lg-12">
+							<div class="row" style="position: relative; top: -20px;">
+								<div style="height: 130px;" class="col-lg-4 col-md-3">
+									<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); border-color: var(--main-color);">
+										<div class="card-body">
+											<div class="d-flex align-items-center mb-4 card-total-sale">
+												<div class="icon iq-icon-box-2 bg-info-light" style="background-color: white !important;">
+													<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+														<path
+															fill="var(--main-color)"
+															d="M6 5a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3ZM2.5 6.5a3.5 3.5 0 1 1 7 0a3.5 3.5 0 0 1-7 0ZM20.414 5L5 20.414L3.586 19L19 3.586L20.414 5ZM18 16a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3Zm-3.5 1.5a3.5 3.5 0 1 1 7 0a3.5 3.5 0 0 1-7 0Z"
+														></path>
+													</svg>
+												</div>
+												<div>
+													<p class="mb-2" style="color: white;">Attendance Rate</p>
+													<h4 style="color: white;">{{ student.attendance_rate }}%</h4>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div style="height: 130px;" class="col-lg-4 col-md-3">
+									<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); border-color: var(--main-color);">
+										<div class="card-body">
+											<div class="d-flex align-items-center mb-4 card-total-sale">
+												<div class="icon iq-icon-box-2 bg-success-light" style="background-color: white !important;">
+													<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+														<path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
+													</svg>
+												</div>
+												<div>
+													<p class="mb-2" style="color: white;">Course</p>
+													<h4 style="color: white;">{{ student.course }}</h4>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div style="height: 130px;" class="col-lg-4 col-md-3">
+									<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); border-color: var(--main-color);">
+										<div class="card-body">
+											<div class="d-flex align-items-center mb-4 card-total-sale">
+												<div class="icon iq-icon-box-2 bg-danger-light" style="background-color: white !important;">
+													<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16">
+														<path
+															fill="var(--main-color)"
+															d="m7.536 8.657l2.828-2.83a1 1 0 0 1 1.414 1.416l-3.535 3.535a1 1 0 0 1-1.415.001l-2.12-2.12a1 1 0 1 1 1.413-1.415zM8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16zm0-2A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"
+														></path>
+													</svg>
+												</div>
+												<div>
+													<p class="mb-2" style="color: white;">Latest Status</p>
+													<h4 style="color: white;">{% for i in latest_status %}{{ i.status }}{% endfor %}</h4>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-6" style="position: relative; top: -20px;">
+							<div class="card card-block card-stretch" style="border-color: var(--main-color);">
+								<div class="card-header d-flex align-items-center justify-content-between" style="border-color: var(--main-color);">
+									<div class="header-title">
+										<h4 class="card-title">Attendance Rate</h4>
+									</div>
+								</div>
+								<div class="card-body">
+									<div style="overflow: auto; height: 370px;">
+										<canvas id="pieChart"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6" style="position: relative; top: -20px;">
+							<div class="card card-block card-stretch" style="border-color: var(--main-color);">
+								<div class="card-header d-flex align-items-center justify-content-between" style="border-color: var(--main-color);">
+									<div class="header-title">
+										<h4 class="card-title">Attendances</h4>
+									</div>
+								</div>
+								<div class="" style="overflow: auto; height: 410px;">
+									<div class="table-responsive mb-5">
+										<table class="table table-bordered text-center" style="color: var(--text-color);">
+											<thead class="thead-light">
+												<tr>
+													<th>Mon</th>
+													<th>Tue</th>
+													<th>Wed</th>
+													<th>Thu</th>
+													<th>Fri</th>
+													<th>Sat</th>
+													<th>Sun</th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for week in calendar_weeks %}
+												<tr>
+													{% for day, is_course_day, status in week %}
+													<td
+														style="
+                                                                padding: 15px;
+                                                                {% if day.month != today.month %}
+                                                                    color: gray;
+                                                                {% elif is_course_day %}
+                                                                    {% if status is True %}
+                                                                        background-color: var(--main-color);
+                                                                        color: white;
+                                                                        font-weight: bold;
+                                                                    {% elif status is False %}
+                                                                        background-color: red;
+                                                                        color: white;
+                                                                        font-weight: bold;
+                                                                    {% else %}
+                                                                        background-color: #f5f5f5;
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            "
+													>
+														{{ day.day }}
+													</td>
+													{% endfor %}
+												</tr>
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Page end  -->
+				</div>
+				<!-- Load Chart.js if not already included -->
+				<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+				<script>
+					const data = {{ chart_data|safe }};
+
+					const ctx = document.getElementById("pieChart").getContext("2d");
+
+					new Chart(ctx, {
+					    type: 'doughnut',
+					    data: {
+					        labels: data.labels,
+					        datasets: [{
+					            label: 'Attendance',
+					            data: data.values,
+					            backgroundColor: '#ffffff', // Blue and red
+					            borderColor: ['#3C19DC', '#FF3B30'],
+					            borderWidth: 2
+					        }]
+					    },
+					    options: {
+					        responsive: true,
+					        plugins: {
+					            legend: {
+					                position: 'bottom',
+					                labels: {
+					                    color: '#000',
+					                    font: {
+					                        size: 14
+					                    }
+					                }
+					            }
+					        }
+					    }
+					});
+				</script>
+
+				<script>
+					const toggleBtn = document.getElementById("theme-toggle");
+					const currentTheme = localStorage.getItem("theme") || "light";
+
+					document.documentElement.setAttribute("data-theme", currentTheme);
+
+					toggleBtn.addEventListener("click", () => {
+					    const newTheme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+					    document.documentElement.setAttribute("data-theme", newTheme);
+					    localStorage.setItem("theme", newTheme);
+					});
+				</script>
+				<!-- Backend Bundle JavaScript -->
+				<script src="{% static 'assets/js/backend-bundle.min.js' %}"></script>
+
+				<!-- Table Treeview JavaScript -->
+				<script src="{% static 'assets/js/table-treeview.js' %}"></script>
+
+				<!-- Chart Custom JavaScript -->
+				<script src="{% static 'assets/js/customizer.js' %}"></script>
+
+				<!-- Chart Custom JavaScript -->
+				<script async src="{% static 'assets/js/chart-custom.js' %}"></script>
+				<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+				<!-- app JavaScript -->
+				<script src="{% static 'assets/js/app.js' %}"></script>
+			</div>
+		</div>
+	</body>
+</html>

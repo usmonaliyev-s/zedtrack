@@ -3,11 +3,13 @@ from django.db.models.functions import NullIf
 from django.shortcuts import render, redirect
 from django.utils import timezone
 
-
+from attendance_tracker.models import Attendance
 from courses.models import Course
 from students.models import Student
 
-
+import calendar
+from collections import defaultdict
+from datetime import date
 
 # Create your views here.
 def students_list(request):
@@ -31,7 +33,6 @@ def add_student(request):
         "courses": Course.objects.all(),
     }
     if request.method == "POST":
-        print(request.POST.get('gender'))
         Student.objects.create(
             first_name=request.POST.get('first_name'),
             last_name=request.POST.get('last_name'),
@@ -72,3 +73,64 @@ def delete_confirmation_student(request, id):
 def delete_student(request, id):
     Student.objects.get(pk=id).delete()
     return redirect('/students/')
+
+def student_details(request, id):
+    student = Student.objects.annotate(
+        total=Count('attendance'),
+        present=Count('attendance', filter=Q(attendance__status=True)),
+    ).annotate(
+        attendance_rate=ExpressionWrapper(
+            100.0 * F('present') / NullIf(F('total'), 0),
+            output_field=FloatField()
+        )
+    ).get(id=id)
+
+    attendances = Attendance.objects.filter(student=student)
+    latest_status = Attendance.objects.filter(student=student).order_by('-time')[:1]
+
+    today = date.today()
+    year, month = today.year, today.month
+    cal = calendar.Calendar(firstweekday=0)
+    month_days = list(cal.itermonthdates(year, month))  # Full weeks
+
+    attendance_map = {a.time.date(): a.status for a in attendances}
+
+    day_map = {
+        'Mon': 0, 'Tue': 1, 'Wed': 2, 'Thu': 3,
+        'Fri': 4, 'Sat': 5, 'Sun': 6,
+    }
+    raw_days = student.course.days  # MultiSelectField returns a list like ['Mon', 'Thu']
+    target_weekdays = [day_map[d] for d in raw_days]
+
+    # Build calendar grid
+    calendar_weeks = []
+    for i in range(0, len(month_days), 7):
+        week = []
+        for day in month_days[i:i+7]:
+            is_course_day = day.weekday() in target_weekdays and day.month == month
+            status = attendance_map.get(day) if is_course_day else None
+            week.append((day, is_course_day, status))
+        calendar_weeks.append(week)
+
+    raw_counts = Attendance.objects.filter(student_id=id).values('status').annotate(count=Count('id'))
+
+    counts = defaultdict(int)
+    for item in raw_counts:
+        counts[item['status']] = item['count']
+
+    chart_data = {
+        "labels": ["Present", "Absent"],
+        "values": [counts[True], counts[False]],
+    }
+
+    data = {
+        "student": student,
+        "attendances": attendances,
+        "latest_status": latest_status,
+        "calendar_weeks": calendar_weeks,
+        "month_name": today.strftime("%B"),
+        "year": year,
+        "today": today,
+        "chart_data": chart_data,
+    }
+    return render(request, "students/student_details.html", data)
