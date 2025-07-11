@@ -1,6 +1,10 @@
 from django.db.models import Count
+from django.db.models.functions import NullIf
 from django.shortcuts import render, redirect
+from django.db.models import ExpressionWrapper, FloatField, F, Count, Q
 
+from courses.models import Course
+from students.models import Student
 from teachers.models import Teacher
 
 # Create your views here.
@@ -50,3 +54,22 @@ def delete_confirmation_teacher(request, id):
 def delete_teacher(request, id):
     Teacher.objects.get(pk=id).delete()
     return redirect('/teacher/list/')
+
+def teacher_details(request, id):
+    teacher = Teacher.objects.get(pk=id)
+    courses = Course.objects.filter(course_teacher=teacher)
+    students = Student.objects.annotate(
+        total=Count('attendance'),
+        present=Count('attendance', filter=Q(attendance__status=True)),
+    ).annotate(
+        attendance_rate=ExpressionWrapper(
+            100.0 * F('present') / NullIf(F('total'), 0),
+            output_field=FloatField()
+        )
+    ).filter(course__course_teacher=teacher)
+    data = {
+        "teacher": teacher,
+        "courses": courses,
+        "students": students,
+    }
+    return render(request, "teachers/teacher_details.html", data)
