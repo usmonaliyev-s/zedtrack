@@ -121,8 +121,8 @@
                     <div class="user-profile d-flex align-items-center">
                         <img src="{% static 'assets/images/profile.png' %}" alt="profile" class="img-fluid rounded-circle" width="40" height="40" />
                         <div class="ml-3">
-                            <h6 style="color: white;">Salohiddin Usmonaliyev</h6>
-                            <small style="color: white;">email@example.com</small>
+                            <h6 style="color: white;">{{ user.username}}>
+                            <small style="color: white;">{{ user.email }}</small>
                         </div>
                     </div>
                 </div>
