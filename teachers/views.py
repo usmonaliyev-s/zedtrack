@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.db.models.functions import NullIf
 from django.shortcuts import render, redirect
@@ -8,6 +9,7 @@ from students.models import Student
 from teachers.models import Teacher
 
 # Create your views here.
+@login_required
 def teachers_list(request):
     teachers = Teacher.objects.annotate(
     num_students=Count('course__student', distinct=True),
@@ -18,6 +20,7 @@ def teachers_list(request):
     }
     return render(request, "teachers/teachers_list.html", data)
 
+@login_required
 def add_teacher(request):
     if request.method == "POST":
         Teacher.objects.create(
@@ -29,7 +32,7 @@ def add_teacher(request):
 
     return render(request, "teachers/add_teacher.html")
 
-
+@login_required
 def edit_teacher(request, id):
     if request.method == "POST":
         teacher = Teacher.objects.get(pk=id)
@@ -44,6 +47,7 @@ def edit_teacher(request, id):
     }
     return render(request, "teachers/edit_teacher.html", data)
 
+@login_required
 def delete_confirmation_teacher(request, id):
     teacher = Teacher.objects.get(pk=id)
     data = {
@@ -51,10 +55,12 @@ def delete_confirmation_teacher(request, id):
     }
     return render(request, "teachers/delete_confirmation_teacher.html", data)
 
+@login_required
 def delete_teacher(request, id):
     Teacher.objects.get(pk=id).delete()
     return redirect('/teacher/list/')
 
+@login_required
 def teacher_details(request, id):
     teacher = Teacher.objects.get(pk=id)
     courses = Course.objects.filter(course_teacher=teacher)

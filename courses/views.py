@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q, ExpressionWrapper, F
 from django.db.models.fields import FloatField
 from django.db.models.functions import NullIf
@@ -12,6 +13,7 @@ import calendar
 
 
 # Create your views here.
+@login_required
 def courses_list(request):
     courses = Course.objects.annotate(num_students=Count('student', distinct=True))
     data = {
@@ -19,7 +21,7 @@ def courses_list(request):
     }
     return render(request, "courses/courses_list.html", data)
 
-
+@login_required
 def add_course(request):
     data = {
         "teachers": Teacher.objects.all(),
@@ -36,6 +38,7 @@ def add_course(request):
 
     return render(request, "courses/add_course.html", data)
 
+@login_required
 def edit_course(request, id):
     if request.method == "POST":
         course = Course.objects.get(pk=id)
@@ -54,6 +57,7 @@ def edit_course(request, id):
     }
     return render(request, "courses/edit_course.html", data)
 
+@login_required
 def delete_confirmation_course(request, id):
     course = Course.objects.get(pk=id)
     data = {
@@ -61,10 +65,12 @@ def delete_confirmation_course(request, id):
     }
     return render(request, "courses/delete_confirmation_course.html", data)
 
+@login_required
 def delete_course(request, id):
     Course.objects.get(pk=id).delete()
     return redirect('/course/list/')
 
+@login_required
 def course_details(request, id):
     course = Course.objects.get(pk=id)
     students = Student.objects.annotate(

@@ -15,6 +15,7 @@ def register(request):
                 return redirect('register')
             user = User.objects.create_user(username=username, password=password)
             user.save()
+            login(request, user)
             messages.success(request, "Registration successful")
             return redirect('dashboard')
         elif password2 != password:

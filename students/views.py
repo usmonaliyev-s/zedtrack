@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import ExpressionWrapper, FloatField, F, Count, Q
 from django.db.models.functions import NullIf
 from django.shortcuts import render, redirect
@@ -12,6 +13,7 @@ from collections import defaultdict
 from datetime import date
 
 # Create your views here.
+@login_required
 def students_list(request):
     students = Student.objects.annotate(
         total=Count('attendance'),
@@ -28,6 +30,7 @@ def students_list(request):
     }
     return render(request, "students/students_list.html", data)
 
+@login_required
 def add_student(request):
     data = {
         "courses": Course.objects.all(),
@@ -44,7 +47,7 @@ def add_student(request):
 
     return render(request, "students/add_student.html", data)
 
-
+@login_required
 def edit_student(request, id):
     if request.method == "POST":
         student = Student.objects.get(pk=id)
@@ -63,6 +66,7 @@ def edit_student(request, id):
     }
     return render(request, "students/edit_student.html", data)
 
+@login_required
 def delete_confirmation_student(request, id):
     student = Student.objects.get(pk=id)
     data = {
@@ -70,10 +74,12 @@ def delete_confirmation_student(request, id):
     }
     return render(request, "students/delete_confirmation_student.html", data)
 
+@login_required
 def delete_student(request, id):
     Student.objects.get(pk=id).delete()
     return redirect('/students/')
 
+@login_required
 def student_details(request, id):
     student = Student.objects.annotate(
         total=Count('attendance'),
