@@ -215,7 +215,7 @@
                                         {% for course in courses %}
                                         <tr style="background-color: var(--background-color);">
                                             <td style="text-align: left"><a style="background-color: var(--background-color); color: var(--text-color); text-align: left" href="{% url 'course-details' course.course.id %}">{{ course.course.course_name }}</a></td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ course.course.course_teacher }}</td>
+                                            <td style="text-align: left"><a style="background-color: var(--background-color); color: var(--text-color); " href="{% url 'teacher-details' course.course.course_teacher.id %}">{{ course.course.course_teacher }}</a></td>
                                             <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ course.course.course_time }}</td>
                                             <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">
                                                 {% for day in course.course.days %} {{ day }}, {% endfor %}

@@ -202,8 +202,7 @@
                                 <table class="data-table table mb-0 tbl-server-info">
                                     <thead class="bg-white text-uppercase">
                                         <tr class="ligth ligth-data">
-                                            <th style="text-align: left">First Name</th>
-                                            <th style="text-align: left">Last Name</th>
+                                            <th style="text-align: left">Name</th>
                                             <th style="text-align: left">Phone Number</th>
                                             <th style="text-align: left">Students</th>
                                             <th style="text-align: left">Courses</th>
@@ -213,8 +212,7 @@
                                     <tbody class="ligth-body">
                                         {% for teacher in teachers %}
                                         <tr style="background-color: var(--background-color); color: var(--text-color);">
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ teacher.first_name }}</td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ teacher.last_name }}</td>
+                                            <td style="text-align: left"><a style="background-color: var(--background-color); color: var(--text-color); text-align: left" href="{% url 'teacher-details' teacher.id %}">{{ teacher.first_name }} {{ teacher.last_name }}</a></td>
                                             <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ teacher.phone_number }}</td>
                                             <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ teacher.num_students }}</td>
                                             <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ teacher.num_courses }}</td>

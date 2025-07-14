@@ -246,7 +246,7 @@
                                             {% for student in students %}
                                             <tr style="background-color: var(--background-color);">
                                                 <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ student.first_name }} {{ student.last_name }}</td>
-                                                <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ student.attendance_rate }}</td>
+                                                <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ student.attendance_rate|floatformat:2 }}%</td>
                                                 <td style="text-align: left">
     <div class="marking-toggle-wrapper">
         {% if attendances %}

@@ -210,17 +210,19 @@
 								<div style="height: 130px;" class="col-lg-4 col-md-3">
 									<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); border-color: var(--main-color);">
 										<div class="card-body">
-											<div class="d-flex align-items-center mb-4 card-total-sale">
-												<div class="icon iq-icon-box-2 bg-success-light" style="background-color: white !important;">
-													<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
-														<path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
-													</svg>
-												</div>
-												<div>
-													<p class="mb-2" style="color: white;">Course</p>
-													<h4 style="color: white;">{{ student.course }}</h4>
-												</div>
-											</div>
+											<a href="{% url 'course-details' student.course.id %}">
+                                                <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                    <div class="icon iq-icon-box-2 bg-success-light" style="background-color: white !important;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+                                                            <path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <p class="mb-2" style="color: white;">Course</p>
+                                                        <h4 style="color: white;">{{ student.course }}</h4>
+                                                    </div>
+                                                </div>
+                                            </a>
 										</div>
 									</div>
 								</div>

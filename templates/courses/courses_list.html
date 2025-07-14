@@ -218,7 +218,7 @@
                                                     {{ course.course_name }}
                                                 </a>
                                             </td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ course.course_teacher }}</td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color); text-align: left" href="{% url 'teacher-details' course.course_teacher.id %}">{{ course.course_teacher }}</a></td>
                                             <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ course.num_students }}</td>
                                             <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">
                                                 {% for day in course.days %} {{ day }}, {% endfor %}

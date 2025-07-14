@@ -177,77 +177,85 @@
                                 <div style="height: 130px;" class="col-lg-3 col-md-3">
                                     <div class="card card-block card-stretch card-height" style="background-color: var(--main-color); border-color: var(--main-color);">
                                         <div class="card-body">
-                                            <div class="d-flex align-items-center mb-4 card-total-sale">
-                                                <div class="icon iq-icon-box-2 bg-info-light" style="background-color: white !important;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 768">
-                                                        <path
-                                                            fill="var(--main-color)"
-                                                            d="M1024 736q0 13-9.5 22.5T992 768t-22.5-9.5T960 736V315L607 492q-40 20-95 20t-95-20L39 303Q0 283 0 255.5T39 209L417 20q40-20 95-20t95 20l378 189q34 17 38 42q1 1 1 4v481zM639 556l193-97v141q0 43-93.5 73.5T512 704t-226.5-30.5T192 600V459l193 97q40 20 127 20t127-20z"
-                                                        ></path>
-                                                    </svg>
+                                            <a href="{% url 'student-list' %}">
+                                                <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                    <div class="icon iq-icon-box-2 bg-info-light" style="background-color: white !important;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 768">
+                                                            <path
+                                                                fill="var(--main-color)"
+                                                                d="M1024 736q0 13-9.5 22.5T992 768t-22.5-9.5T960 736V315L607 492q-40 20-95 20t-95-20L39 303Q0 283 0 255.5T39 209L417 20q40-20 95-20t95 20l378 189q34 17 38 42q1 1 1 4v481zM639 556l193-97v141q0 43-93.5 73.5T512 704t-226.5-30.5T192 600V459l193 97q40 20 127 20t127-20z"
+                                                            ></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <p class="mb-2" style="color: white;">Students</p>
+                                                        <h4 style="color: white;">{{ students.count }}</h4>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <p class="mb-2" style="color: white;">Students</p>
-                                                    <h4 style="color: white;">{{ students.count }}</h4>
-                                                </div>
-                                            </div>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                                 <div style="height: 130px;" class="col-lg-3 col-md-3">
                                     <div class="card card-block card-stretch card-height" style="background-color: var(--main-color); border-color: var(--main-color);">
                                         <div class="card-body">
-                                            <div class="d-flex align-items-center mb-4 card-total-sale">
-                                                <div class="icon iq-icon-box-2 bg-success-light" style="background-color: white !important;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" stroke="var(--main-color)" stroke-width="0.5" viewBox="0 0 20 20">
-                                                        <path
-                                                            fill="var(--main-color)"
-                                                            d="M8.75 3.75a2.75 2.75 0 1 0-5.5 0a2.75 2.75 0 0 0 5.5 0Zm-4.5 0a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0ZM2.5 7.5h4.183c-.164.31-.286.646-.358 1H2.5A.5.5 0 0 0 2 9v.5c0 1.26 1.099 2.614 3.096 2.93c-.322.22-.59.513-.781.854C2.205 12.713 1 11.087 1 9.5V9a1.5 1.5 0 0 1 1.5-1.5Zm5.379 0c.504-.61 1.267-1 2.121-1a2.744 2.744 0 0 1 2.646 2a2.753 2.753 0 0 1-3.893 3.202A2.75 2.75 0 0 1 7.88 7.5Zm.54 1a1.75 1.75 0 1 0 3.164 1.5a1.75 1.75 0 0 0-3.165-1.5Zm7.266 4.784a2.513 2.513 0 0 0-.781-.853C16.9 12.114 18 10.759 18 9.5V9a.5.5 0 0 0-.5-.5h-3.825a3.726 3.726 0 0 0-.357-1H17.5A1.5 1.5 0 0 1 19 9v.5c0 1.587-1.206 3.212-3.315 3.784Zm-1.198.087A1.493 1.493 0 0 0 13.5 13h-7A1.496 1.496 0 0 0 5 14.5v.5c0 1.971 1.86 4 5 4c3.14 0 5-2.029 5-4v-.5c0-.45-.198-.854-.513-1.13ZM6 14.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v.5c0 1.438-1.432 3-4 3s-4-1.562-4-3v-.5ZM14 1a2.75 2.75 0 1 1 0 5.5A2.75 2.75 0 0 1 14 1Zm0 1a1.75 1.75 0 1 0 0 3.5A1.75 1.75 0 0 0 14 2Z"
-                                                        ></path>
-                                                    </svg>
+                                            <a href="{% url 'teachers-list' %}">
+                                                <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                    <div class="icon iq-icon-box-2 bg-success-light" style="background-color: white !important;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" stroke="var(--main-color)" stroke-width="0.5" viewBox="0 0 20 20">
+                                                            <path
+                                                                fill="var(--main-color)"
+                                                                d="M8.75 3.75a2.75 2.75 0 1 0-5.5 0a2.75 2.75 0 0 0 5.5 0Zm-4.5 0a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0ZM2.5 7.5h4.183c-.164.31-.286.646-.358 1H2.5A.5.5 0 0 0 2 9v.5c0 1.26 1.099 2.614 3.096 2.93c-.322.22-.59.513-.781.854C2.205 12.713 1 11.087 1 9.5V9a1.5 1.5 0 0 1 1.5-1.5Zm5.379 0c.504-.61 1.267-1 2.121-1a2.744 2.744 0 0 1 2.646 2a2.753 2.753 0 0 1-3.893 3.202A2.75 2.75 0 0 1 7.88 7.5Zm.54 1a1.75 1.75 0 1 0 3.164 1.5a1.75 1.75 0 0 0-3.165-1.5Zm7.266 4.784a2.513 2.513 0 0 0-.781-.853C16.9 12.114 18 10.759 18 9.5V9a.5.5 0 0 0-.5-.5h-3.825a3.726 3.726 0 0 0-.357-1H17.5A1.5 1.5 0 0 1 19 9v.5c0 1.587-1.206 3.212-3.315 3.784Zm-1.198.087A1.493 1.493 0 0 0 13.5 13h-7A1.496 1.496 0 0 0 5 14.5v.5c0 1.971 1.86 4 5 4c3.14 0 5-2.029 5-4v-.5c0-.45-.198-.854-.513-1.13ZM6 14.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v.5c0 1.438-1.432 3-4 3s-4-1.562-4-3v-.5ZM14 1a2.75 2.75 0 1 1 0 5.5A2.75 2.75 0 0 1 14 1Zm0 1a1.75 1.75 0 1 0 0 3.5A1.75 1.75 0 0 0 14 2Z"
+                                                            ></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <p class="mb-2" style="color: white;">Teachers</p>
+                                                        <h4 style="color: white;">{{ teachers.count }}</h4>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <p class="mb-2" style="color: white;">Teachers</p>
-                                                    <h4 style="color: white;">{{ teachers.count }}</h4>
-                                                </div>
-                                            </div>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                                 <div style="height: 130px;" class="col-lg-3 col-md-3">
                                     <div class="card card-block card-stretch card-height" style="background-color: var(--main-color); border-color: var(--main-color);">
                                         <div class="card-body">
-                                            <div class="d-flex align-items-center mb-4 card-total-sale">
-                                                <div class="icon iq-icon-box-2 bg-danger-light" style="background-color: white !important;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
-                                                        <path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
-                                                    </svg>
+                                            <a href="{% url 'course-list' %}">
+                                                <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                    <div class="icon iq-icon-box-2 bg-danger-light" style="background-color: white !important;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+                                                            <path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <p class="mb-2" style="color: white;">Available Courses</p>
+                                                        <h4 style="color: white;">{{ courses.count }}</h4>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <p class="mb-2" style="color: white;">Available Courses</p>
-                                                    <h4 style="color: white;">{{ courses.count }}</h4>
-                                                </div>
-                                            </div>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                                 <div style="height: 130px;" class="col-lg-3 col-md-3">
                                     <div class="card card-block card-stretch card-height" style="background-color: var(--main-color); border-color: var(--main-color);">
                                         <div class="card-body">
-                                            <div class="d-flex align-items-center mb-4 card-total-sale">
-                                                <div class="icon iq-icon-box-2 bg-success-light" style="background-color: white !important;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
-                                                        <path
-                                                            fill="var(--main-color)"
-                                                            d="M17.5 12a5.5 5.5 0 1 1 0 11a5.5 5.5 0 0 1 0-11Zm-2.646 5.147a.5.5 0 1 0-.707.707l2 2a.5.5 0 0 0 .707 0l4-4a.5.5 0 1 0-.707-.707L16.5 18.793l-1.646-1.646ZM12.023 14a6.47 6.47 0 0 0-.709 1.5H4.253a.749.749 0 0 0-.75.75v.577c0 .535.192 1.053.54 1.46c1.253 1.469 3.22 2.214 5.957 2.214c.597 0 1.157-.035 1.68-.106c.246.495.553.954.912 1.367c-.795.16-1.66.24-2.592.24c-3.146 0-5.532-.906-7.098-2.74a3.75 3.75 0 0 1-.898-2.435v-.578A2.249 2.249 0 0 1 4.253 14h7.77ZM10 2.005a5 5 0 1 1 0 10a5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7Z"
-                                                        ></path>
-                                                    </svg>
+                                            <a href="{% url 'select-course' %}">
+                                                <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                    <div class="icon iq-icon-box-2 bg-success-light" style="background-color: white !important;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+                                                            <path
+                                                                fill="var(--main-color)"
+                                                                d="M17.5 12a5.5 5.5 0 1 1 0 11a5.5 5.5 0 0 1 0-11Zm-2.646 5.147a.5.5 0 1 0-.707.707l2 2a.5.5 0 0 0 .707 0l4-4a.5.5 0 1 0-.707-.707L16.5 18.793l-1.646-1.646ZM12.023 14a6.47 6.47 0 0 0-.709 1.5H4.253a.749.749 0 0 0-.75.75v.577c0 .535.192 1.053.54 1.46c1.253 1.469 3.22 2.214 5.957 2.214c.597 0 1.157-.035 1.68-.106c.246.495.553.954.912 1.367c-.795.16-1.66.24-2.592.24c-3.146 0-5.532-.906-7.098-2.74a3.75 3.75 0 0 1-.898-2.435v-.578A2.249 2.249 0 0 1 4.253 14h7.77ZM10 2.005a5 5 0 1 1 0 10a5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7Z"
+                                                            ></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <p class="mb-2" style="color: white;">Attendance Rate</p>
+                                                        <h4 style="color: white;">{{ attendance_rate|floatformat:2 }}%</h4>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <p class="mb-2" style="color: white;">Attendance Rate</p>
-                                                    <h4 style="color: white;">{{ attendance_rate|floatformat:2 }}%</h4>
-                                                </div>
-                                            </div>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -360,8 +368,16 @@
                                         {% for student in top_students %}
                                         <div class="d-flex align-items-top">
                                             <div class="style-text text-left">
-                                                <h5 class="mb-2">{{ student.first_name }} {{ student.last_name }}</h5>
-                                                <p class="mb-2">Course : {{ student.course }}</p>
+                                                <h5 class="mb-2">
+                                                    <a style="color: var(--text-color)" title="Details" href="{% url 'student-details' student.id %}">
+                                                        {{ student.first_name }} {{ student.last_name }}
+                                                    </a>
+                                                </h5>
+                                                <p class="mb-2">
+                                                    <a title="Details" style="color: var(--text-color)" href="{% url 'course-details' student.course.id %}">
+                                                        Course : {{ student.course }}
+                                                    </a>
+                                                </p>
                                                 <p class="mb-0">Attendance : {{ student.total_lessons }}</p>
                                                 <p class="mb-0">Absence: {{ student.absent }}</p>
                                             </div>
@@ -410,11 +426,11 @@
                                             <tbody class="ligth-body">
                                                 {% for record in attendance_records %}
                                                 <tr>
-                                                    <td style="text-align: start; color: var(--text-color);">{{ record.student.first_name }} {{ record.student.last_name }}</td>
-                                                    <td style="color: var(--text-color);">{{ record.course }}</td>
+                                                    <td style="text-align: start;"><a title="Details" style="color: var(--text-color);" href="{% url 'student-details' record.student.id %}">{{ record.student.first_name }} {{ record.student.last_name }}</a></td>
+                                                    <td style="text-align: start;"><a title="Details" style="color: var(--text-color);" href="{% url 'course-details' record.course.id %}">{{ record.course }}</a></td>
                                                     <td style="color: var(--text-color);">{{ record.course.course_time }}</td>
                                                     <td style="color: var(--text-color);">{{ record.time }}</td>
-                                                    <td style="color: var(--text-color);">{{ record.student.course.course_teacher.first_name }} {{ record.student.course.course_teacher.last_name }}</td>
+                                                    <td style="color: var(--text-color);"><a title="Details" style="color: var(--text-color);" href="{% url 'teacher-details' record.student.course.course_teacher.id %}">{{ record.student.course.course_teacher.first_name }} {{ record.student.course.course_teacher.last_name }}</a></td>
                                                     {% if record.status %}
                                                     <td style="color: var(--text-color);">✅ Present</td>
                                                     {% else %}
@@ -465,7 +481,7 @@
                     data: {
                         labels: dataPoints.labels,  // Example labels
                         datasets: [{
-                            label: 'Student',
+                            label: 'Students',
                             data: dataPoints.values,
                             backgroundColor: 'rgb(92 11 214)',
                             borderColor: 'rgb(92 11 214)',
@@ -489,11 +505,6 @@
 
             <!-- Chart Custom JavaScript -->
             <script src="{% static 'assets/js/customizer.js' %}"></script>
-            <script src="{% static 'chart.js' %}"></script>
-            <script src="{% static 'custom.js' %}"></script>
-
-            <!-- Chart Custom JavaScript -->
-            <script async src="{% static 'assets/js/chart-custom.js' %}"></script>
 
             <!-- app JavaScript -->
             <script src="{% static 'assets/js/app.js' %}"></script>
