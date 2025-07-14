@@ -9,8 +9,10 @@ from students.models import Student
 from teachers.models import Teacher
 
 
-# Create your views here.
 def index(request):
+    return render(request, 'index.html')
+
+def dashboard(request):
     students = Student.objects.annotate(
         total=Count('attendance'),
         total_lessons=Count('attendance'),
@@ -96,7 +98,7 @@ def index(request):
         "date": date.today(),
         "attendance_records": Attendance.objects.all().order_by('-time')[:10],
     }
-    return render(request, 'index.html', data)
+    return render(request, 'dashboard.html', data)
 
 def select_course(request):
     today = date.today()

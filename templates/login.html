@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 {% load static %}
 <html lang="zxx">
@@ -10,7 +9,7 @@
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-TAGCODE');</script>
     <!-- End Google Tag Manager -->
-    <title>ZEDPOS | Login</title>
+    <title>ZEDTRACK | Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <!-- External CSS libraries -->
@@ -31,10 +30,6 @@
 
 </head>
 <body id="top">
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TAGCODE"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 <div class="page_loader"></div>
 
 <!-- Login 1 start -->
@@ -47,9 +42,18 @@
                         <a href="/" class="logo">
                             <img src="{% static 'zed.png' %}" alt="logo">
                         </a>
-                        <h3>Kirish</h3>
+                        <h3>Login</h3>
+                        {% if messages %}
+                          <ul>
+                            {% for message in messages %}
+                              <li style="color: red" {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                              {{ message.tags|title }}: {{ message }}
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        {% endif %}
+
                         <form action="{% url 'login' %}" method="post">{% csrf_token %}
-                            <p style="color: red">{{ error }}</p>
                             <div class="form-group form-box clearfix">
                                 <input name="username" type="text" class="form-control" placeholder="Username" aria-label="Username">
                             </div>
@@ -57,11 +61,11 @@
                                 <input name="password" type="password" class="form-control" autocomplete="off" placeholder="Password" aria-label="Password">
                             </div>
                             <div class="form-group">
-                                <button style="background-color: #3321d7" type="submit" class="btn btn-lg btn-theme"><span>Kirish</span></button>
+                                <button style="background-color: #3321d7" type="submit" class="btn btn-lg btn-theme"><span>Login</span></button>
                             </div>
 
-
-                        <p>Hisobingiz yo'qmi? <a href="{% url 'register' %}" class="thembo"> Ro'yhatdan o'tish</a></p>
+                        </form>
+                        <p>Don't have an account? <a href="{% url 'register' %}" class="thembo"><strong>Register</strong></p>
                     </div>
                 </div>
             </div>
