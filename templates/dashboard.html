@@ -16,10 +16,15 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <link href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    </head>
+        </head>
+    <style>
+    #sidebar.collapsed #user-info {
+        display: none;
+    }
+    </style>
     <body>
         <div class="wrapper">
-            <div class="iq-sidebar sidebar-default" style="display: flex; flex-direction: column; height: 100vh;">
+            <div class="iq-sidebar sidebar-default" style="display: flex; flex-direction: column; height: 100vh;" id="sidebar">
                 <!-- Sidebar logo and toggle -->
                 <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
                     <a href="/" class="header-logo">
@@ -117,12 +122,12 @@
                 </div>
 
                 <!-- User info fixed at bottom -->
-                <div class="p-3 border-top" style="background-color: var(--main-color);">
+                <div class="p-3 border-top" id="user-info" style="background-color: var(--main-color);">
                     <div class="user-profile d-flex align-items-center">
                         <img src="{% static 'assets/images/profile.png' %}" alt="profile" class="img-fluid rounded-circle" width="40" height="40" />
                         <div class="ml-3">
-                            <h6 style="color: white;">{{ user.username}}>
-                            <small style="color: white;">{{ user.email }}</small>
+                            <h6 style="color: white; word-break: break-all; white-space: normal;">{{ user.username }}</h6>
+                            <small style="color: white; word-break: break-all; white-space: normal;">{{ user.email }}</small>
                         </div>
                     </div>
                 </div>
@@ -448,6 +453,7 @@
                     </div>
                 </div>
             </div>
+
             <script>
                 // Retrieve data passed from the view
                 var data = {{ gender_data|safe }};
@@ -497,6 +503,16 @@
                         }
                     }
                 });
+            </script>
+            <script>
+              document.addEventListener("DOMContentLoaded", function () {
+                const sidebar = document.getElementById("sidebar");
+                const toggleBtn = document.querySelector(".iq-menu-bt-sidebar");
+
+                toggleBtn.addEventListener("click", function () {
+                  sidebar.classList.toggle("collapsed");
+                });
+              });
             </script>
             <script src="{% static 'assets/js/backend-bundle.min.js' %}"></script>
 

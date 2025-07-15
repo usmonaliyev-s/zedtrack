@@ -8,12 +8,13 @@ def register(request):
         username = request.POST['username']
         password = request.POST['password']
         password2 = request.POST['password2']
+        email = request.POST['email']
 
         if password == password2:
             if User.objects.filter(username=username).exists():
                 messages.error(request, "Username already exists")
                 return redirect('register')
-            user = User.objects.create_user(username=username, password=password)
+            user = User.objects.create_user(username=username, password=password, email=email)
             user.save()
             login(request, user)
             messages.success(request, "Registration successful")
@@ -22,7 +23,7 @@ def register(request):
             messages.error(request, 'Passwords do not match')
             return redirect('register')
 
-    return render(request, 'register.html')
+    return render(request, 'accounts/register.html')
 
 def login_view(request):
     if request.method == 'POST':
@@ -35,7 +36,7 @@ def login_view(request):
         else:
             messages.error(request, "Invalid credentials")
             return redirect('login')
-    return render(request, 'login.html')
+    return render(request, 'accounts/login.html')
 
 def logout_view(request):
     logout(request)

@@ -16,7 +16,12 @@
         <link rel="stylesheet" href="{% static 'assets/vendor/remixicon/fonts/remixicon.css' %}" />
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    </head>
+        </head>
+    <style>
+    #sidebar.collapsed #user-info {
+        display: none;
+    }
+    </style>
     <body>
         <div class="container-fluid">
             <div class="row justify-content-center" style="margin-top: 30px;">
@@ -47,7 +52,17 @@
 
         <!-- Wrapper End-->
         <!-- Backend Bundle JavaScript -->
-        <script src="{% static 'assets/js/backend-bundle.min.js' %}"></script>
+        <script>
+              document.addEventListener("DOMContentLoaded", function () {
+                const sidebar = document.getElementById("sidebar");
+                const toggleBtn = document.querySelector(".iq-menu-bt-sidebar");
+
+                toggleBtn.addEventListener("click", function () {
+                  sidebar.classList.toggle("collapsed");
+                });
+              });
+            </script>
+            <script src="{% static 'assets/js/backend-bundle.min.js' %}"></script>
 
         <!-- Table Treeview JavaScript -->
         <script src="{% static 'assets/js/table-treeview.js' %}"></script>
