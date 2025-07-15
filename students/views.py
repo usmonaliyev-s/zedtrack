@@ -138,5 +138,6 @@ def student_details(request, id):
         "year": year,
         "today": today,
         "chart_data": chart_data,
+        "attendance_records": Attendance.objects.filter(student=student)
     }
     return render(request, "students/student_details.html", data)
