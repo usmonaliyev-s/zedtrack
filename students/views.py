@@ -23,7 +23,7 @@ def students_list(request):
             100.0 * F('present') / NullIf(F('total'), 0),
             output_field=FloatField()
         )
-    )
+    ).filter(user=request.user)
 
     data = {
         "students": students,
@@ -33,7 +33,7 @@ def students_list(request):
 @login_required
 def add_student(request):
     data = {
-        "courses": Course.objects.all(),
+        "courses": Course.objects.filter(user=request.user),
     }
     if request.method == "POST":
         Student.objects.create(
@@ -41,7 +41,8 @@ def add_student(request):
             last_name=request.POST.get('last_name'),
             gender=request.POST.get('gender'),
             course_id=request.POST.get('course'),
-            registration_date=timezone.now().date()
+            registration_date=timezone.now().date(),
+            user=request.user
         )
         return redirect('/students/')
 
@@ -50,15 +51,16 @@ def add_student(request):
 @login_required
 def edit_student(request, id):
     if request.method == "POST":
-        student = Student.objects.get(pk=id)
+        student = Student.objects.get(pk=id, user=request.user)
         student.first_name = request.POST.get('first_name')
         student.last_name = request.POST.get('last_name')
         student.gender = request.POST.get('gender')
         student.course_id = request.POST.get('course')
+        student.user = request.user
         student.save()
         return redirect('/students/')
-    student = Student.objects.get(id=id)
-    courses = Course.objects.all()
+    student = Student.objects.get(id=id, user=request.user)
+    courses = Course.objects.filter(user=request.user)
     # print(student.gender)
     data = {
         "student": student,
@@ -68,7 +70,7 @@ def edit_student(request, id):
 
 @login_required
 def delete_confirmation_student(request, id):
-    student = Student.objects.get(pk=id)
+    student = Student.objects.get(pk=id, user=request.user)
     data = {
         "student": student,
     }
@@ -76,7 +78,7 @@ def delete_confirmation_student(request, id):
 
 @login_required
 def delete_student(request, id):
-    Student.objects.get(pk=id).delete()
+    Student.objects.get(pk=id, user=request.user).delete()
     return redirect('/students/')
 
 @login_required
@@ -89,10 +91,10 @@ def student_details(request, id):
             100.0 * F('present') / NullIf(F('total'), 0),
             output_field=FloatField()
         )
-    ).get(id=id)
+    ).get(id=id, user=request.user)
 
-    attendances = Attendance.objects.filter(student=student)
-    latest_status = Attendance.objects.filter(student=student).order_by('-time')[:1]
+    attendances = Attendance.objects.filter(student=student, user=request.user)
+    latest_status = Attendance.objects.filter(student=student, user=request.user).order_by('-time')[:1]
 
     today = date.today()
     year, month = today.year, today.month
@@ -118,7 +120,7 @@ def student_details(request, id):
             week.append((day, is_course_day, status))
         calendar_weeks.append(week)
 
-    raw_counts = Attendance.objects.filter(student_id=id).values('status').annotate(count=Count('id'))
+    raw_counts = Attendance.objects.filter(student_id=id, user=request.user).values('status').annotate(count=Count('id'))
 
     counts = defaultdict(int)
     for item in raw_counts:
@@ -138,6 +140,6 @@ def student_details(request, id):
         "year": year,
         "today": today,
         "chart_data": chart_data,
-        "attendance_records": Attendance.objects.filter(student=student)
+        "attendance_records": Attendance.objects.filter(student=student, user=request.user)
     }
     return render(request, "students/student_details.html", data)

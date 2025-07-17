@@ -14,7 +14,7 @@ def teachers_list(request):
     teachers = Teacher.objects.annotate(
     num_students=Count('course__student', distinct=True),
     num_courses=Count("course", distinct=True)
-    )
+    ).filter(user=request.user)
     data = {
         "teachers": teachers,
     }
@@ -27,6 +27,7 @@ def add_teacher(request):
             first_name=request.POST.get('first_name'),
             last_name=request.POST.get('last_name'),
             phone_number=request.POST.get('phone_number'),
+            user = request.user
         )
         return redirect('/teacher/list/')
 
@@ -35,13 +36,13 @@ def add_teacher(request):
 @login_required
 def edit_teacher(request, id):
     if request.method == "POST":
-        teacher = Teacher.objects.get(pk=id)
+        teacher = Teacher.objects.get(pk=id, user=request.user)
         teacher.first_name = request.POST.get('first_name')
         teacher.last_name = request.POST.get('last_name')
         teacher.phone_number = request.POST.get('phone_number')
         teacher.save()
         return redirect('/teacher/list/')
-    teacher = Teacher.objects.get(id=id)
+    teacher = Teacher.objects.get(id=id, user=request.user)
     data = {
         "teacher": teacher,
     }
@@ -49,7 +50,7 @@ def edit_teacher(request, id):
 
 @login_required
 def delete_confirmation_teacher(request, id):
-    teacher = Teacher.objects.get(pk=id)
+    teacher = Teacher.objects.get(pk=id, user=request.user)
     data = {
         "teacher": teacher,
     }
@@ -57,13 +58,13 @@ def delete_confirmation_teacher(request, id):
 
 @login_required
 def delete_teacher(request, id):
-    Teacher.objects.get(pk=id).delete()
+    Teacher.objects.get(pk=id, user=request.user).delete()
     return redirect('/teacher/list/')
 
 @login_required
 def teacher_details(request, id):
-    teacher = Teacher.objects.get(pk=id)
-    courses = Course.objects.filter(course_teacher=teacher)
+    teacher = Teacher.objects.get(pk=id, user=request.user)
+    courses = Course.objects.filter(course_teacher=teacher, user=request.user)
     students = Student.objects.annotate(
         total=Count('attendance'),
         present=Count('attendance', filter=Q(attendance__status=True)),
@@ -72,7 +73,7 @@ def teacher_details(request, id):
             100.0 * F('present') / NullIf(F('total'), 0),
             output_field=FloatField()
         )
-    ).filter(course__course_teacher=teacher)
+    ).filter(course__course_teacher=teacher, user=request.user)
     data = {
         "teacher": teacher,
         "courses": courses,
