@@ -35,7 +35,7 @@ def add_course(request):
             description=request.POST.get('description'),
             user = request.user
         )
-        return redirect('/course/list/')
+        return redirect('course-list')
 
     return render(request, "courses/add_course.html", data)
 
@@ -49,7 +49,7 @@ def edit_course(request, id):
         course.days = request.POST.getlist('days')
         course.description = request.POST.get('description')
         course.save()
-        return redirect('/course/list/')
+        return redirect('course-list')
     course = Course.objects.get(id=id, user=request.user)
     data = {
         "course": course,
@@ -69,7 +69,7 @@ def delete_confirmation_course(request, id):
 @login_required
 def delete_course(request, id):
     Course.objects.get(pk=id, user=request.user).delete()
-    return redirect('/course/list/')
+    return redirect('course-list')
 
 @login_required
 def course_details(request, id):

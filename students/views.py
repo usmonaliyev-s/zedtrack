@@ -44,7 +44,7 @@ def add_student(request):
             registration_date=timezone.now().date(),
             user=request.user
         )
-        return redirect('/students/')
+        return redirect('student-list')
 
     return render(request, "students/add_student.html", data)
 
@@ -58,7 +58,7 @@ def edit_student(request, id):
         student.course_id = request.POST.get('course')
         student.user = request.user
         student.save()
-        return redirect('/students/')
+        return redirect('student-list')
     student = Student.objects.get(id=id, user=request.user)
     courses = Course.objects.filter(user=request.user)
     # print(student.gender)
@@ -79,7 +79,7 @@ def delete_confirmation_student(request, id):
 @login_required
 def delete_student(request, id):
     Student.objects.get(pk=id, user=request.user).delete()
-    return redirect('/students/')
+    return redirect('student-list')
 
 @login_required
 def student_details(request, id):

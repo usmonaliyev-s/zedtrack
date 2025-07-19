@@ -192,7 +192,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form action="{% url 'course-list' %}{{ course.id }}/edit/" method="post" data-toggle="validator">
+                                        <form action="{% url 'edit-course' course.id %}" method="post" data-toggle="validator">
                                             {% csrf_token %}
                                             <div class="row">
                                                 <div class="col-md-6">

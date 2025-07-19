@@ -29,7 +29,7 @@ def add_teacher(request):
             phone_number=request.POST.get('phone_number'),
             user = request.user
         )
-        return redirect('/teacher/list/')
+        return redirect('teachers-list')
 
     return render(request, "teachers/add_teacher.html")
 
@@ -41,7 +41,7 @@ def edit_teacher(request, id):
         teacher.last_name = request.POST.get('last_name')
         teacher.phone_number = request.POST.get('phone_number')
         teacher.save()
-        return redirect('/teacher/list/')
+        return redirect('teachers-list')
     teacher = Teacher.objects.get(id=id, user=request.user)
     data = {
         "teacher": teacher,
@@ -59,7 +59,7 @@ def delete_confirmation_teacher(request, id):
 @login_required
 def delete_teacher(request, id):
     Teacher.objects.get(pk=id, user=request.user).delete()
-    return redirect('/teacher/list/')
+    return redirect('teachers-list')
 
 @login_required
 def teacher_details(request, id):
