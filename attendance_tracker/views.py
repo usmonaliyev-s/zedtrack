@@ -13,6 +13,7 @@ from teachers.models import Teacher
 def index(request):
     return render(request, 'index.html')
 
+@login_required
 def dashboard(request):
     if request.user.is_authenticated:
         students = Student.objects.annotate(
