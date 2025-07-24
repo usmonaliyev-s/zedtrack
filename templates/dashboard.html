@@ -39,10 +39,8 @@
                     <a href="index.html">
                         <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
                             <img class="dark:hidden" width="40" height="40" style="border-radius: 8px" src="{% static 'zed.png' %}" alt="Logo" />
-                            <img class="hidden dark:block" src="{% static 'ze' %}" alt="Logo" />
+                            <img class="hidden dark:block" width="40" height="40" style="border-radius: 8px" src="{% static 'zed.png' %}" alt="Logo" />
                         </span>
-
-                        <img class="logo-icon" :class="sidebarToggle ? 'lg:block' : 'hidden'" src="src/images/logo/logo-icon.svg" alt="Logo" />
                     </a>
                 </div>
                 <!-- SIDEBAR HEADER -->
@@ -71,7 +69,7 @@
                                 <!-- Menu Item Dashboard -->
                                 <li>
                                     <a
-                                        href="index.html#"
+                                        href="{% url 'dashboard' %}"
                                         @click.prevent="selected = (selected === 'Dashboard' ? '':'Dashboard')"
                                         class="menu-item group"
                                         :class=" (selected === 'Dashboard') || (page === 'dashboard') ? 'menu-item-active' : 'menu-item-inactive'"
@@ -99,10 +97,10 @@
                                 </li>
                                 <li>
                                     <a
-                                        href="teachers.html"
-                                        @click="selected = (selected === 'Teachers' ? '':'Teachers')"
+                                        href="{% url 'select-course' %}"
+                                        @click="selected = (selected === 'Select' ? '':'select')"
                                         class="menu-item group"
-                                        :class=" (selected === 'Teachers') && (page === 'teachers') ? 'menu-item-active' : 'menu-item-inactive'"
+                                        :class=" (selected === 'Select') && (page === 'select') ? 'menu-item-active' : 'menu-item-inactive'"
                                     >
                                           <svg class="h-6 w-6 text-gray-500 group-hover:text-white transition duration-300" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 1024 1024"><path fill="currentColor" d="M512 0C229.232 0 0 229.232 0 512c0 282.784 229.232 512 512 512c282.784 0 512-229.216 512-512C1024 229.232 794.784 0 512 0zm0 961.008c-247.024 0-448-201.984-448-449.01c0-247.024 200.976-448 448-448s448 200.977 448 448s-200.976 449.01-448 449.01zm204.336-636.352L415.935 626.944l-135.28-135.28c-12.496-12.496-32.752-12.496-45.264 0c-12.496 12.496-12.496 32.752 0 45.248l158.384 158.4c12.496 12.48 32.752 12.48 45.264 0c1.44-1.44 2.673-3.009 3.793-4.64l318.784-320.753c12.48-12.496 12.48-32.752 0-45.263c-12.512-12.496-32.768-12.496-45.28 0z"/></svg>
                                         <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
@@ -112,7 +110,7 @@
                                 </li>
                                 <li>
                                     <a
-                                        href="students.html"
+                                        href="{% url 'student-list' %}"
                                         @click="selected = (selected === 'Students' ? '':'Students')"
                                         class="menu-item group"
                                         :class=" (selected === 'Students') && (page === 'students') ? 'menu-item-active' : 'menu-item-inactive'"
@@ -131,7 +129,7 @@
                                 </li>
                                 <li>
                                     <a
-                                        href="teachers.html"
+                                        href="{% url 'teachers-list' %}"
                                         @click="selected = (selected === 'Teachers' ? '':'Teachers')"
                                         class="menu-item group"
                                         :class=" (selected === 'Teachers') && (page === 'teachers') ? 'menu-item-active' : 'menu-item-inactive'"
@@ -145,7 +143,7 @@
                                 </li>
                                 <li>
                                     <a
-                                        href="courses.html"
+                                        href="{% url 'course-list' %}"
                                         @click="selected = (selected === 'COurses' ? '':'Courses')"
                                         class="menu-item group"
                                         :class=" (selected === 'Courses') && (page === 'courses') ? 'menu-item-active' : 'menu-item-inactive'"
@@ -263,7 +261,7 @@
                                 <!-- User Area -->
                                 <div class="relative" x-data="{ dropdownOpen: false }" @click.outside="dropdownOpen = false">
                                     <a class="flex items-center text-gray-700 dark:text-gray-400" href="index.html#" @click.prevent="dropdownOpen = ! dropdownOpen">
-                                        <span class="text-theme-sm mr-1 block font-medium"> Admin </span>
+                                        <span class="text-theme-sm mr-1 block font-medium"> {{ user.username }} </span>
 
                                         <svg :class="dropdownOpen && 'rotate-180'" class="stroke-gray-500 dark:stroke-gray-400" width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M4.3125 8.65625L9 13.3437L13.6875 8.65625" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -274,38 +272,12 @@
                                     <div x-show="dropdownOpen" class="shadow-theme-lg dark:bg-gray-dark absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 dark:border-gray-800">
                                         <div>
                                             <span class="text-theme-sm block font-medium text-gray-700 dark:text-gray-400">
-                                                Admin
+                                                {{ user.username }}
                                             </span>
                                             <span class="text-theme-xs mt-0.5 block text-gray-500 dark:text-gray-400">
-                                                <a href="https://demo.tailadmin.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3547545b515a584046504775455c585f5a1b565a58">[email&#160;protected]</a>
+                                                <a href="https://demo.tailadmin.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3547545b515a584046504775455c585f5a1b565a58">{{ user.email }}</a>
                                             </span>
                                         </div>
-
-                                        <ul class="flex flex-col gap-1 border-b border-gray-200 pt-4 pb-3 dark:border-gray-800">
-                                            <li>
-                                                <a
-                                                    href="profile.html"
-                                                    class="group text-theme-sm flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
-                                                >
-                                                    <svg
-                                                        class="fill-gray-500 group-hover:fill-gray-700 dark:fill-gray-400 dark:group-hover:fill-gray-300"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            fill-rule="evenodd"
-                                                            clip-rule="evenodd"
-                                                            d="M12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 14.1526 4.3002 16.1184 5.61936 17.616C6.17279 15.3096 8.24852 13.5955 10.7246 13.5955H13.2746C15.7509 13.5955 17.8268 15.31 18.38 17.6167C19.6996 16.119 20.5 14.153 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM17.0246 18.8566V18.8455C17.0246 16.7744 15.3457 15.0955 13.2746 15.0955H10.7246C8.65354 15.0955 6.97461 16.7744 6.97461 18.8455V18.856C8.38223 19.8895 10.1198 20.5 12 20.5C13.8798 20.5 15.6171 19.8898 17.0246 18.8566ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM11.9991 7.25C10.8847 7.25 9.98126 8.15342 9.98126 9.26784C9.98126 10.3823 10.8847 11.2857 11.9991 11.2857C13.1135 11.2857 14.0169 10.3823 14.0169 9.26784C14.0169 8.15342 13.1135 7.25 11.9991 7.25ZM8.48126 9.26784C8.48126 7.32499 10.0563 5.75 11.9991 5.75C13.9419 5.75 15.5169 7.32499 15.5169 9.26784C15.5169 11.2107 13.9419 12.7857 11.9991 12.7857C10.0563 12.7857 8.48126 11.2107 8.48126 9.26784Z"
-                                                            fill=""
-                                                        />
-                                                    </svg>
-                                                    Edit profile
-                                                </a>
-                                            </li>
-                                        </ul>
                                         <button
                                             class="group text-theme-sm mt-3 flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
                                         >
@@ -350,7 +322,7 @@
                                             <div>
                                                 <span class="text-sm text-gray-500 dark:text-gray-400">Students</span>
                                                 <h4 class="mt-2 text-title-sm font-bold text-gray-800 dark:text-white/90">
-                                                    3,782
+                                                    {{ students.count }}
                                                 </h4>
                                             </div>
                                         </div>
@@ -368,7 +340,7 @@
                                             <div>
                                                 <span class="text-sm text-gray-500 dark:text-gray-400">Attendance Records</span>
                                                 <h4 class="mt-2 text-title-sm font-bold text-gray-800 dark:text-white/90">
-                                                    5,359
+                                                    {{ attendance_records.count }}
                                                 </h4>
                                             </div>
                                         </div>
@@ -386,7 +358,7 @@
                                     </div>
 
                                     <div class="max-w-full overflow-x-auto custom-scrollbar">
-                                        <div id="chartOne" class="-ml-5 h-full min-w-[690px] pl-2 xl:min-w-full"></div>
+                                        <canvas style="position: relative; height: 196px; overflow-x: auto; margin-left: -5px" id="attendanceChart" class="-ml-5 h-full min-w-[690px] pl-2 xl:min-w-full"></canvas>
                                     </div>
                                 </div>
                                 <!-- ====== Chart One End -->
@@ -403,34 +375,6 @@
                                                 <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">
                                                     Attendance rate among all students
                                                 </p>
-                                            </div>
-                                            <div x-data="{openDropDown: false}" class="relative h-fit">
-                                                <button @click="openDropDown = !openDropDown" :class="openDropDown ? 'text-gray-700 dark:text-white' : 'text-gray-400 hover:text-gray-700 dark:hover:text-white'">
-                                                    <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            fill-rule="evenodd"
-                                                            clip-rule="evenodd"
-                                                            d="M10.2441 6C10.2441 5.0335 11.0276 4.25 11.9941 4.25H12.0041C12.9706 4.25 13.7541 5.0335 13.7541 6C13.7541 6.9665 12.9706 7.75 12.0041 7.75H11.9941C11.0276 7.75 10.2441 6.9665 10.2441 6ZM10.2441 18C10.2441 17.0335 11.0276 16.25 11.9941 16.25H12.0041C12.9706 16.25 13.7541 17.0335 13.7541 18C13.7541 18.9665 12.9706 19.75 12.0041 19.75H11.9941C11.0276 19.75 10.2441 18.9665 10.2441 18ZM11.9941 10.25C11.0276 10.25 10.2441 11.0335 10.2441 12C10.2441 12.9665 11.0276 13.75 11.9941 13.75H12.0041C12.9706 13.75 13.7541 12.9665 13.7541 12C13.7541 11.0335 12.9706 10.25 12.0041 10.25H11.9941Z"
-                                                            fill=""
-                                                        />
-                                                    </svg>
-                                                </button>
-                                                <div
-                                                    x-show="openDropDown"
-                                                    @click.outside="openDropDown = false"
-                                                    class="absolute right-0 top-full z-40 w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark"
-                                                >
-                                                    <button
-                                                        class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
-                                                    >
-                                                        View More
-                                                    </button>
-                                                    <button
-                                                        class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="relative max-h-[195px]">
@@ -471,68 +415,6 @@
                                     </div>
                                 </div>
                                 <!-- ====== Chart Two End -->
-                            </div>
-
-                            <div class="col-span-12">
-                                <!-- ====== Chart Three Start -->
-                                <div class="rounded-2xl border border-gray-200 bg-white px-5 pb-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
-                                    <div class="flex flex-col gap-5 mb-6 sm:flex-row sm:justify-between">
-                                        <div class="w-full">
-                                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-                                                Statistics
-                                            </h3>
-                                        </div>
-
-                                        <div class="flex items-start w-full gap-3 sm:justify-end">
-                                            <div x-data="{selected: 'overview'}" class="inline-flex w-fit items-center gap-0.5 rounded-lg bg-gray-100 p-0.5 dark:bg-gray-900">
-                                                <button
-                                                    @click="selected = 'overview'"
-                                                    :class="selected === 'overview' ? 'shadow-theme-xs text-gray-900 dark:text-white bg-white dark:bg-gray-800' : 'text-gray-500 dark:text-gray-400'"
-                                                    class="px-3 py-2 font-medium rounded-md text-theme-sm hover:text-gray-900 dark:hover:text-white"
-                                                >
-                                                    Overview
-                                                </button>
-                                                <button
-                                                    @click="selected = 'sales'"
-                                                    :class="selected === 'sales' ? 'shadow-theme-xs text-gray-900 dark:text-white bg-white dark:bg-gray-800' : 'text-gray-500 dark:text-gray-400'"
-                                                    class="px-3 py-2 font-medium rounded-md text-theme-sm hover:text-gray-900 dark:hover:text-white"
-                                                >
-                                                    Sales
-                                                </button>
-                                                <button
-                                                    @click="selected = 'revenue'"
-                                                    :class="selected === 'revenue' ? 'shadow-theme-xs text-gray-900 dark:text-white bg-white dark:bg-gray-800' : 'text-gray-500 dark:text-gray-400'"
-                                                    class="px-3 py-2 font-medium rounded-md text-theme-sm hover:text-gray-900 dark:hover:text-white"
-                                                >
-                                                    Revenue
-                                                </button>
-                                            </div>
-
-                                            <div class="relative w-fit">
-                                                <input
-                                                    class="datepicker h-10 w-full max-w-11 rounded-lg border border-gray-200 bg-white py-2.5 pl-[34px] pr-4 text-theme-sm font-medium text-gray-700 shadow-theme-xs focus:outline-hidden focus:ring-0 focus-visible:outline-hidden dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 xl:max-w-fit xl:pl-11"
-                                                    placeholder="Select dates"
-                                                    data-class="flatpickr-right"
-                                                    readonly="readonly"
-                                                />
-                                                <div class="absolute inset-0 right-auto flex items-center pointer-events-none left-4">
-                                                    <svg class="fill-gray-700 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            fill-rule="evenodd"
-                                                            clip-rule="evenodd"
-                                                            d="M6.66683 1.54199C7.08104 1.54199 7.41683 1.87778 7.41683 2.29199V3.00033H12.5835V2.29199C12.5835 1.87778 12.9193 1.54199 13.3335 1.54199C13.7477 1.54199 14.0835 1.87778 14.0835 2.29199V3.00033L15.4168 3.00033C16.5214 3.00033 17.4168 3.89576 17.4168 5.00033V7.50033V15.8337C17.4168 16.9382 16.5214 17.8337 15.4168 17.8337H4.5835C3.47893 17.8337 2.5835 16.9382 2.5835 15.8337V7.50033V5.00033C2.5835 3.89576 3.47893 3.00033 4.5835 3.00033L5.91683 3.00033V2.29199C5.91683 1.87778 6.25262 1.54199 6.66683 1.54199ZM6.66683 4.50033H4.5835C4.30735 4.50033 4.0835 4.72418 4.0835 5.00033V6.75033H15.9168V5.00033C15.9168 4.72418 15.693 4.50033 15.4168 4.50033H13.3335H6.66683ZM15.9168 8.25033H4.0835V15.8337C4.0835 16.1098 4.30735 16.3337 4.5835 16.3337H15.4168C15.693 16.3337 15.9168 16.1098 15.9168 15.8337V8.25033Z"
-                                                            fill=""
-                                                        />
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="max-w-full overflow-x-auto custom-scrollbar">
-                                        <div id="chartThree" class="-ml-4 min-w-[700px] pl-2 xl:min-w-full"></div>
-                                    </div>
-                                </div>
-                                <!-- ====== Chart Three End -->
                             </div>
 
                             <div class="col-span-12 xl:col-span-14">
@@ -600,13 +482,14 @@
 
                                             <!-- table body start -->
                                             <tbody class="py-3 divide-y divide-gray-100 dark:divide-gray-800">
-                                                <tr>
+                                                {% for record in attendance_records %}
+                                                    <tr>
                                                     <td class="px-6 py-3 whitespace-nowrap first:pl-0">
                                                         <div class="flex items-center">
                                                             <div class="flex items-center gap-3">
                                                                 <div>
                                                                     <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                                        Student 321
+                                                                        {{ record.student.first_name }} {{ record.student.last_name }}
                                                                     </p>
                                                                 </div>
                                                             </div>
@@ -615,319 +498,39 @@
                                                     <td class="px-6 py-3 whitespace-nowrap first:pl-0">
                                                         <div class="flex items-center">
                                                             <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                Math
+                                                                {{ record.course.course_name }}
                                                             </p>
                                                         </div>
                                                     </td>
                                                     <td class="px-6 py-3 whitespace-nowrap first:pl-0">
                                                         <div class="flex items-center">
                                                             <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.34 am
+                                                                {{ record.time }}
                                                             </p>
                                                         </div>
                                                     </td>
                                                     <td class="px-6 py-3 whitespace-nowrap first:pl-0">
                                                         <div class="flex items-center">
                                                             <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.40 am
+                                                                {{ record.course.course_time }}
                                                             </p>
                                                         </div>
                                                     </td>
                                                     <td class="px-6 py-3 whitespace-nowrap first:pl-0">
                                                         <div class="flex items-center">
+                                                            {% if record.status %}
                                                             <p class="bg-success-50 text-theme-xs text-success-600 dark:bg-success-500/15 dark:text-success-500 rounded-full px-2 py-0.5 font-medium">
                                                                 Present
                                                             </p>
+                                                            {% else %}
+                                                            <p style="background-color: red" class="bg-error-50 text-theme-xs text-error-600 dark:bg-error-500/15 dark:text-error-500 rounded-full px-2 py-0.5 font-medium">
+                                                                Absent
+                                                            </p>
+                                                            {% endif %}
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <div class="flex items-center gap-3">
-                                                                <div>
-                                                                    <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                                        Student 321
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                Math
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.34 am
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.40 am
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="bg-success-50 text-theme-xs text-success-600 dark:bg-success-500/15 dark:text-success-500 rounded-full px-2 py-0.5 font-medium">
-                                                                Present
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <div class="flex items-center gap-3">
-                                                                <div>
-                                                                    <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                                        Student 321
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                Math
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.34 am
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.40 am
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="bg-success-50 text-theme-xs text-success-600 dark:bg-success-500/15 dark:text-success-500 rounded-full px-2 py-0.5 font-medium">
-                                                                Present
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <div class="flex items-center gap-3">
-                                                                <div>
-                                                                    <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                                        Student 321
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                Math
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.34 am
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.40 am
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="bg-success-50 text-theme-xs text-success-600 dark:bg-success-500/15 dark:text-success-500 rounded-full px-2 py-0.5 font-medium">
-                                                                Present
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <div class="flex items-center gap-3">
-                                                                <div>
-                                                                    <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                                        Student 321
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                Math
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.34 am
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.40 am
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="bg-success-50 text-theme-xs text-success-600 dark:bg-success-500/15 dark:text-success-500 rounded-full px-2 py-0.5 font-medium">
-                                                                Present
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <div class="flex items-center gap-3">
-                                                                <div>
-                                                                    <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                                        Student 321
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                Math
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.34 am
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.40 am
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="bg-success-50 text-theme-xs text-success-600 dark:bg-success-500/15 dark:text-success-500 rounded-full px-2 py-0.5 font-medium">
-                                                                Present
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <div class="flex items-center gap-3">
-                                                                <div>
-                                                                    <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                                        Student 321
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                Math
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.34 am
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.40 am
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="bg-success-50 text-theme-xs text-success-600 dark:bg-success-500/15 dark:text-success-500 rounded-full px-2 py-0.5 font-medium">
-                                                                Present
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <div class="flex items-center gap-3">
-                                                                <div>
-                                                                    <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                                        Student 321
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                Math
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.34 am
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                11.40 am
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="bg-success-50 text-theme-xs text-success-600 dark:bg-success-500/15 dark:text-success-500 rounded-full px-2 py-0.5 font-medium">
-                                                                Present
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>
@@ -941,8 +544,60 @@
             </div>
             <!-- ===== Content Area End ===== -->
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+  var dataPoints = JSON.parse('{{ bar_chart_data|escapejs }}');
+
+const ctx = document.getElementById('attendanceChart').getContext('2d');
+const attendanceChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: dataPoints.labels,
+    datasets: [{
+      label: 'Attendance',
+      data: dataPoints.values,
+      backgroundColor: '#3321d7',
+      borderRadius: 6,
+      barPercentage: 0.6,
+      categoryPercentage: 0.8
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 5,
+          color: '#888'
+        },
+        grid: {
+          color: '#eee'
+        }
+      },
+      x: {
+        ticks: {
+          maxRotation: 45,
+          minRotation: 45,
+          color: '#666'
+        },
+        grid: {
+          display: false
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        display: false
+      }
+    }
+  }
+});
+
+</script>
         <!-- ===== Page Wrapper End ===== -->
-        <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+        <script data-cfasync="false" src="{% static 'cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script>
         <script defer src="{% static 'bundle.js' %}"></script>
     </body>
 </html>

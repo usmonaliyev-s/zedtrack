@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q, ExpressionWrapper, F, FloatField
 from django.db.models.functions import TruncDate, NullIf
@@ -68,7 +70,7 @@ def dashboard(request):
         for i in Course.objects.filter(user=request.user):
             if today in i.days:
                 todays_courses += 1
-        line_chart_data = {
+        bar_chart_data = {
             "labels": dates,
             "values": counts
         }
@@ -93,7 +95,7 @@ def dashboard(request):
             "absent_students": absent_students,
             "lessons": Attendance.objects.filter(user=request.user),
             "gender_data": gender_data,
-            "line_chart_data":line_chart_data,
+            "bar_chart_data":json.dumps(bar_chart_data),
             "attendance_rate": attendance_rate,
             "attendance_rate_today": attendance_rate_today,
             "todays_courses": todays_courses,
