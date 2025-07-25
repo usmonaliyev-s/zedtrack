@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>ZEDTRACK | Attendance Tracker</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'zed.png' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/backend-plugin.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/backend.css?v=1.0.0' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/vendor/remixicon/fonts/remixicon.css' %}" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        :root {
+            --primary-color: #3321d7;
+            --text-color: #1e1e2f;
+            --text-gray: #5c5f70;
+            --bg-color: white;
+            --rounded: 16px;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        header {
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+        }
+
+        header img {
+            height: 40px;
+            border-radius: 10px;
+        }
+
+        .nav-links a {
+            margin-left: 2rem;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8rem 5rem;
+            background-color: white;
+        }
+
+        .hero-text {
+            max-width: 600px;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+        }
+
+        .hero-text a {
+            padding: 0.9rem 2.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--rounded);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .hero-img img {
+            width: 650px;
+            max-width: 90%;
+            border-radius: var(--rounded);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+
+        .section {
+            padding: 6rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: var(--rounded);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card img {
+            width: 340px;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .feature-card p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        .about {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4rem;
+            padding: 6rem 4rem;
+        }
+
+        .about img {
+            width: 700px;
+            border-radius: var(--rounded);
+        }
+
+        .about-content {
+            max-width: 500px;
+        }
+
+        .about-content h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .about-content p {
+            color: var(--text-gray);
+            line-height: 1.7;
+        }
+
+        footer {
+            padding: 4rem 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <img src="{% static 'zed.png' %}" alt="ZEDTRACK Logo">
+        <nav class="nav-links">
+            <a href="{% url 'register' %}">Register</a>
+            <a href="{% url 'login' %}">Login</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Attendance, Simplified</h1>
+            <p>Monitor. Track. Analyze. ZEDTRACK provides effortless, reliable attendance management for modern schools and teams, built with clarity and performance at its core.</p>
+            <a href="{% url 'register' %}">Get Started for Free</a>
+        </div>
+        <div class="hero-img">
+            <img src="{% static 'image.png' %}" alt="Dashboard Preview" style="width: 650px; max-width: 90%; border-radius: 20px;">
+        </div>
+    </section>
+
+
+    <section class="section">
+    <h2 class="section-title">Why Choose ZEDTRACK?</h2>
+    <p class="section-subtitle">ZEDTRACK combines modern technology with simple interfaces to help organizations of any size streamline attendance without the hassle of outdated systems.</p>
+    <div class="features">
+
+        <div class="feature-card">
+            <div style="margin-bottom: 1rem;">
+                <svg width="64" height="64" fill="none" viewBox="0 0 24 24" stroke="#3321d7" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.75 4.75h14.5v14.5H4.75V4.75zM9 9l6 6m0-6l-6 6" />
+                </svg>
+            </div>
+            <h3>Instant Records</h3>
+            <p>Track attendance with clarity and confidence. Real-time data updates ensure accuracy and reliability.</p>
+        </div>
+
+        <div class="feature-card">
+            <div style="margin-bottom: 1rem;">
+                <svg width="64" height="64" fill="none" viewBox="0 0 24 24" stroke="#3321d7" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M3 17l4-4 4 4 6-6 4 4" />
+                </svg>
+            </div>
+            <h3>Powerful Analytics</h3>
+            <p>Visual dashboards offer deep insights into attendance patterns and engagement rates over time.</p>
+        </div>
+
+        <div class="feature-card">
+            <div style="margin-bottom: 1rem;">
+                <svg width="64" height="64" fill="none" viewBox="0 0 24 24" stroke="#3321d7" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3C7.03 3 3 7.03 3 12c0 4.96 4.03 9 9 9s9-4.03 9-9c0-4.97-4.03-9-9-9zm0 12v-4M12 7h.01" />
+                </svg>
+            </div>
+            <h3>Data Security</h3>
+            <p>Your information is protected with industry-grade encryption and modern cloud storage protocols.</p>
+        </div>
+
+        <div class="feature-card">
+            <div style="margin-bottom: 1rem;">
+                <svg width="64" height="64" fill="none" viewBox="0 0 24 24" stroke="#3321d7" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 2v2m4-2v2m-7 4h10m-8 6h6m-6 4h6M4 6h16v14H4V6z" />
+                </svg>
+            </div>
+            <h3>Save Time</h3>
+            <p>Automate repetitive processes and reduce manual tracking. Focus more on people, less on paperwork.</p>
+        </div>
+
+    </div>
+</section>
+
+
+    <section class="about">
+        <img src="{% static 'laptop-mockup.png' %}" alt="Team Collaboration">
+        <div class="about-content">
+            <h2>Built for Modern Workflows</h2>
+            <p>ZEDTRACK fits seamlessly into the daily operations of educational institutions and organizations. From flexible schedules to customizable reports, our platform adapts to your needs, not the other way around.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>ZEDTRACK &copy; 2025 — Designed for better attendance everywhere.</p>
+    </footer>
+
+</body>
+
+</html>
