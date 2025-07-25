@@ -2,602 +2,533 @@
 {% load static %}
 <html lang="en">
     <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <title>
-            ZEDTRACK
-        </title>
-        <link rel="icon" href="{% static 'zed.png' %}" />
-        <link href="{% static 'style.css' %}" rel="stylesheet" />
-    </head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>ZEDTRACK</title>
 
-    <body
-        x-data="{ page: 'dashboard', 'loaded': true, 'darkMode': false, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
-        x-init="
-         darkMode = JSON.parse(localStorage.getItem('darkMode'));
-         $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
-        :class="{'dark bg-gray-900': darkMode === true}"
-    >
-        <!-- ===== Preloader Start ===== -->
-        <div x-show="loaded" x-init="window.addEventListener('DOMContentLoaded', () => {setTimeout(() => loaded = false, 500)})" class="fixed left-0 top-0 z-999999 flex h-screen w-screen items-center justify-center bg-white dark:bg-black">
-            <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-brand-500 border-t-transparent"></div>
-        </div>
-
-        <!-- ===== Preloader End ===== -->
-
-        <!-- ===== Page Wrapper Start ===== -->
-        <div class="flex h-screen overflow-hidden">
-            <!-- ===== Sidebar Start ===== -->
-            <aside
-                :class="sidebarToggle ? 'translate-x-0 lg:w-[90px]' : '-translate-x-full'"
-                class="sidebar fixed top-0 left-0 z-9999 flex h-screen w-[290px] flex-col overflow-y-auto border-r border-gray-200 bg-white px-5 transition-all duration-300 lg:static lg:translate-x-0 dark:border-gray-800 dark:bg-black"
-                @click.outside="sidebarToggle = false"
-            >
-                <!-- SIDEBAR HEADER -->
-                <div :class="sidebarToggle ? 'justify-center' : 'justify-between'" class="sidebar-header flex items-center gap-2 pt-8 pb-7">
-                    <a href="index.html">
-                        <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
-                            <img class="dark:hidden" width="40" height="40" style="border-radius: 8px" src="{% static 'zed.png' %}" alt="Logo" />
-                            <img class="hidden dark:block" width="40" height="40" style="border-radius: 8px" src="{% static 'zed.png' %}" alt="Logo" />
-                        </span>
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="{% static 'zed.png' %}" />
+        <link rel="stylesheet" href="{% static 'assets/css/backend-plugin.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'assets/css/backend.css?v=1.0.0' %}" />
+        <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}" />
+        <link rel="stylesheet" href="{% static 'assets/vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'assets/vendor/remixicon/fonts/remixicon.css' %}" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+        </head>
+    <style>
+    #sidebar.collapsed #user-info {
+        display: none;
+    }
+    </style>
+    <body style="background-color: var(--main-background-color)">
+        <div class="wrapper">
+            <div class="iq-sidebar sidebar-default" style="display: flex; flex-direction: column; height: 100vh;" id="sidebar">
+                <!-- Sidebar logo and toggle -->
+                <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
+                    <a href="/" class="header-logo">
+                        <img src="{% static 'zed.png' %}" class="img-fluid rounded-normal light-logo" alt="logo" />
+                        <h6 class="logo-title light-logo ml-3" style="color: var(--text-color);">ZEDTRACK</h6>
                     </a>
+                    <div class="iq-menu-bt-sidebar ml-0">
+                        <i class="wrapper-menu">
+                            <svg fill="var(--text-color)" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 6H20M4 12H20M4 18H20" stroke="var(--text-color)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                            </svg>
+                        </i>
+                    </div>
                 </div>
-                <!-- SIDEBAR HEADER -->
 
-                <div class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
-                    <!-- Sidebar Menu -->
-                    <nav x-data="{selected: $persist('Dashboard')}">
-                        <!-- Menu Group -->
-                        <div>
-                            <h3 class="mb-4 text-xs leading-[20px] text-gray-400 uppercase">
-                                <span class="menu-group-title" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                    MENU
-                                </span>
-
-                                <svg :class="sidebarToggle ? 'lg:block hidden' : 'hidden'" class="menu-group-icon mx-auto fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        fill-rule="evenodd"
-                                        clip-rule="evenodd"
-                                        d="M5.99915 10.2451C6.96564 10.2451 7.74915 11.0286 7.74915 11.9951V12.0051C7.74915 12.9716 6.96564 13.7551 5.99915 13.7551C5.03265 13.7551 4.24915 12.9716 4.24915 12.0051V11.9951C4.24915 11.0286 5.03265 10.2451 5.99915 10.2451ZM17.9991 10.2451C18.9656 10.2451 19.7491 11.0286 19.7491 11.9951V12.0051C19.7491 12.9716 18.9656 13.7551 17.9991 13.7551C17.0326 13.7551 16.2491 12.9716 16.2491 12.0051V11.9951C16.2491 11.0286 17.0326 10.2451 17.9991 10.2451ZM13.7491 11.9951C13.7491 11.0286 12.9656 10.2451 11.9991 10.2451C11.0326 10.2451 10.2491 11.0286 10.2491 11.9951V12.0051C10.2491 12.9716 11.0326 13.7551 11.9991 13.7551C12.9656 13.7551 13.7491 12.9716 13.7491 12.0051V11.9951Z"
-                                        fill=""
-                                    />
-                                </svg>
-                            </h3>
-
-                            <ul class="mb-6 flex flex-col gap-4">
-                                <!-- Menu Item Dashboard -->
-                                <li>
-                                    <a
-                                        href="{% url 'dashboard' %}"
-                                        @click.prevent="selected = (selected === 'Dashboard' ? '':'Dashboard')"
-                                        class="menu-item group"
-                                        :class=" (selected === 'Dashboard') || (page === 'dashboard') ? 'menu-item-active' : 'menu-item-inactive'"
-                                    >
-                                        <svg
-                                            :class="(selected === 'Dashboard') || (page === 'dashboard') ? 'menu-item-icon-active'  :'menu-item-icon-inactive'"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
+                <!-- Sidebar menu scrollable area -->
+                <div class="data-scrollbar" data-scroll="1" style="flex: 1; overflow-y: auto;">
+                    <nav class="iq-sidebar-menu">
+                        <ul id="iq-sidebar-toggle" class="iq-menu">
+                            <li class="active">
+                                <a href="/" class="svg-icon">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        x="0px"
+                                        y="0px"
+                                        width="20px"
+                                        height="20px"
+                                        viewBox="0 0 122.88 122.566"
+                                        enable-background="new 0 0 122.88 122.566"
+                                        xml:space="preserve">
+                                        <g>
                                             <path
                                                 fill-rule="evenodd"
                                                 clip-rule="evenodd"
-                                                d="M5.5 3.25C4.25736 3.25 3.25 4.25736 3.25 5.5V8.99998C3.25 10.2426 4.25736 11.25 5.5 11.25H9C10.2426 11.25 11.25 10.2426 11.25 8.99998V5.5C11.25 4.25736 10.2426 3.25 9 3.25H5.5ZM4.75 5.5C4.75 5.08579 5.08579 4.75 5.5 4.75H9C9.41421 4.75 9.75 5.08579 9.75 5.5V8.99998C9.75 9.41419 9.41421 9.74998 9 9.74998H5.5C5.08579 9.74998 4.75 9.41419 4.75 8.99998V5.5ZM5.5 12.75C4.25736 12.75 3.25 13.7574 3.25 15V18.5C3.25 19.7426 4.25736 20.75 5.5 20.75H9C10.2426 20.75 11.25 19.7427 11.25 18.5V15C11.25 13.7574 10.2426 12.75 9 12.75H5.5ZM4.75 15C4.75 14.5858 5.08579 14.25 5.5 14.25H9C9.41421 14.25 9.75 14.5858 9.75 15V18.5C9.75 18.9142 9.41421 19.25 9 19.25H5.5C5.08579 19.25 4.75 18.9142 4.75 18.5V15ZM12.75 5.5C12.75 4.25736 13.7574 3.25 15 3.25H18.5C19.7426 3.25 20.75 4.25736 20.75 5.5V8.99998C20.75 10.2426 19.7426 11.25 18.5 11.25H15C13.7574 11.25 12.75 10.2426 12.75 8.99998V5.5ZM15 4.75C14.5858 4.75 14.25 5.08579 14.25 5.5V8.99998C14.25 9.41419 14.5858 9.74998 15 9.74998H18.5C18.9142 9.74998 19.25 9.41419 19.25 8.99998V5.5C19.25 5.08579 18.9142 4.75 18.5 4.75H15ZM15 12.75C13.7574 12.75 12.75 13.7574 12.75 15V18.5C12.75 19.7426 13.7574 20.75 15 20.75H18.5C19.7426 20.75 20.75 19.7427 20.75 18.5V15C20.75 13.7574 19.7426 12.75 18.5 12.75H15ZM14.25 15C14.25 14.5858 14.5858 14.25 15 14.25H18.5C18.9142 14.25 19.25 14.5858 19.25 15V18.5C19.25 18.9142 18.9142 19.25 18.5 19.25H15C14.5858 19.25 14.25 18.9142 14.25 18.5V15Z"
-                                                fill=""
-                                            />
-                                        </svg>
+                                                d="M3.78,66.082h47.875c2.045,0,3.717,1.988,3.717,4.414v46.479 c0,2.43-1.671,4.416-3.717,4.416H3.78c-2.043,0-3.717-1.986-3.717-4.416V70.496C0.063,68.07,1.737,66.082,3.78,66.082L3.78,66.082z M71.224,0H119.1c2.046,0,3.717,1.986,3.717,4.415v46.479c0,2.429-1.671,4.413-3.717,4.413H71.224 c-2.045,0-3.714-1.984-3.714-4.413V4.415C67.51,1.986,69.179,0,71.224,0L71.224,0z M3.714,0h47.878 c2.045,0,3.717,1.986,3.717,4.415v46.479c0,2.429-1.671,4.413-3.717,4.413H3.714C1.671,55.307,0,53.323,0,50.894V4.415 C0,1.986,1.671,0,3.714,0L3.714,0z M71.287,67.26h47.876c2.043,0,3.717,1.986,3.717,4.416v46.479c0,2.426-1.674,4.412-3.717,4.412 H71.287c-2.045,0-3.717-1.986-3.717-4.412V71.676C67.57,69.246,69.242,67.26,71.287,67.26L71.287,67.26z"></path>
+                                        </g>
+                                    </svg>
+                                    <span class="ml-4">Dashboard</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'select-course' %}" class="svg-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                        <path
+                                            fill="var(--main-color)"
+                                            d="M20 16v-6h2v6a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2h8v2H8v12h12m-9.09-8.92L14 10.17l6.59-6.59L22 5l-8 8l-4.5-4.5l1.41-1.42M16 20v2H4a2 2 0 0 1-2-2V7h2v13h12Z">
+                                        </path>
+                                    </svg>
+                                    <span class="ml-4">Mark Attendance</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'student-list' %}" class="svg-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 1024 768">
+                                        <path fill="var(--main-color)"
+                                            d="M1024 736q0 13-9.5 22.5T992 768t-22.5-9.5T960 736V315L607 492q-40 20-95 20t-95-20L39 303Q0 283 0 255.5T39 209L417 20q40-20 95-20t95 20l378 189q34 17 38 42q1 1 1 4v481zM639 556l193-97v141q0 43-93.5 73.5T512 704t-226.5-30.5T192 600V459l193 97q40 20 127 20t127-20z">>
+                                        </path>
+                                    </svg>
+                                    <span class="ml-4">Students</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'teachers-list' %}" class="svg-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="var(--main-color)" stroke-width="1" viewBox="0 0 20 20">
+                                        <path
+                                            fill="var(--main-color)"
+                                            d="M8.75 3.75a2.75 2.75 0 1 0-5.5 0a2.75 2.75 0 0 0 5.5 0Zm-4.5 0a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0ZM2.5 7.5h4.183c-.164.31-.286.646-.358 1H2.5A.5.5 0 0 0 2 9v.5c0 1.26 1.099 2.614 3.096 2.93c-.322.22-.59.513-.781.854C2.205 12.713 1 11.087 1 9.5V9a1.5 1.5 0 0 1 1.5-1.5Zm5.379 0c.504-.61 1.267-1 2.121-1a2.744 2.744 0 0 1 2.646 2a2.753 2.753 0 0 1-3.893 3.202A2.75 2.75 0 0 1 7.88 7.5Zm.54 1a1.75 1.75 0 1 0 3.164 1.5a1.75 1.75 0 0 0-3.165-1.5Zm7.266 4.784a2.513 2.513 0 0 0-.781-.853C16.9 12.114 18 10.759 18 9.5V9a.5.5 0 0 0-.5-.5h-3.825a3.726 3.726 0 0 0-.357-1H17.5A1.5 1.5 0 0 1 19 9v.5c0 1.587-1.206 3.212-3.315 3.784Zm-1.198.087A1.493 1.493 0 0 0 13.5 13h-7A1.496 1.496 0 0 0 5 14.5v.5c0 1.971 1.86 4 5 4c3.14 0 5-2.029 5-4v-.5c0-.45-.198-.854-.513-1.13ZM6 14.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v.5c0 1.438-1.432 3-4 3s-4-1.562-4-3v-.5ZM14 1a2.75 2.75 0 1 1 0 5.5A2.75 2.75 0 0 1 14 1Zm0 1a1.75 1.75 0 1 0 0 3.5A1.75 1.75 0 0 0 14 2Z">
+                                        </path>
+                                    </svg>
+                                    <span class="ml-4">Teachers</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'course-list' %}" class="svg-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                        <path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"> </path>
+                                    </svg>
+                                    <span class="ml-4">Courses</span>
+                                </a>
+                            </li>
 
-                                        <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                            Dashboard
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="{% url 'select-course' %}"
-                                        @click="selected = (selected === 'Select' ? '':'select')"
-                                        class="menu-item group"
-                                        :class=" (selected === 'Select') && (page === 'select') ? 'menu-item-active' : 'menu-item-inactive'"
-                                    >
-                                          <svg class="h-6 w-6 text-gray-500 group-hover:text-white transition duration-300" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 1024 1024"><path fill="currentColor" d="M512 0C229.232 0 0 229.232 0 512c0 282.784 229.232 512 512 512c282.784 0 512-229.216 512-512C1024 229.232 794.784 0 512 0zm0 961.008c-247.024 0-448-201.984-448-449.01c0-247.024 200.976-448 448-448s448 200.977 448 448s-200.976 449.01-448 449.01zm204.336-636.352L415.935 626.944l-135.28-135.28c-12.496-12.496-32.752-12.496-45.264 0c-12.496 12.496-12.496 32.752 0 45.248l158.384 158.4c12.496 12.48 32.752 12.48 45.264 0c1.44-1.44 2.673-3.009 3.793-4.64l318.784-320.753c12.48-12.496 12.48-32.752 0-45.263c-12.512-12.496-32.768-12.496-45.28 0z"/></svg>
-                                        <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                            Marking Attendance
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="{% url 'student-list' %}"
-                                        @click="selected = (selected === 'Students' ? '':'Students')"
-                                        class="menu-item group"
-                                        :class=" (selected === 'Students') && (page === 'students') ? 'menu-item-active' : 'menu-item-inactive'"
-                                    >
-                                    <svg
-                                        class="h-6 w-6 text-gray-500 group-hover:text-white transition duration-300"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor"
-                                        viewBox="0 0 1024 768">
-                                        <path d="M1024 736q0 13-9.5 22.5T992 768t-22.5-9.5T960 736V315L607 492q-40 20-95 20t-95-20L39 303Q0 283 0 255.5T39 209L417 20q40-20 95-20t95 20l378 189q34 17 38 42q1 1 1 4v481zM639 556l193-97v141q0 43-93.5 73.5T512 704t-226.5-30.5T192 600V459l193 97q40 20 127 20t127-20z"/>
-                                      </svg>
-                                        <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                            Students
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="{% url 'teachers-list' %}"
-                                        @click="selected = (selected === 'Teachers' ? '':'Teachers')"
-                                        class="menu-item group"
-                                        :class=" (selected === 'Teachers') && (page === 'teachers') ? 'menu-item-active' : 'menu-item-inactive'"
-                                    >
-                                        <svg class="h-6 w-6 text-gray-500 group-hover:text-white transition duration-300" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16"><path fill="currentColor" d="M3 3a2 2 0 1 1 4 0a2 2 0 0 1-4 0Zm6.779 1.584l.042.032a2 2 0 1 0-.042-.032ZM6.268 6A2 2 0 1 1 9.73 7.998A2 2 0 0 1 6.268 6ZM2.5 6h2.67a3.013 3.013 0 0 0 .594 3H5.5a2.501 2.501 0 0 0-2.355 1.658a3.733 3.733 0 0 1-.933-.543C1.46 9.51 1 8.616 1 7.5A1.5 1.5 0 0 1 2.5 6Zm8 3a2.5 2.5 0 0 1 2.354 1.658c.34-.139.655-.32.934-.543C14.54 9.51 15 8.616 15 7.5A1.5 1.5 0 0 0 13.5 6h-2.67c.11.313.17.65.17 1a2.99 2.99 0 0 1-.764 2h.264Zm1.387 1.928c.073.176.113.37.113.572c0 1.116-.459 2.01-1.212 2.615C10.047 14.71 9.053 15 8 15c-1.053 0-2.047-.29-2.788-.885C4.46 13.51 4 12.616 4 11.5A1.496 1.496 0 0 1 5.5 10h5a1.5 1.5 0 0 1 1.387.928Z"/></svg>
+                        </ul>
+                    </nav>
+                </div>
 
-                                        <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                            Teachers
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="{% url 'course-list' %}"
-                                        @click="selected = (selected === 'COurses' ? '':'Courses')"
-                                        class="menu-item group"
-                                        :class=" (selected === 'Courses') && (page === 'courses') ? 'menu-item-active' : 'menu-item-inactive'"
-                                    >
-                                        <svg class="h-6 w-6 text-gray-500 group-hover:text-white transition duration-300" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"/></svg>
-                                        <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                            Courses
-                                        </span>
-                                    </a>
-                                </li>
-                            </ul>
+                <!-- User info fixed at bottom -->
+                <div class="p-3 border-top" id="user-info" style="background-color: var(--main-color);">
+                    <div class="user-profile d-flex align-items-center">
+                        <img src="{% static 'assets/images/profile.png' %}" alt="profile" class="img-fluid rounded-circle" width="40" height="40" />
+                        <div class="ml-3">
+                            <h6 style="color: white; word-break: break-all; white-space: normal;">{{ user.username }}</h6>
+                            <small style="color: white; word-break: break-all; white-space: normal;">{{ user.email }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="iq-top-navbar">
+                <div class="iq-navbar-custom">
+                    <nav class="navbar navbar-expand-lg navbar-light p-0 d-flex align-items-center justify-content-between">
+                        <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
+                            <i class="wrapper-menu">
+                                <svg fill="var(--text-color)" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 6H20M4 12H20M4 18H20" stroke="var(--text-color)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                                </svg>
+                            </i>
+                            <a href="/" class="header-logo d-flex align-items-center">
+                                <img src="{% static 'zed.png' %}" class="img-fluid rounded-normal" alt="logo" />
+                                <h5 class="logo-title ml-3" style="color: var(--text-color);">ZEDTRACK</h5>
+                            </a>
+                        </div>
+
+                        <div class="d-flex align-items-center" >
+                            <button class="btn" style="margin-left: auto; margin-top: 12px; color: white">Filters</button>
+                            <div style="margin-left: auto; margin-top: 12px;">
+                                <a id="theme-toggle" style="position: absolute; top: 40%; right: 20px; cursor: pointer; z-index: 1000;">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 122.88" width="26" height="26" fill="var(--text-color)">
+                                    <style>
+                                        .st0 {
+                                            fill-rule: evenodd;
+                                            clip-rule: evenodd;
+                                        }
+                                    </style>
+                                    <path
+                                        class="st0"
+                                        d="M122.88,61.44c0,8.47-1.5,16.34-4.5,23.58c-0.49,1.19-1.02,2.35-1.59,3.49
+        c-2.92,5.89-6.89,11.35-11.92,16.36c-1.67,1.68-3.4,3.24-5.17,4.68c-1.78,1.45-3.61,2.78-5.48,3.98
+        c-9.65,6.23-20.58,9.34-32.78,9.34c-8.47,0-16.33-1.5-23.58-4.5c-1.19-0.49-2.35-1.02-3.49-1.59
+        c-5.89-2.92-11.35-6.89-16.36-11.92c-1.68-1.67-3.24-3.4-4.68-5.17c-1.45-1.78-2.78-3.61-3.98-5.48
+        C3.11,84.58,0,73.64,0,61.44c0-8.47,1.5-16.33,4.5-23.58c0.49-1.19,1.02-2.35,1.59-3.49c2.92-5.89,6.89-11.35,11.92-16.36
+        c1.67-1.68,3.4-3.24,5.17-4.68c1.78-1.45,3.61-2.78,5.48-3.98C38.3,3.11,49.24,0,61.44,0c8.47,0,16.33,1.5,23.58,4.5
+        c1.19,0.49,2.35,1.02,3.49,1.59c5.89,2.92,11.35,6.89,16.36,11.92c1.68,1.67,3.24,3.4,4.68,5.17c1.45,1.78,2.78,3.61,3.98,5.48
+        C119.77,38.3,122.88,49.24,122.88,61.44z M61.44,10.96v100.96c-27.88,0-50.48-22.6-50.48-50.48C10.96,33.56,33.56,10.96,61.44,10.96z"></path>
+                                </svg>
+                            </a>
+                            </div>
                         </div>
                     </nav>
                 </div>
-            </aside>
-
-            <!-- ===== Sidebar End ===== -->
-
-            <!-- ===== Content Area Start ===== -->
-            <div class="relative flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
-                <!-- Small Device Overlay Start -->
-                <div :class="sidebarToggle ? 'block lg:hidden' : 'hidden'" class="fixed z-9 h-screen w-full bg-gray-900/50"></div>
-                <!-- Small Device Overlay End -->
-
-                <!-- ===== Main Content Start ===== -->
-                <main>
-                    <!-- ===== Header Start ===== -->
-                    <header x-data="{menuToggle: false}" class="sticky top-0 z-99999 flex w-full border-gray-200 bg-white lg:border-b dark:border-gray-800 dark:bg-gray-900">
-                        <div class="flex grow flex-col items-center justify-between lg:flex-row lg:px-6">
-                            <div class="flex w-full items-center justify-between gap-2 border-b border-gray-200 px-3 py-3 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4 dark:border-gray-800">
-                                <!-- Hamburger Toggle BTN -->
-                                <button
-                                    :class="sidebarToggle ? 'lg:bg-transparent dark:lg:bg-transparent bg-gray-100 dark:bg-gray-800' : ''"
-                                    class="z-99999 flex h-10 w-10 items-center justify-center rounded-lg border-gray-200 text-gray-500 lg:h-11 lg:w-11 lg:border dark:border-gray-800 dark:text-gray-400"
-                                    @click.stop="sidebarToggle = !sidebarToggle"
-                                >
-                                    <svg class="hidden fill-current lg:block" width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            fill-rule="evenodd"
-                                            clip-rule="evenodd"
-                                            d="M0.583252 1C0.583252 0.585788 0.919038 0.25 1.33325 0.25H14.6666C15.0808 0.25 15.4166 0.585786 15.4166 1C15.4166 1.41421 15.0808 1.75 14.6666 1.75L1.33325 1.75C0.919038 1.75 0.583252 1.41422 0.583252 1ZM0.583252 11C0.583252 10.5858 0.919038 10.25 1.33325 10.25L14.6666 10.25C15.0808 10.25 15.4166 10.5858 15.4166 11C15.4166 11.4142 15.0808 11.75 14.6666 11.75L1.33325 11.75C0.919038 11.75 0.583252 11.4142 0.583252 11ZM1.33325 5.25C0.919038 5.25 0.583252 5.58579 0.583252 6C0.583252 6.41421 0.919038 6.75 1.33325 6.75L7.99992 6.75C8.41413 6.75 8.74992 6.41421 8.74992 6C8.74992 5.58579 8.41413 5.25 7.99992 5.25L1.33325 5.25Z"
-                                            fill=""
-                                        />
-                                    </svg>
-
-                                    <svg :class="sidebarToggle ? 'hidden' : 'block lg:hidden'" class="fill-current lg:hidden" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            fill-rule="evenodd"
-                                            clip-rule="evenodd"
-                                            d="M3.25 6C3.25 5.58579 3.58579 5.25 4 5.25L20 5.25C20.4142 5.25 20.75 5.58579 20.75 6C20.75 6.41421 20.4142 6.75 20 6.75L4 6.75C3.58579 6.75 3.25 6.41422 3.25 6ZM3.25 18C3.25 17.5858 3.58579 17.25 4 17.25L20 17.25C20.4142 17.25 20.75 17.5858 20.75 18C20.75 18.4142 20.4142 18.75 20 18.75L4 18.75C3.58579 18.75 3.25 18.4142 3.25 18ZM4 11.25C3.58579 11.25 3.25 11.5858 3.25 12C3.25 12.4142 3.58579 12.75 4 12.75L12 12.75C12.4142 12.75 12.75 12.4142 12.75 12C12.75 11.5858 12.4142 11.25 12 11.25L4 11.25Z"
-                                            fill=""
-                                        />
-                                    </svg>
-
-                                    <!-- cross icon -->
-                                    <svg :class="sidebarToggle ? 'block lg:hidden' : 'hidden'" class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            fill-rule="evenodd"
-                                            clip-rule="evenodd"
-                                            d="M6.21967 7.28131C5.92678 6.98841 5.92678 6.51354 6.21967 6.22065C6.51256 5.92775 6.98744 5.92775 7.28033 6.22065L11.999 10.9393L16.7176 6.22078C17.0105 5.92789 17.4854 5.92788 17.7782 6.22078C18.0711 6.51367 18.0711 6.98855 17.7782 7.28144L13.0597 12L17.7782 16.7186C18.0711 17.0115 18.0711 17.4863 17.7782 17.7792C17.4854 18.0721 17.0105 18.0721 16.7176 17.7792L11.999 13.0607L7.28033 17.7794C6.98744 18.0722 6.51256 18.0722 6.21967 17.7794C5.92678 17.4865 5.92678 17.0116 6.21967 16.7187L10.9384 12L6.21967 7.28131Z"
-                                            fill=""
-                                        />
-                                    </svg>
-                                </button>
-                                <!-- Hamburger Toggle BTN -->
-
-                                <a href="index.html" class="lg:hidden">
-                                    <img class="dark:hidden" src="src/images/logo/logo.svg" alt="Logo" />
-                                    <img class="hidden dark:block" src="src/images/logo/logo-dark.svg" alt="Logo" />
-                                </a>
-
-                                <!-- Application nav menu button -->
-                                <button
-                                    class="z-99999 flex h-10 w-10 items-center justify-center rounded-lg text-gray-700 hover:bg-gray-100 lg:hidden dark:text-gray-400 dark:hover:bg-gray-800"
-                                    :class="menuToggle ? 'bg-gray-100 dark:bg-gray-800' : ''"
-                                    @click.stop="menuToggle = !menuToggle"
-                                >
-                                    <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            fill-rule="evenodd"
-                                            clip-rule="evenodd"
-                                            d="M5.99902 10.4951C6.82745 10.4951 7.49902 11.1667 7.49902 11.9951V12.0051C7.49902 12.8335 6.82745 13.5051 5.99902 13.5051C5.1706 13.5051 4.49902 12.8335 4.49902 12.0051V11.9951C4.49902 11.1667 5.1706 10.4951 5.99902 10.4951ZM17.999 10.4951C18.8275 10.4951 19.499 11.1667 19.499 11.9951V12.0051C19.499 12.8335 18.8275 13.5051 17.999 13.5051C17.1706 13.5051 16.499 12.8335 16.499 12.0051V11.9951C16.499 11.1667 17.1706 10.4951 17.999 10.4951ZM13.499 11.9951C13.499 11.1667 12.8275 10.4951 11.999 10.4951C11.1706 10.4951 10.499 11.1667 10.499 11.9951V12.0051C10.499 12.8335 11.1706 13.5051 11.999 13.5051C12.8275 13.5051 13.499 12.8335 13.499 12.0051V11.9951Z"
-                                            fill=""
-                                        />
-                                    </svg>
-                                </button>
-                                <!-- Application nav menu button -->
-                            </div>
-
-                            <div :class="menuToggle ? 'flex' : 'hidden'" class="shadow-theme-md w-full items-center justify-between gap-4 px-5 py-4 lg:flex lg:justify-end lg:px-0 lg:shadow-none">
-                                <div class="2xsm:gap-3 flex items-center gap-2">
-                                    <!-- Dark Mode Toggler -->
-                                    <button
-                                        class="hover:text-dark-900 relative flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
-                                        @click.prevent="darkMode = !darkMode"
-                                    >
-                                        <svg class="hidden dark:block" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                fill-rule="evenodd"
-                                                clip-rule="evenodd"
-                                                d="M9.99998 1.5415C10.4142 1.5415 10.75 1.87729 10.75 2.2915V3.5415C10.75 3.95572 10.4142 4.2915 9.99998 4.2915C9.58577 4.2915 9.24998 3.95572 9.24998 3.5415V2.2915C9.24998 1.87729 9.58577 1.5415 9.99998 1.5415ZM10.0009 6.79327C8.22978 6.79327 6.79402 8.22904 6.79402 10.0001C6.79402 11.7712 8.22978 13.207 10.0009 13.207C11.772 13.207 13.2078 11.7712 13.2078 10.0001C13.2078 8.22904 11.772 6.79327 10.0009 6.79327ZM5.29402 10.0001C5.29402 7.40061 7.40135 5.29327 10.0009 5.29327C12.6004 5.29327 14.7078 7.40061 14.7078 10.0001C14.7078 12.5997 12.6004 14.707 10.0009 14.707C7.40135 14.707 5.29402 12.5997 5.29402 10.0001ZM15.9813 5.08035C16.2742 4.78746 16.2742 4.31258 15.9813 4.01969C15.6884 3.7268 15.2135 3.7268 14.9207 4.01969L14.0368 4.90357C13.7439 5.19647 13.7439 5.67134 14.0368 5.96423C14.3297 6.25713 14.8045 6.25713 15.0974 5.96423L15.9813 5.08035ZM18.4577 10.0001C18.4577 10.4143 18.1219 10.7501 17.7077 10.7501H16.4577C16.0435 10.7501 15.7077 10.4143 15.7077 10.0001C15.7077 9.58592 16.0435 9.25013 16.4577 9.25013H17.7077C18.1219 9.25013 18.4577 9.58592 18.4577 10.0001ZM14.9207 15.9806C15.2135 16.2735 15.6884 16.2735 15.9813 15.9806C16.2742 15.6877 16.2742 15.2128 15.9813 14.9199L15.0974 14.036C14.8045 13.7431 14.3297 13.7431 14.0368 14.036C13.7439 14.3289 13.7439 14.8038 14.0368 15.0967L14.9207 15.9806ZM9.99998 15.7088C10.4142 15.7088 10.75 16.0445 10.75 16.4588V17.7088C10.75 18.123 10.4142 18.4588 9.99998 18.4588C9.58577 18.4588 9.24998 18.123 9.24998 17.7088V16.4588C9.24998 16.0445 9.58577 15.7088 9.99998 15.7088ZM5.96356 15.0972C6.25646 14.8043 6.25646 14.3295 5.96356 14.0366C5.67067 13.7437 5.1958 13.7437 4.9029 14.0366L4.01902 14.9204C3.72613 15.2133 3.72613 15.6882 4.01902 15.9811C4.31191 16.274 4.78679 16.274 5.07968 15.9811L5.96356 15.0972ZM4.29224 10.0001C4.29224 10.4143 3.95645 10.7501 3.54224 10.7501H2.29224C1.87802 10.7501 1.54224 10.4143 1.54224 10.0001C1.54224 9.58592 1.87802 9.25013 2.29224 9.25013H3.54224C3.95645 9.25013 4.29224 9.58592 4.29224 10.0001ZM4.9029 5.9637C5.1958 6.25659 5.67067 6.25659 5.96356 5.9637C6.25646 5.6708 6.25646 5.19593 5.96356 4.90303L5.07968 4.01915C4.78679 3.72626 4.31191 3.72626 4.01902 4.01915C3.72613 4.31204 3.72613 4.78692 4.01902 5.07981L4.9029 5.9637Z"
-                                                fill="currentColor"
-                                            />
-                                        </svg>
-                                        <svg class="dark:hidden" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M17.4547 11.97L18.1799 12.1611C18.265 11.8383 18.1265 11.4982 17.8401 11.3266C17.5538 11.1551 17.1885 11.1934 16.944 11.4207L17.4547 11.97ZM8.0306 2.5459L8.57989 3.05657C8.80718 2.81209 8.84554 2.44682 8.67398 2.16046C8.50243 1.8741 8.16227 1.73559 7.83948 1.82066L8.0306 2.5459ZM12.9154 13.0035C9.64678 13.0035 6.99707 10.3538 6.99707 7.08524H5.49707C5.49707 11.1823 8.81835 14.5035 12.9154 14.5035V13.0035ZM16.944 11.4207C15.8869 12.4035 14.4721 13.0035 12.9154 13.0035V14.5035C14.8657 14.5035 16.6418 13.7499 17.9654 12.5193L16.944 11.4207ZM16.7295 11.7789C15.9437 14.7607 13.2277 16.9586 10.0003 16.9586V18.4586C13.9257 18.4586 17.2249 15.7853 18.1799 12.1611L16.7295 11.7789ZM10.0003 16.9586C6.15734 16.9586 3.04199 13.8433 3.04199 10.0003H1.54199C1.54199 14.6717 5.32892 18.4586 10.0003 18.4586V16.9586ZM3.04199 10.0003C3.04199 6.77289 5.23988 4.05695 8.22173 3.27114L7.83948 1.82066C4.21532 2.77574 1.54199 6.07486 1.54199 10.0003H3.04199ZM6.99707 7.08524C6.99707 5.52854 7.5971 4.11366 8.57989 3.05657L7.48132 2.03522C6.25073 3.35885 5.49707 5.13487 5.49707 7.08524H6.99707Z"
-                                                fill="currentColor"
-                                            />
-                                        </svg>
-                                    </button>
-                                    <!-- Dark Mode Toggler -->
-                                </div>
-
-                                <!-- User Area -->
-                                <div class="relative" x-data="{ dropdownOpen: false }" @click.outside="dropdownOpen = false">
-                                    <a class="flex items-center text-gray-700 dark:text-gray-400" href="index.html#" @click.prevent="dropdownOpen = ! dropdownOpen">
-                                        <span class="text-theme-sm mr-1 block font-medium"> {{ user.username }} </span>
-
-                                        <svg :class="dropdownOpen && 'rotate-180'" class="stroke-gray-500 dark:stroke-gray-400" width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.3125 8.65625L9 13.3437L13.6875 8.65625" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    </a>
-
-                                    <!-- Dropdown Start -->
-                                    <div x-show="dropdownOpen" class="shadow-theme-lg dark:bg-gray-dark absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 dark:border-gray-800">
-                                        <div>
-                                            <span class="text-theme-sm block font-medium text-gray-700 dark:text-gray-400">
-                                                {{ user.username }}
-                                            </span>
-                                            <span class="text-theme-xs mt-0.5 block text-gray-500 dark:text-gray-400">
-                                                <a href="https://demo.tailadmin.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3547545b515a584046504775455c585f5a1b565a58">{{ user.email }}</a>
-                                            </span>
+            </div>
+            <div class="content-page">
+                <div class="container-fluid">
+                    <div class="card-header-toolbar d-flex align-items-center"></div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row" style="position: relative; top: -20px;">
+                                <div style="height: 130px;" class="col-lg-3 col-md-3">
+                                    <div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
+                                        <div class="card-body">
+                                            <a href="{% url 'student-list' %}">
+                                                <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                    <div class="icon iq-icon-box-2 bg-info-light" style="background-color: white !important;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 768">
+                                                            <path
+                                                                fill="var(--main-color)"
+                                                                d="M1024 736q0 13-9.5 22.5T992 768t-22.5-9.5T960 736V315L607 492q-40 20-95 20t-95-20L39 303Q0 283 0 255.5T39 209L417 20q40-20 95-20t95 20l378 189q34 17 38 42q1 1 1 4v481zM639 556l193-97v141q0 43-93.5 73.5T512 704t-226.5-30.5T192 600V459l193 97q40 20 127 20t127-20z"
+                                                            ></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <p class="mb-2" style="color: white;">Students</p>
+                                                        <h4 style="color: white;">{{ students.count }}</h4>
+                                                    </div>
+                                                </div>
+                                            </a>
                                         </div>
-                                        <button
-                                            class="group text-theme-sm mt-3 flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
-                                        >
-                                            <svg class="fill-gray-500 group-hover:fill-gray-700 dark:group-hover:fill-gray-300" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    fill-rule="evenodd"
-                                                    clip-rule="evenodd"
-                                                    d="M15.1007 19.247C14.6865 19.247 14.3507 18.9112 14.3507 18.497L14.3507 14.245H12.8507V18.497C12.8507 19.7396 13.8581 20.747 15.1007 20.747H18.5007C19.7434 20.747 20.7507 19.7396 20.7507 18.497L20.7507 5.49609C20.7507 4.25345 19.7433 3.24609 18.5007 3.24609H15.1007C13.8581 3.24609 12.8507 4.25345 12.8507 5.49609V9.74501L14.3507 9.74501V5.49609C14.3507 5.08188 14.6865 4.74609 15.1007 4.74609L18.5007 4.74609C18.9149 4.74609 19.2507 5.08188 19.2507 5.49609L19.2507 18.497C19.2507 18.9112 18.9149 19.247 18.5007 19.247H15.1007ZM3.25073 11.9984C3.25073 12.2144 3.34204 12.4091 3.48817 12.546L8.09483 17.1556C8.38763 17.4485 8.86251 17.4487 9.15549 17.1559C9.44848 16.8631 9.44863 16.3882 9.15583 16.0952L5.81116 12.7484L16.0007 12.7484C16.4149 12.7484 16.7507 12.4127 16.7507 11.9984C16.7507 11.5842 16.4149 11.2484 16.0007 11.2484L5.81528 11.2484L9.15585 7.90554C9.44864 7.61255 9.44847 7.13767 9.15547 6.84488C8.86248 6.55209 8.3876 6.55226 8.09481 6.84525L3.52309 11.4202C3.35673 11.5577 3.25073 11.7657 3.25073 11.9984Z"
-                                                    fill=""
-                                                />
-                                            </svg>
-
-                                            Sign out
-                                        </button>
                                     </div>
-                                    <!-- Dropdown End -->
                                 </div>
-                                <!-- User Area -->
+                                <div style="height: 130px;" class="col-lg-3 col-md-3">
+                                    <div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
+                                        <div class="card-body">
+                                            <a href="{% url 'teachers-list' %}">
+                                                <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                    <div class="icon iq-icon-box-2 bg-success-light" style="background-color: white !important;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" stroke="var(--main-color)" stroke-width="0.5" viewBox="0 0 20 20">
+                                                            <path
+                                                                fill="var(--main-color)"
+                                                                d="M8.75 3.75a2.75 2.75 0 1 0-5.5 0a2.75 2.75 0 0 0 5.5 0Zm-4.5 0a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0ZM2.5 7.5h4.183c-.164.31-.286.646-.358 1H2.5A.5.5 0 0 0 2 9v.5c0 1.26 1.099 2.614 3.096 2.93c-.322.22-.59.513-.781.854C2.205 12.713 1 11.087 1 9.5V9a1.5 1.5 0 0 1 1.5-1.5Zm5.379 0c.504-.61 1.267-1 2.121-1a2.744 2.744 0 0 1 2.646 2a2.753 2.753 0 0 1-3.893 3.202A2.75 2.75 0 0 1 7.88 7.5Zm.54 1a1.75 1.75 0 1 0 3.164 1.5a1.75 1.75 0 0 0-3.165-1.5Zm7.266 4.784a2.513 2.513 0 0 0-.781-.853C16.9 12.114 18 10.759 18 9.5V9a.5.5 0 0 0-.5-.5h-3.825a3.726 3.726 0 0 0-.357-1H17.5A1.5 1.5 0 0 1 19 9v.5c0 1.587-1.206 3.212-3.315 3.784Zm-1.198.087A1.493 1.493 0 0 0 13.5 13h-7A1.496 1.496 0 0 0 5 14.5v.5c0 1.971 1.86 4 5 4c3.14 0 5-2.029 5-4v-.5c0-.45-.198-.854-.513-1.13ZM6 14.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v.5c0 1.438-1.432 3-4 3s-4-1.562-4-3v-.5ZM14 1a2.75 2.75 0 1 1 0 5.5A2.75 2.75 0 0 1 14 1Zm0 1a1.75 1.75 0 1 0 0 3.5A1.75 1.75 0 0 0 14 2Z"
+                                                            ></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <p class="mb-2" style="color: white;">Teachers</p>
+                                                        <h4 style="color: white;">{{ teachers.count }}</h4>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="height: 130px;" class="col-lg-3 col-md-3">
+                                    <div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
+                                        <div class="card-body">
+                                            <a href="{% url 'course-list' %}">
+                                                <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                    <div class="icon iq-icon-box-2 bg-danger-light" style="background-color: white !important;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+                                                            <path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <p class="mb-2" style="color: white;">Courses</p>
+                                                        <h4 style="color: white;">{{ courses.count }}</h4>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="height: 130px;" class="col-lg-3 col-md-3">
+                                    <div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
+                                        <div class="card-body">
+                                            <a href="{% url 'select-course' %}">
+                                                <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                    <div class="icon iq-icon-box-2 bg-success-light" style="background-color: white !important;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+                                                            <path
+                                                                fill="var(--main-color)"
+                                                                d="M17.5 12a5.5 5.5 0 1 1 0 11a5.5 5.5 0 0 1 0-11Zm-2.646 5.147a.5.5 0 1 0-.707.707l2 2a.5.5 0 0 0 .707 0l4-4a.5.5 0 1 0-.707-.707L16.5 18.793l-1.646-1.646ZM12.023 14a6.47 6.47 0 0 0-.709 1.5H4.253a.749.749 0 0 0-.75.75v.577c0 .535.192 1.053.54 1.46c1.253 1.469 3.22 2.214 5.957 2.214c.597 0 1.157-.035 1.68-.106c.246.495.553.954.912 1.367c-.795.16-1.66.24-2.592.24c-3.146 0-5.532-.906-7.098-2.74a3.75 3.75 0 0 1-.898-2.435v-.578A2.249 2.249 0 0 1 4.253 14h7.77ZM10 2.005a5 5 0 1 1 0 10a5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7Z"
+                                                            ></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <p class="mb-2" style="color: white;">Rate</p>
+                                                        <h4 style="color: white;">{{ attendance_rate|floatformat:2 }}%</h4>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="height: 130px;" class="col-lg-3 col-md-3">
+                                    <div class="card card-block card-stretch card-height" style=" background-color: white;">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                <div class="icon iq-icon-box-2 bg-success-light" style="background-color: var(--main-color) !important;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 10 10">
+                                                        <path
+                                                            fill="white"
+                                                            d="M4.998 0a4.998 4.998 0 1 0 0 9.995a4.998 4.998 0 0 0 0-9.995ZM1 4.998a3.998 3.998 0 1 1 7.995 0a3.998 3.998 0 0 1-7.995 0Zm6.104-1.602a.5.5 0 0 1 0 .708l-2.25 2.25a.5.5 0 0 1-.708 0l-1-1a.5.5 0 1 1 .708-.708l.646.647l1.896-1.897a.5.5 0 0 1 .708 0Z"
+                                                        ></path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <p class="mb-2" style="color: black;">Present</p>
+                                                    <h4 style="color: black;">{{ present_student.count }}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="height: 130px;" class="col-lg-3 col-md-3">
+                                    <div class="card card-block card-stretch card-height" style=" background-color: white;">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                <div class="icon iq-icon-box-2 bg-success-light" style="background-color: var(--main-color) !important;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16">
+                                                        <path
+                                                            fill="white"
+                                                            fill-rule="evenodd"
+                                                            d="M14.1 13.2c1.2-1.4 1.92-3.21 1.92-5.2c0-4.42-3.58-8-8-8s-8 3.58-8 8s3.58 8 8 8a7.98 7.98 0 0 0 6.084-2.804zm-1.59.174a6.96 6.96 0 0 1-4.49 1.63c-3.87 0-7-3.13-7-7c0-1.71.612-3.27 1.63-4.49zm.884-.884l-9.86-9.86A6.96 6.96 0 0 1 8.024 1c3.87 0 7 3.13 7 7c0 1.71-.612 3.27-1.63 4.49"
+                                                            clip-rule="evenodd"
+                                                        ></path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <p class="mb-2" style="color: black;">Absent</p>
+                                                    <h4 style="color: black;">{{ absent_students.count }}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="height: 130px;" class="col-lg-3 col-md-3">
+                                    <div class="card card-block card-stretch card-height" style=" background-color: white;">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                <div class="icon iq-icon-box-2 bg-success-light" style="background-color: var(--main-color) !important;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+                                                        <path fill="white" d="M12 21.934A9.934 9.934 0 1 1 21.933 12A9.945 9.945 0 0 1 12 21.934Zm0-18.868A8.934 8.934 0 1 0 20.933 12A8.944 8.944 0 0 0 12 3.066Z" />
+                                                        <path
+                                                            fill="white"
+                                                            d="M9 10.258a1.5 1.5 0 1 1 1.061-.439A1.5 1.5 0 0 1 9 10.258Zm0-2a.5.5 0 1 0 .353.146A.5.5 0 0 0 9 8.259Zm-1.242 8.485a.5.5 0 0 1-.358-.853l8.489-8.49a.5.5 0 0 1 .707.707L8.111 16.6a.5.5 0 0 1-.353.143ZM15 16.742a1.5 1.5 0 1 1 1.061-.438a1.493 1.493 0 0 1-1.061.438Zm0-2a.5.5 0 0 0-.354.147a.5.5 0 0 0-.146.352a.5.5 0 1 0 1 0a.5.5 0 0 0-.5-.5Z"
+                                                        ></path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <p class="mb-2" style="color: black;">Rate (Today)</p>
+                                                    <h4 style="color: black;">{{ attendance_rate_today|floatformat:2 }}%</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="height: 130px;" class="col-lg-3 col-md-3">
+                                    <div class="card card-block card-stretch card-height" style=" background-color: white;">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                <div class="icon iq-icon-box-2 bg-success-light" style="background-color: var(--main-color) !important;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+                                                        <path fill="white" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <p class="mb-2" style="color: black;">Courses (Today)</p>
+                                                    <h4 style="color: black;">{{ todays_courses }}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </header>
-                    <!-- ===== Header End ===== -->
-                    <div class="mx-auto max-w-(--breakpoint-2xl) p-4 md:p-6">
-                        <div class="grid grid-cols-12 gap-4 md:gap-6">
-                            <div class="col-span-12 space-y-6 xl:col-span-7">
-                                <!-- Metric Group One -->
-                                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
-                                    <!-- Metric Item Start -->
-                                    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-                                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800">
-                                            <svg class="fill-gray-800 dark:fill-white/90" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    fill-rule="evenodd"
-                                                    clip-rule="evenodd"
-                                                    d="M8.80443 5.60156C7.59109 5.60156 6.60749 6.58517 6.60749 7.79851C6.60749 9.01185 7.59109 9.99545 8.80443 9.99545C10.0178 9.99545 11.0014 9.01185 11.0014 7.79851C11.0014 6.58517 10.0178 5.60156 8.80443 5.60156ZM5.10749 7.79851C5.10749 5.75674 6.76267 4.10156 8.80443 4.10156C10.8462 4.10156 12.5014 5.75674 12.5014 7.79851C12.5014 9.84027 10.8462 11.4955 8.80443 11.4955C6.76267 11.4955 5.10749 9.84027 5.10749 7.79851ZM4.86252 15.3208C4.08769 16.0881 3.70377 17.0608 3.51705 17.8611C3.48384 18.0034 3.5211 18.1175 3.60712 18.2112C3.70161 18.3141 3.86659 18.3987 4.07591 18.3987H13.4249C13.6343 18.3987 13.7992 18.3141 13.8937 18.2112C13.9797 18.1175 14.017 18.0034 13.9838 17.8611C13.7971 17.0608 13.4132 16.0881 12.6383 15.3208C11.8821 14.572 10.6899 13.955 8.75042 13.955C6.81096 13.955 5.61877 14.572 4.86252 15.3208ZM3.8071 14.2549C4.87163 13.2009 6.45602 12.455 8.75042 12.455C11.0448 12.455 12.6292 13.2009 13.6937 14.2549C14.7397 15.2906 15.2207 16.5607 15.4446 17.5202C15.7658 18.8971 14.6071 19.8987 13.4249 19.8987H4.07591C2.89369 19.8987 1.73504 18.8971 2.05628 17.5202C2.28015 16.5607 2.76117 15.2906 3.8071 14.2549ZM15.3042 11.4955C14.4702 11.4955 13.7006 11.2193 13.0821 10.7533C13.3742 10.3314 13.6054 9.86419 13.7632 9.36432C14.1597 9.75463 14.7039 9.99545 15.3042 9.99545C16.5176 9.99545 17.5012 9.01185 17.5012 7.79851C17.5012 6.58517 16.5176 5.60156 15.3042 5.60156C14.7039 5.60156 14.1597 5.84239 13.7632 6.23271C13.6054 5.73284 13.3741 5.26561 13.082 4.84371C13.7006 4.37777 14.4702 4.10156 15.3042 4.10156C17.346 4.10156 19.0012 5.75674 19.0012 7.79851C19.0012 9.84027 17.346 11.4955 15.3042 11.4955ZM19.9248 19.8987H16.3901C16.7014 19.4736 16.9159 18.969 16.9827 18.3987H19.9248C20.1341 18.3987 20.2991 18.3141 20.3936 18.2112C20.4796 18.1175 20.5169 18.0034 20.4837 17.861C20.2969 17.0607 19.913 16.088 19.1382 15.3208C18.4047 14.5945 17.261 13.9921 15.4231 13.9566C15.2232 13.6945 14.9995 13.437 14.7491 13.1891C14.5144 12.9566 14.262 12.7384 13.9916 12.5362C14.3853 12.4831 14.8044 12.4549 15.2503 12.4549C17.5447 12.4549 19.1291 13.2008 20.1936 14.2549C21.2395 15.2906 21.7206 16.5607 21.9444 17.5202C22.2657 18.8971 21.107 19.8987 19.9248 19.8987Z"
-                                                    fill=""
-                                                />
-                                            </svg>
-                                        </div>
-
-                                        <div class="mt-5 flex items-end justify-between">
-                                            <div>
-                                                <span class="text-sm text-gray-500 dark:text-gray-400">Students</span>
-                                                <h4 class="mt-2 text-title-sm font-bold text-gray-800 dark:text-white/90">
-                                                    {{ students.count }}
-                                                </h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Metric Item End -->
-
-                                    <!-- Metric Item Start -->
-                                    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-                                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800">
-                                          <svg class="fill-gray-800 dark:fill-white/90" width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" d="M512 0C229.232 0 0 229.232 0 512c0 282.784 229.232 512 512 512c282.784 0 512-229.216 512-512C1024 229.232 794.784 0 512 0zm0 961.008c-247.024 0-448-201.984-448-449.01c0-247.024 200.976-448 448-448s448 200.977 448 448s-200.976 449.01-448 449.01zm204.336-636.352L415.935 626.944l-135.28-135.28c-12.496-12.496-32.752-12.496-45.264 0c-12.496 12.496-12.496 32.752 0 45.248l158.384 158.4c12.496 12.48 32.752 12.48 45.264 0c1.44-1.44 2.673-3.009 3.793-4.64l318.784-320.753c12.48-12.496 12.48-32.752 0-45.263c-12.512-12.496-32.768-12.496-45.28 0z"/></svg>
-
-                                        </div>
-
-                                        <div class="mt-5 flex items-end justify-between">
-                                            <div>
-                                                <span class="text-sm text-gray-500 dark:text-gray-400">Attendance Records</span>
-                                                <h4 class="mt-2 text-title-sm font-bold text-gray-800 dark:text-white/90">
-                                                    {{ attendance_records.count }}
-                                                </h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Metric Item End -->
-                                </div>
-                                <!-- Metric Group One -->
-
-                                <!-- ====== Chart One Start -->
-                                <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-5 pt-5 sm:px-6 sm:pt-6 dark:border-gray-800 dark:bg-white/[0.03]">
-                                    <div class="flex items-center justify-between">
-                                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-                                            Attendance Records
-                                        </h3>
-                                    </div>
-
-                                    <div class="max-w-full overflow-x-auto custom-scrollbar">
-                                        <canvas style="position: relative; height: 196px; overflow-x: auto; margin-left: -5px" id="attendanceChart" class="-ml-5 h-full min-w-[690px] pl-2 xl:min-w-full"></canvas>
+                        <div class="col-lg-6" style="position: relative; top: -20px; ">
+                            <div class="card card-block card-stretch" style=" background-color: var(--background-color);">
+                                <div class="card-header d-flex align-items-center justify-content-between" style="">
+                                    <div class="header-title">
+                                        <h4 class="card-title">Attendace Records</h4>
                                     </div>
                                 </div>
-                                <!-- ====== Chart One End -->
+                                <div class="card-body">
+                                    <div>
+                                        <canvas id="lineChart"></canvas>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-span-12 xl:col-span-5">
-                                <!-- ====== Chart Two Start -->
-                                <div class="rounded-2xl border border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-white/[0.03]">
-                                    <div class="shadow-default rounded-2xl bg-white px-5 pb-11 pt-5 dark:bg-gray-900 sm:px-6 sm:pt-6">
-                                        <div class="flex justify-between">
-                                            <div>
-                                                <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-                                                    Attendance Rate
-                                                </h3>
-                                                <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">
-                                                    Attendance rate among all students
+                        </div>
+                        <div class="col-lg-3" style="position: relative; top: -20px;">
+                            <div class="card card-block card-stretch" style="">
+                                <div class="card-header d-flex align-items-center justify-content-between" style="">
+                                    <div class="header-title">
+                                        <h4 class="card-title">Top Students</h4>
+                                    </div>
+                                </div>
+                                <div style="overflow: auto; height: 308px;">
+                                    <div class="card-body card-item-right">
+                                        {% for student in top_students %}
+                                        <div class="d-flex align-items-top">
+                                            <div class="style-text text-left">
+                                                <h5 class="mb-2">
+                                                    <a style="color: var(--text-color)" title="Details" href="{% url 'student-details' student.id %}">
+                                                        {{ student.first_name }} {{ student.last_name }}
+                                                    </a>
+                                                </h5>
+                                                <p class="mb-2">
+                                                    <a title="Details" style="color: var(--text-color)" href="{% url 'course-details' student.course.id %}">
+                                                        Course : {{ student.course }}
+                                                    </a>
                                                 </p>
+                                                <p class="mb-0">Attendance : {{ student.total_lessons }}</p>
+                                                <p class="mb-0">Absence: {{ student.absent }}</p>
                                             </div>
                                         </div>
-                                        <div class="relative max-h-[195px]">
-                                            <div id="chartTwo" class="h-full"></div>
-                                            <span
-                                                class="absolute left-1/2 top-[85%] -translate-x-1/2 -translate-y-[85%] rounded-full bg-success-50 px-3 py-1 text-xs font-medium text-success-600 dark:bg-success-500/15 dark:text-success-500"
-                                            >
-                                                +10%
-                                            </span>
-                                        </div>
-                                        <p class="mx-auto mt-1.5 w-full max-w-[380px] text-center text-sm text-gray-500 sm:text-base">
-                                            The percent of present student 14% higher than the last month.
-                                        </p>
-                                    </div>
-
-                                    <div class="flex items-center justify-center gap-5 px-6 py-3.5 sm:gap-8 sm:py-5">
-                                        <div>
-                                            <p class="mb-1 text-center text-theme-xs text-gray-500 dark:text-gray-400 sm:text-sm">
-                                                Absent
-                                            </p>
-                                            <p class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 dark:text-white/90 sm:text-lg">
-                                                20,123
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 1024 1024"><path fill="red" d="M512 0c283 0 512 229 512 512s-229 512-512 512S0 795 0 512S229 0 512 0zm0 961c247 0 448-202 448-449S759 64 512 64S64 265 64 512s201 449 448 449zm-35-417H288c-18 0-32-14-32-32s14-32 32-32h448c18 0 32 14 32 32s-14 32-32 32H477z"/></svg>
-                                            </p>
-                                        </div>
-
-                                        <div class="h-7 w-px bg-gray-200 dark:bg-gray-800"></div>
-
-                                        <div>
-                                            <p class="mb-1 text-center text-theme-xs text-gray-500 dark:text-gray-400 sm:text-sm">
-                                                Present
-                                            </p>
-                                            <p class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 dark:text-white/90 sm:text-lg">
-                                                43,121
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 1024 1024"><path fill="green" d="M512 0C229.232 0 0 229.232 0 512c0 282.784 229.232 512 512 512c282.784 0 512-229.216 512-512C1024 229.232 794.784 0 512 0zm0 961.008c-247.024 0-448-201.984-448-449.01c0-247.024 200.976-448 448-448s448 200.977 448 448s-200.976 449.01-448 449.01zM736 480H544V288c0-17.664-14.336-32-32-32s-32 14.336-32 32v192H288c-17.664 0-32 14.336-32 32s14.336 32 32 32h192v192c0 17.664 14.336 32 32 32s32-14.336 32-32V544h192c17.664 0 32-14.336 32-32s-14.336-32-32-32z"/></svg>
-                                            </p>
-                                        </div>
+                                        <hr style="background-color: var(--text-color);" />
+                                        {% endfor %}
                                     </div>
                                 </div>
-                                <!-- ====== Chart Two End -->
                             </div>
+                        </div>
 
-                            <div class="col-span-12 xl:col-span-14">
-                                <!-- ====== Table One Start -->
-                                <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pt-4 pb-3 sm:px-6 dark:border-gray-800 dark:bg-white/[0.03]">
-                                    <div class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
-                                        <div>
-                                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-                                                Recent Records
-                                            </h3>
-                                        </div>
-
-                                        <div class="flex items-center gap-3">
-                                            <button
-                                                class="text-theme-sm shadow-theme-xs inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
-                                            >
-                                                See all
-                                            </button>
-                                        </div>
+                        <div class="col-lg-3" style="position: relative; top: -20px;">
+                            <div class="card card-block card-stretch" style="">
+                                <div class="card-header d-flex align-items-center justify-content-between" style="">
+                                    <div class="header-title">
+                                        <h4 class="card-title">Students</h4>
                                     </div>
-
-                                    <div class="max-w-full overflow-x-auto custom-scrollbar">
-                                        <table class="min-w-full">
-                                            <!-- table header start -->
-                                            <thead class="border-gray-100 border-y dark:border-gray-800">
-                                                <tr>
-                                                    <th class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                                                Student
-                                                            </p>
-                                                        </div>
-                                                    </th>
-                                                    <th class="px-6 py-3 whitespace-nowrap">
-                                                        <div class="flex items-center">
-                                                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                                                Course
-                                                            </p>
-                                                        </div>
-                                                    </th>
-                                                    <th class="px-6 py-3 whitespace-nowrap">
-                                                        <div class="flex items-center">
-                                                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                                                Record Time
-                                                            </p>
-                                                        </div>
-                                                    </th>
-                                                    <th class="px-6 py-3 whitespace-nowrap">
-                                                        <div class="flex items-center">
-                                                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                                                Course Time
-                                                            </p>
-                                                        </div>
-                                                    </th>
-                                                    <th class="px-6 py-3 whitespace-nowrap">
-                                                        <div class="flex items-center">
-                                                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                                                Status
-                                                            </p>
-                                                        </div>
-                                                    </th>
+                                </div>
+                                <div class="card-body">
+                                    <div style="overflow: auto; height: 270px;">
+                                        <canvas id="pieChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12" style="position: relative; top: -20px;">
+                            <div class="card card-block card-stretch" style="">
+                                <div class="card-header d-flex align-items-center justify-content-between" style="">
+                                    <div class="header-title">
+                                        <h4 class="card-title">Recent Attendance Records</h4>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div style="overflow: auto; height: 370px;">
+                                        <table class="table">
+                                            <thead class=" ">
+                                                <tr class="ligth ligth-data">
+                                                    <th style="text-align: start;">Student</th>
+                                                    <th style="text-align: left">Course</th>
+                                                    <th style="text-align: left">Course Time</th>
+                                                    <th style="text-align: left">Record Time</th>
+                                                    <th style="text-align: left">Teacher</th>
+                                                    <th style="text-align: left">Status</th>
                                                 </tr>
                                             </thead>
-                                            <!-- table header end -->
-
-                                            <!-- table body start -->
-                                            <tbody class="py-3 divide-y divide-gray-100 dark:divide-gray-800">
+                                            <tbody class="ligth-body">
                                                 {% for record in attendance_records %}
-                                                    <tr>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <div class="flex items-center gap-3">
-                                                                <div>
-                                                                    <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                                        {{ record.student.first_name }} {{ record.student.last_name }}
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                {{ record.course.course_name }}
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                {{ record.time }}
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                                                {{ record.course.course_time }}
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-3 whitespace-nowrap first:pl-0">
-                                                        <div class="flex items-center">
-                                                            {% if record.status %}
-                                                            <p class="bg-success-50 text-theme-xs text-success-600 dark:bg-success-500/15 dark:text-success-500 rounded-full px-2 py-0.5 font-medium">
-                                                                Present
-                                                            </p>
-                                                            {% else %}
-                                                            <p style="background-color: red" class="bg-error-50 text-theme-xs text-error-600 dark:bg-error-500/15 dark:text-error-500 rounded-full px-2 py-0.5 font-medium">
-                                                                Absent
-                                                            </p>
-                                                            {% endif %}
-                                                        </div>
-                                                    </td>
+                                                <tr>
+                                                    <td style="text-align: start;"><a title="Details" style="color: var(--text-color);" href="{% url 'student-details' record.student.id %}">{{ record.student.first_name }} {{ record.student.last_name }}</a></td>
+                                                    <td style="text-align: start;"><a title="Details" style="color: var(--text-color);" href="{% url 'course-details' record.course.id %}">{{ record.course }}</a></td>
+                                                    <td style="color: var(--text-color);">{{ record.course.course_time }}</td>
+                                                    <td style="color: var(--text-color);">{{ record.time }}</td>
+                                                    <td style="color: var(--text-color);"><a title="Details" style="color: var(--text-color);" href="{% url 'teacher-details' record.student.course.course_teacher.id %}">{{ record.student.course.course_teacher.first_name }} {{ record.student.course.course_teacher.last_name }}</a></td>
+                                                    {% if record.status %}
+                                                    <td style="color: var(--text-color);">✅ Present</td>
+                                                    {% else %}
+                                                    <td style="color: var(--text-color);">❌ Absent</td>
+                                                    {% endif %}
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-                                <!-- ====== Table One End -->
                             </div>
                         </div>
+                        <!-- Page end  -->
                     </div>
-                </main>
-                <!-- ===== Main Content End ===== -->
+                </div>
             </div>
-            <!-- ===== Content Area End ===== -->
+
+            <script>
+                // Retrieve data passed from the view
+                var data = {{ gender_data|safe }};
+
+                // Get the canvas element
+                var canvas = document.getElementById('pieChart');
+
+                // Create the chart
+                new Chart(canvas, {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            data: data.values,
+                            borderColor: ['rgb(60 25 220)', 'blue', 'green', "grey", "rgb(92 11 214)"],
+                            backgroundColor: 'white'
+                        }]
+                    }
+                });
+            </script>
+            <script>
+                // Retrieve the data points from the Django template context
+                var dataPoints = {{ line_chart_data|safe }};
+
+                // Get the canvas element
+                var ctx = document.getElementById('lineChart').getContext('2d');
+
+                // Create the line chart
+                var chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dataPoints.labels,  // Example labels
+                        datasets: [{
+                            label: 'Students',
+                            data: dataPoints.values,
+                            backgroundColor: 'rgb(92 11 214)',
+                            borderColor: 'rgb(92 11 214)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+            <script>
+              document.addEventListener("DOMContentLoaded", function () {
+                const sidebar = document.getElementById("sidebar");
+                const toggleBtn = document.querySelector(".iq-menu-bt-sidebar");
+
+                toggleBtn.addEventListener("click", function () {
+                  sidebar.classList.toggle("collapsed");
+                });
+              });
+            </script>
+            <script src="{% static 'assets/js/backend-bundle.min.js' %}"></script>
+
+            <!-- Table Treeview JavaScript -->
+            <script src="{% static 'assets/js/table-treeview.js' %}"></script>
+
+            <!-- Chart Custom JavaScript -->
+            <script src="{% static 'assets/js/customizer.js' %}"></script>
+
+            <!-- app JavaScript -->
+            <script src="{% static 'assets/js/app.js' %}"></script>
+            <script>
+                const toggleBtn = document.getElementById("theme-toggle");
+                const currentTheme = localStorage.getItem("theme") || "light";
+
+                document.documentElement.setAttribute("data-theme", currentTheme);
+
+                toggleBtn.addEventListener("click", () => {
+                    const newTheme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+                    document.documentElement.setAttribute("data-theme", newTheme);
+                    localStorage.setItem("theme", newTheme);
+                });
+            </script>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-  var dataPoints = JSON.parse('{{ bar_chart_data|escapejs }}');
-
-const ctx = document.getElementById('attendanceChart').getContext('2d');
-const attendanceChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: dataPoints.labels,
-    datasets: [{
-      label: 'Attendance',
-      data: dataPoints.values,
-      backgroundColor: '#3321d7',
-      borderRadius: 6,
-      barPercentage: 0.6,
-      categoryPercentage: 0.8
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          stepSize: 5,
-          color: '#888'
-        },
-        grid: {
-          color: '#eee'
-        }
-      },
-      x: {
-        ticks: {
-          maxRotation: 45,
-          minRotation: 45,
-          color: '#666'
-        },
-        grid: {
-          display: false
-        }
-      }
-    },
-    plugins: {
-      legend: {
-        display: false
-      }
-    }
-  }
-});
-
-</script>
-        <!-- ===== Page Wrapper End ===== -->
-        <script data-cfasync="false" src="{% static 'cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script>
-        <script defer src="{% static 'bundle.js' %}"></script>
     </body>
 </html>
