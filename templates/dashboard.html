@@ -7,7 +7,7 @@
         <title>ZEDTRACK</title>
 
         <!-- Favicon -->
-        <link rel="shortcut icon" href="{% static 'zed.png' %}" />
+        <link rel="shortcut icon" href="{% static 'logo_rounded.png' %}" />
         <link rel="stylesheet" href="{% static 'assets/css/backend-plugin.min.css' %}" />
         <link rel="stylesheet" href="{% static 'assets/css/backend.css?v=1.0.0' %}" />
         <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}" />
@@ -139,7 +139,6 @@
                         </div>
 
                         <div class="d-flex align-items-center" >
-                            <button class="btn" style="margin-left: auto; margin-top: 12px; color: white">Filters</button>
                             <div style="margin-left: auto; margin-top: 12px;">
                                 <a id="theme-toggle" style="position: absolute; top: 40%; right: 20px; cursor: pointer; z-index: 1000;">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 122.88" width="26" height="26" fill="var(--text-color)">
@@ -171,6 +170,7 @@
                     <div class="card-header-toolbar d-flex align-items-center"></div>
                     <div class="row">
                         <div class="col-lg-12">
+                            <h5 style="margin-bottom: 25px; margin-top: -18px; font-weight: 600; color: #333;">General Statistics</h5>
                             <div class="row" style="position: relative; top: -20px;">
                                 <div style="height: 130px;" class="col-lg-3 col-md-3">
                                     <div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
@@ -198,7 +198,7 @@
                                     <div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
                                         <div class="card-body">
                                             <a href="{% url 'teachers-list' %}">
-                                                <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                <div title="Total Teachers" class="d-flex align-items-center mb-4 card-total-sale">
                                                     <div class="icon iq-icon-box-2 bg-success-light" style="background-color: white !important;">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" stroke="var(--main-color)" stroke-width="0.5" viewBox="0 0 20 20">
                                                             <path
@@ -257,6 +257,9 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <h5 style="margin-bottom: 25px; margin-top: -38px; font-weight: 600; color: #333;">Today’s Statistics</h5>
+                            <div class="row" style="position: relative; top: -20px;">
                                 <div style="height: 130px;" class="col-lg-3 col-md-3">
                                     <div class="card card-block card-stretch card-height" style=" background-color: white;">
                                         <div class="card-body">
@@ -313,14 +316,13 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p class="mb-2" style="color: black;">Rate (Today)</p>
+                                                    <p class="mb-2" style="color: black;">Rate</p>
                                                     <h4 style="color: black;">{{ attendance_rate_today|floatformat:2 }}%</h4>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div style="height: 130px;" class="col-lg-3 col-md-3">
                                     <div class="card card-block card-stretch card-height" style=" background-color: white;">
                                         <div class="card-body">
@@ -331,7 +333,7 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p class="mb-2" style="color: black;">Courses (Today)</p>
+                                                    <p class="mb-2" style="color: black;">Courses</p>
                                                     <h4 style="color: black;">{{ todays_courses }}</h4>
                                                 </div>
                                             </div>
@@ -346,6 +348,10 @@
                                     <div class="header-title">
                                         <h4 class="card-title">Attendance Records</h4>
                                     </div>
+                              <form method="post" action="/date-range/" style="position: relative; top: -35px; left: 17px">{% csrf_token %}
+                                   <button name="year" value="365" style="border: 2px solid var(--main-color); border-radius: 5px; background-color: white; position: relative; top: 35px; width: 80px; left: -15px; color: var(--main-color);">30 days</button>
+                                   <button name="year" value="365" style="border: 2px solid var(--main-color); border-radius: 5px; background-color: white; position: relative; top: 35px; width: 80px; left: -15px; color: var(--main-color);">1 year</button>
+                               </form>
                                 </div>
                                 <div class="card-body">
                                     <div>

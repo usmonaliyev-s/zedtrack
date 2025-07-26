@@ -14,7 +14,7 @@ def index(request):
     return render(request, 'index.html')
 
 @login_required
-def dashboard(request):
+def dashboard(request, a=None, b=None, c=None):
     if request.user.is_authenticated:
         students = Student.objects.annotate(
             total=Count('attendance'),
@@ -53,7 +53,7 @@ def dashboard(request):
 
         attendance_trends = (
             Attendance.objects
-            .filter(status=True, user=request.user)
+            .filter(user=request.user)
             .annotate(date=TruncDate('time'))
             .values('date')
             .annotate(count=Count('id'))
