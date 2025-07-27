@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q, ExpressionWrapper, F, FloatField
 from django.db.models.functions import TruncDate, NullIf
 from django.shortcuts import render, redirect
-from datetime import date
+from datetime import date, timedelta
 
 from attendance_tracker.models import Attendance
 from courses.models import Course
@@ -59,7 +59,12 @@ def dashboard(request, a=None, b=None, c=None):
             .annotate(count=Count('id'))
             .order_by('date')
         )
-
+        if a and b:
+            attendance_trends = attendance_trends.filter(date__range=(a, b))
+        elif c:
+            a = date.today() - timedelta(days=c)
+            b = date.today()
+            attendance_trends = attendance_trends.filter(date__range=(a, b))
         dates = [record["date"].strftime("%Y-%m-%d") for record in attendance_trends]
         counts = [record["count"] for record in attendance_trends]
 

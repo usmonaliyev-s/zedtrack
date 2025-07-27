@@ -348,10 +348,11 @@
                                     <div class="header-title">
                                         <h4 class="card-title">Attendance Records</h4>
                                     </div>
-                              <form method="post" action="/date-range/" style="position: relative; top: -35px; left: 17px">{% csrf_token %}
-                                   <button name="year" value="365" style="border: 2px solid var(--main-color); border-radius: 5px; background-color: white; position: relative; top: 35px; width: 80px; left: -15px; color: var(--main-color);">30 days</button>
-                                   <button name="year" value="365" style="border: 2px solid var(--main-color); border-radius: 5px; background-color: white; position: relative; top: 35px; width: 80px; left: -15px; color: var(--main-color);">1 year</button>
-                               </form>
+                                    <div style="position: relative; top: -35px; left: 17px">
+                                        <a href="{% url 'dashboard' 7 %}" style="border: 2px solid var(--main-color); border-radius: 5px; background-color: white; position: relative; top: 35px; left: -25px; color: var(--main-color); padding: 8px;">7 days</a>
+                                        <a href="{% url 'dashboard' 30 %}" style="border: 2px solid var(--main-color); border-radius: 5px; background-color: white; position: relative; top: 35px; left: -25px; color: var(--main-color); padding: 8px;">30 days</a>
+                                        <a href="{% url 'dashboard' 365 %}" style="border: 2px solid var(--main-color); border-radius: 5px; background-color: white; position: relative; top: 35px; left: -25px; color: var(--main-color); padding: 8px;">1 year</a>
+                                    </div>
                                 </div>
                                 <div class="card-body">
                                     <div>
