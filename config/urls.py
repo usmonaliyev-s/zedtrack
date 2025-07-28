@@ -6,7 +6,7 @@ from attendance_tracker.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', dashboard, name='dashboard'),
-    path('<str:a>/<str:b>/', dashboard, name='dashboard'),
+    path('<str:a>-to-<str:b>/', dashboard, name='dashboard'),
     path('<int:c>/', dashboard, name='dashboard'),
     path('index/', index, name='index'),
     path('courses/', include('courses.urls')),
