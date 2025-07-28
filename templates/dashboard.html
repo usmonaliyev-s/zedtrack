@@ -348,12 +348,14 @@
                                     <div class="header-title">
                                         <h4 class="card-title">Attendance Records</h4>
                                     </div>
+                                    {% with request.path as current_url %}
                                     <div style="position: relative; top: -35px; left: 17px">
-                                        <a href="{% url 'dashboard' 7 %}" style="border: 2px solid var(--main-color); border-radius: 5px; background-color: white; position: relative; top: 35px; left: -25px; color: var(--main-color); padding: 8px;">7 days</a>
-                                        <a href="{% url 'dashboard' 30 %}" style="border: 2px solid var(--main-color); border-radius: 5px; background-color: white; position: relative; top: 35px; left: -25px; color: var(--main-color); padding: 8px;">30 days</a>
-                                        <a href="{% url 'dashboard' 365 %}" style="border: 2px solid var(--main-color); border-radius: 5px; background-color: white; position: relative; top: 35px; left: -25px; color: var(--main-color); padding: 8px;">1 year</a>
-                                        <a href="{% url 'dashboard' %}" style="border: 2px solid var(--main-color); border-radius: 5px; background-color: white; position: relative; top: 35px; left: -25px; color: var(--main-color); padding: 8px;">Total</a>
+                                        <a href="{% url 'dashboard' 7 %}" style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/7/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %}; position: relative; top: 35px; left: -25px; padding: 8px;">7 days</a>
+                                        <a href="{% url 'dashboard' 30 %}" style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/30/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %}; position: relative; top: 35px; left: -25px; padding: 8px;">30 days</a>
+                                        <a href="{% url 'dashboard' 365 %}" style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/365/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %}; position: relative; top: 35px; left: -25px; padding: 8px;">1 year</a>
+                                        <a href="{% url 'dashboard' %}" style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %};position: relative; top: 35px; left: -25px; padding: 8px;">Total</a>
                                     </div>
+                                    {% endwith %}
                                 </div>
                                 <div class="card-body">
                                     <div>
