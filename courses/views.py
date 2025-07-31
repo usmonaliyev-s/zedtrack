@@ -16,6 +16,8 @@ import calendar
 @login_required
 def courses_list(request):
     courses = Course.objects.annotate(num_students=Count('student', distinct=True)).filter(center=request.user)
+    if hasattr(request.user, 'teacher_user'):
+        courses = Course.objects.filter(course_teacher__user=request.user)
     data = {
         "courses": courses,
     }
@@ -23,6 +25,8 @@ def courses_list(request):
 
 @login_required
 def add_course(request):
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        return redirect('dashboard')
     data = {
         "teachers": Teacher.objects.filter(center=request.user),
     }
@@ -33,7 +37,7 @@ def add_course(request):
             course_time=request.POST.get('course_time'),
             days=request.POST.getlist('days'),
             description=request.POST.get('description'),
-            user = request.user
+            center=request.user
         )
         return redirect('course-list')
 
@@ -41,6 +45,8 @@ def add_course(request):
 
 @login_required
 def edit_course(request, id):
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        return redirect('dashboard')
     if request.method == "POST":
         course = Course.objects.get(pk=id, center=request.user)
         course.course_name = request.POST.get('name')
@@ -60,6 +66,8 @@ def edit_course(request, id):
 
 @login_required
 def delete_confirmation_course(request, id):
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        return redirect('dashboard')
     course = Course.objects.get(pk=id, center=request.user)
     data = {
         "course": course,
@@ -68,21 +76,37 @@ def delete_confirmation_course(request, id):
 
 @login_required
 def delete_course(request, id):
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        return redirect('dashboard')
     Course.objects.get(pk=id, center=request.user).delete()
     return redirect('course-list')
 
 @login_required
 def course_details(request, id):
-    course = Course.objects.get(pk=id, center=request.user)
-    students = Student.objects.annotate(
-        total=Count('attendance'),
-        present=Count('attendance', filter=Q(attendance__status=True)),
-    ).annotate(
-        attendance_rate=ExpressionWrapper(
-            100.0 * F('present') / NullIf(F('total'), 0),
-            output_field=FloatField()
-        )
-    ).filter(course=course, center=request.user)
+    if hasattr(request.user, 'teacher_user'):
+        course = Course.objects.get(pk=id, course_teacher__user=request.user)
+        students = Student.objects.annotate(
+            total=Count('attendance'),
+            present=Count('attendance', filter=Q(attendance__status=True)),
+        ).annotate(
+            attendance_rate=ExpressionWrapper(
+                100.0 * F('present') / NullIf(F('total'), 0),
+                output_field=FloatField()
+            )
+        ).filter(course=course, course__course_teacher__user=request.user)
+    elif hasattr(request.user, 'student_user'):
+        return redirect('dashboard')
+    else:
+        course = Course.objects.get(pk=id, center=request.user)
+        students = Student.objects.annotate(
+            total=Count('attendance'),
+            present=Count('attendance', filter=Q(attendance__status=True)),
+        ).annotate(
+            attendance_rate=ExpressionWrapper(
+                100.0 * F('present') / NullIf(F('total'), 0),
+                output_field=FloatField()
+            )
+        ).filter(course=course, center=request.user)
 
     day_map = {
         'Mon': 0, 'Monday': 0,
@@ -99,9 +123,8 @@ def course_details(request, id):
     today = date.today()
     year, month = today.year, today.month
     cal = calendar.Calendar(firstweekday=0)
-    month_days = list(cal.itermonthdates(year, month))  # Includes days from prev/next month to fill full weeks
+    month_days = list(cal.itermonthdates(year, month))
 
-    # Build a list of weeks, each week is a list of (date, is_course_day)
     weeks = []
     for i in range(0, len(month_days), 7):
         week = []
