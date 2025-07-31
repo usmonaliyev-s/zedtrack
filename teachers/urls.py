@@ -10,5 +10,5 @@ urlpatterns = [
     path('delete/<int:id>/', delete_teacher, name='delete-teacher'),
     path('details/<int:id>/', teacher_details, name='teacher-details'),
     path('', teacher_dashboard, name='teacher-dashboard'),
-    path('<int:a>', teacher_dashboard, name='teacher-dashboard'),
+    path('<int:a>/', teacher_dashboard, name='teacher-dashboard'),
 ]

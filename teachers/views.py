@@ -101,7 +101,7 @@ def teacher_details(request, id):
     return render(request, "teachers/teacher_details.html", data)
 
 @login_required
-def teacher_dashboard(request, a=None, b=None, c=None):
+def teacher_dashboard(request, a=None):
     if request.user.is_authenticated and hasattr(request.user, 'teacher_user'):
         students = Student.objects.annotate(
             total=Count('attendance'),
@@ -139,10 +139,9 @@ def teacher_dashboard(request, a=None, b=None, c=None):
             .annotate(count=Count('id'))
             .order_by('date')
         )
-        if a and b:
-            attendance_trends = attendance_trends.filter(date__range=(a, b))
-        elif c:
-            a = date.today() - timedelta(days=c)
+
+        if a:
+            a = date.today() - timedelta(days=a)
             b = date.today()
             attendance_trends = attendance_trends.filter(date__range=(a, b))
         dates = [record["date"].strftime("%Y-%m-%d") for record in attendance_trends]
