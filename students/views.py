@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.db.models import ExpressionWrapper, FloatField, F, Count, Q
 from django.db.models.functions import NullIf
 from django.shortcuts import render, redirect
@@ -36,13 +37,15 @@ def add_student(request):
         "courses": Course.objects.filter(center=request.user),
     }
     if request.method == "POST":
+        user = User.objects.create_user(username=request.POST["username"], password=request.POST["password"])
         Student.objects.create(
             first_name=request.POST.get('first_name'),
             last_name=request.POST.get('last_name'),
             gender=request.POST.get('gender'),
             course_id=request.POST.get('course'),
             registration_date=timezone.now().date(),
-            center=request.user
+            center=request.user,
+            user=user,
         )
         return redirect('student-list')
 

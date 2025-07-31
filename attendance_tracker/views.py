@@ -16,6 +16,8 @@ def index(request):
 @login_required
 def dashboard(request, a=None, b=None, c=None):
     if request.user.is_authenticated:
+        if hasattr(request.user, 'teacher_user'):
+            return redirect('teacher-dashboard')
         students = Student.objects.annotate(
             total=Count('attendance'),
             total_lessons=Count('attendance'),

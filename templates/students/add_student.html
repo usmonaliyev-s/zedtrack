@@ -200,10 +200,22 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
+                                                    <label>Username *</label>
+                                                    <input name="username" type="text" class="form-control" placeholder="Enter Username" data-errors="Please Enter Username." required />
+                                                    <div class="help-block with-errors"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Password *</label>
+                                                    <input name="password" type="password" class="form-control" placeholder="Enter Password" data-errors="Please Enter Password." required />
+                                                    <div class="help-block with-errors"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
                                                     <label>Gender *</label>
                                                     <select name="gender" class="form-control">
-                                                        -->
-
                                                         <option value="M">Male</option>
                                                         <option value="F">Female</option>
                                                     </select>
@@ -214,7 +226,7 @@
                                                 <div class="form-group">
                                                     <label>Course *</label>
                                                     <select name="course" class="form-control">
-                                                        --> {% for course in courses %}
+                                                        {% for course in courses %}
                                                         <option value="{{ course.id }}">{{ course.course_name }}</option>
                                                         {% endfor %}
                                                     </select>
