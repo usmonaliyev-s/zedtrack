@@ -22,11 +22,11 @@ def dashboard(request, a=None, b=None, c=None):
             absent=Count('attendance', filter=Q(attendance__status=False)),
             present=Count('attendance', filter=Q(attendance__status=True))
         ).filter(
-            total__gt=0, user=request.user
+            total__gt=0, center=request.user
             # absent__lt=2
         ).order_by('absent', '-present')[:5]
 
-        gender_counts = Student.objects.filter(user=request.user).values('gender').annotate(count=Count('id'))
+        gender_counts = Student.objects.filter(center=request.user).values('gender').annotate(count=Count('id'))
 
         gender_data = {
             "labels": [("Male" if g["gender"] == "M" else "Female") for g in gender_counts],
@@ -39,7 +39,7 @@ def dashboard(request, a=None, b=None, c=None):
                 attendance__time__date=date.today()
             ))
         ).filter(
-            absents_today__gt=0, user=request.user
+            absents_today__gt=0, center=request.user
         )
 
         present_student = Student.objects.annotate(
@@ -48,12 +48,12 @@ def dashboard(request, a=None, b=None, c=None):
                 attendance__time__date=date.today()
             ))
         ).filter(
-            absents_today__gt=0, user=request.user
+            absents_today__gt=0, center=request.user
         )
 
         attendance_trends = (
             Attendance.objects
-            .filter(user=request.user)
+            .filter(center=request.user)
             .annotate(date=TruncDate('time'))
             .values('date')
             .annotate(count=Count('id'))
@@ -70,7 +70,7 @@ def dashboard(request, a=None, b=None, c=None):
 
         todays_courses = 0
         today = date.today().strftime("%a")
-        for i in Course.objects.filter(user=request.user):
+        for i in Course.objects.filter(center=request.user):
             if today in i.days:
                 todays_courses += 1
         line_chart_data = {
@@ -79,24 +79,24 @@ def dashboard(request, a=None, b=None, c=None):
         }
 
         attendance_rate = (
-            Attendance.objects.filter(status=True, user=request.user).count() /
-            Attendance.objects.filter(user=request.user).count()
-            ) * 100 if Attendance.objects.filter(user=request.user).exists() else 0
+            Attendance.objects.filter(status=True, center=request.user).count() /
+            Attendance.objects.filter(center=request.user).count()
+            ) * 100 if Attendance.objects.filter(center=request.user).exists() else 0
 
-        present_today = Attendance.objects.filter(status=True, time__date=date.today(), user=request.user).count()
-        total_today = Attendance.objects.filter(time__date=date.today(), user=request.user).count()
+        present_today = Attendance.objects.filter(status=True, time__date=date.today(), center=request.user).count()
+        total_today = Attendance.objects.filter(time__date=date.today(), center=request.user).count()
 
         attendance_rate_today = (
             (present_today / total_today) * 100
             if total_today > 0 else 0
         )
         data = {
-            "students": Student.objects.filter(user=request.user),
+            "students": Student.objects.filter(center=request.user),
             "top_students": students,
-            "teachers": Teacher.objects.filter(user=request.user),
-            "courses": Course.objects.filter(user=request.user),
+            "teachers": Teacher.objects.filter(center=request.user),
+            "courses": Course.objects.filter(center=request.user),
             "absent_students": absent_students,
-            "lessons": Attendance.objects.filter(user=request.user),
+            "lessons": Attendance.objects.filter(center=request.user),
             "gender_data": gender_data,
             "line_chart_data":line_chart_data,
             "attendance_rate": attendance_rate,
@@ -104,7 +104,7 @@ def dashboard(request, a=None, b=None, c=None):
             "todays_courses": todays_courses,
             "present_student": present_student,
             "date": date.today(),
-            "attendance_records": Attendance.objects.filter(user=request.user).order_by('-time')[:10],
+            "attendance_records": Attendance.objects.filter(center=request.user).order_by('-time')[:10],
         }
         return render(request, 'dashboard.html', data)
     else:
@@ -114,10 +114,10 @@ def dashboard(request, a=None, b=None, c=None):
 def select_course(request):
     today = date.today()
     weekday = today.strftime("%a")
-    courses = Course.objects.filter(days__contains=weekday, user=request.user)
+    courses = Course.objects.filter(days__contains=weekday, center=request.user)
     marked_courses = []
     for course in courses:
-        has_attendance = Attendance.objects.filter(course=course, time__date=today, user=request.user).exists()
+        has_attendance = Attendance.objects.filter(course=course, time__date=today, center=request.user).exists()
         marked_courses.append({
             "course": course,
             "status": has_attendance,
@@ -138,7 +138,7 @@ def marking(request, id):
             100.0 * F('present') / NullIf(F('total'), 0),
             output_field=FloatField()
         )
-    ).filter(course__id=id, user=request.user)
+    ).filter(course__id=id, center=request.user)
     if request.method == "POST":
         for i in students:
             status = request.POST.get(f'status-{i.id}')
@@ -146,16 +146,16 @@ def marking(request, id):
                 status = True
             elif status == "absent":
                 status = False
-            Attendance.objects.create(student_id=i.id, course_id=id, status=status, user=request.user)
+            Attendance.objects.create(student_id=i.id, course_id=id, status=status, center=request.user)
         return redirect("select-course")
-    attendances = Attendance.objects.filter(course_id=id, time__date=date.today(), user=request.user)
+    attendances = Attendance.objects.filter(course_id=id, time__date=date.today(), center=request.user)
     if attendances.exists():
         attendances = attendances
     else:
         attendances = None
     data = {
         "students": students,
-        "course": Course.objects.get(pk=id, user=request.user),
+        "course": Course.objects.get(pk=id, center=request.user),
         "attendances": attendances,
         "date": date.today()
     }

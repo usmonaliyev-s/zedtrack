@@ -15,7 +15,7 @@ import calendar
 # Create your views here.
 @login_required
 def courses_list(request):
-    courses = Course.objects.annotate(num_students=Count('student', distinct=True)).filter(user=request.user)
+    courses = Course.objects.annotate(num_students=Count('student', distinct=True)).filter(center=request.user)
     data = {
         "courses": courses,
     }
@@ -24,7 +24,7 @@ def courses_list(request):
 @login_required
 def add_course(request):
     data = {
-        "teachers": Teacher.objects.filter(user=request.user),
+        "teachers": Teacher.objects.filter(center=request.user),
     }
     if request.method == "POST":
         Course.objects.create(
@@ -42,7 +42,7 @@ def add_course(request):
 @login_required
 def edit_course(request, id):
     if request.method == "POST":
-        course = Course.objects.get(pk=id, user=request.user)
+        course = Course.objects.get(pk=id, center=request.user)
         course.course_name = request.POST.get('name')
         course.course_teacher_id = request.POST.get('teacher')
         course.course_time = request.POST.get('time')
@@ -50,17 +50,17 @@ def edit_course(request, id):
         course.description = request.POST.get('description')
         course.save()
         return redirect('course-list')
-    course = Course.objects.get(id=id, user=request.user)
+    course = Course.objects.get(id=id, center=request.user)
     data = {
         "course": course,
-        "teachers": Teacher.objects.filter(user=request.user),
+        "teachers": Teacher.objects.filter(center=request.user),
         "days": course.days,
     }
     return render(request, "courses/edit_course.html", data)
 
 @login_required
 def delete_confirmation_course(request, id):
-    course = Course.objects.get(pk=id, user=request.user)
+    course = Course.objects.get(pk=id, center=request.user)
     data = {
         "course": course,
     }
@@ -68,12 +68,12 @@ def delete_confirmation_course(request, id):
 
 @login_required
 def delete_course(request, id):
-    Course.objects.get(pk=id, user=request.user).delete()
+    Course.objects.get(pk=id, center=request.user).delete()
     return redirect('course-list')
 
 @login_required
 def course_details(request, id):
-    course = Course.objects.get(pk=id, user=request.user)
+    course = Course.objects.get(pk=id, center=request.user)
     students = Student.objects.annotate(
         total=Count('attendance'),
         present=Count('attendance', filter=Q(attendance__status=True)),
@@ -82,7 +82,7 @@ def course_details(request, id):
             100.0 * F('present') / NullIf(F('total'), 0),
             output_field=FloatField()
         )
-    ).filter(course=course, user=request.user)
+    ).filter(course=course, center=request.user)
 
     day_map = {
         'Mon': 0, 'Monday': 0,

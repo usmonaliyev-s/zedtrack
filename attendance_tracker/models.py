@@ -11,7 +11,7 @@ class Attendance(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     status = models.BooleanField(verbose_name='Attence status', default=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    center = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"{self.student.first_name} {self.student.last_name} - {self.time} - {self.course} - {self.status}"

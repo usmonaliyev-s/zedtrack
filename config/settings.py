@@ -98,8 +98,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-AUTH_USER_MODEL = 'accounts.CustomUser'
-
 TIME_ZONE = 'Asia/Tashkent'
 
 USE_I18N = True
