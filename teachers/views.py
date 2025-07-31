@@ -109,8 +109,7 @@ def teacher_dashboard(request, a=None):
             absent=Count('attendance', filter=Q(attendance__status=False)),
             present=Count('attendance', filter=Q(attendance__status=True))
         ).filter(
-            total__gt=0, center=request.user
-            # absent__lt=2
+            total__gt=0, course__course_teacher__user=request.user
         ).order_by('absent', '-present')[:5]
 
         absent_students = Student.objects.annotate(
@@ -119,7 +118,7 @@ def teacher_dashboard(request, a=None):
                 attendance__time__date=date.today()
             ))
         ).filter(
-            absents_today__gt=0, center=request.user
+            absents_today__gt=0, course__course_teacher__user=request.user
         )
 
         present_student = Student.objects.annotate(
@@ -128,12 +127,12 @@ def teacher_dashboard(request, a=None):
                 attendance__time__date=date.today()
             ))
         ).filter(
-            absents_today__gt=0, center=request.user
+            absents_today__gt=0, course__course_teacher__user=request.user
         )
 
         attendance_trends = (
             Attendance.objects
-            .filter(center=request.user)
+            .filter(course__course_teacher__user=request.user)
             .annotate(date=TruncDate('time'))
             .values('date')
             .annotate(count=Count('id'))
@@ -158,31 +157,30 @@ def teacher_dashboard(request, a=None):
         }
 
         attendance_rate = (
-            Attendance.objects.filter(status=True, center=request.user).count() /
-            Attendance.objects.filter(center=request.user).count()
-            ) * 100 if Attendance.objects.filter(center=request.user).exists() else 0
+            Attendance.objects.filter(status=True, course__course_teacher__user=request.user).count() /
+            Attendance.objects.filter(course__course_teacher__user=request.user).count()
+            ) * 100 if Attendance.objects.filter(course__course_teacher__user=request.user).exists() else 0
 
-        present_today = Attendance.objects.filter(status=True, time__date=date.today(), center=request.user).count()
-        total_today = Attendance.objects.filter(time__date=date.today(), center=request.user).count()
+        present_today = Attendance.objects.filter(status=True, time__date=date.today(), course__course_teacher__user=request.user).count()
+        total_today = Attendance.objects.filter(time__date=date.today(), course__course_teacher__user=request.user).count()
 
         attendance_rate_today = (
             (present_today / total_today) * 100
             if total_today > 0 else 0
         )
         data = {
-            "students": Student.objects.filter(center=request.user),
+            "students": Student.objects.filter(course__course_teacher__user=request.user),
             "top_students": students,
-            "teachers": Teacher.objects.filter(center=request.user),
-            "courses": Course.objects.filter(center=request.user),
+            "courses": Course.objects.filter(course_teacher__user=request.user),
             "absent_students": absent_students,
-            "lessons": Attendance.objects.filter(center=request.user),
+            "lessons": Attendance.objects.filter(course__course_teacher__user=request.user),
             "line_chart_data":line_chart_data,
             "attendance_rate": attendance_rate,
             "attendance_rate_today": attendance_rate_today,
             "todays_courses": todays_courses,
             "present_student": present_student,
             "date": date.today(),
-            "attendance_records": Attendance.objects.filter(center=request.user).order_by('-time')[:10],
+            "attendance_records": Attendance.objects.filter(course__course_teacher__user=request.user).order_by('-time')[:10],
         }
         return render(request, 'teachers/dashboard.html', data)
     else:
