@@ -18,7 +18,7 @@ def courses_list(request):
     courses = Course.objects.annotate(num_students=Count('student', distinct=True)).filter(center=request.user)
     role = "admin"
     if hasattr(request.user, 'teacher_user'):
-        courses = Course.objects.filter(course_teacher__user=request.user)
+        courses = Course.objects.annotate(num_students=Count('student', distinct=True)).filter(course_teacher__user=request.user)
         role = "teacher"
     data = {
         "courses": courses,

@@ -179,9 +179,11 @@
                                     <h4 class="mb-3">Course: {{ course.course_name }}</h4>
                                 </div>
                                 <div>
+                                    {% if role == "admin" %}
                                     <a href="{% url 'edit-course' course.id %}" class="btn btn-primary add-list">
                                         Edit Details
                                     </a>
+                                    {% endif %}
                                     <a href="{% url 'selected-course' course.id %}" class="btn btn-primary add-list">
                                         Mark Attendance
                                     </a>

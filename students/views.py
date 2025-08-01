@@ -121,6 +121,13 @@ def student_details(request, id):
                 output_field=FloatField()
             )
         ).get(id=id, course__course_teacher__user=request.user)
+        attendances = Attendance.objects.filter(student=student, course__course_teacher__user=request.user)
+        latest_status = Attendance.objects.filter(
+            student=student,
+            course__course_teacher__user=request.user).order_by('-time')[:1]
+        raw_counts = Attendance.objects.filter(
+            student_id=id, course__course_teacher__user=request.user).values('status').annotate(count=Count('id'))
+        attendance_records = Attendance.objects.filter(student=student, course__course_teacher__user=request.user)
     else:
         student = Student.objects.annotate(
             total=Count('attendance'),
@@ -131,10 +138,11 @@ def student_details(request, id):
                 output_field=FloatField()
             )
         ).get(id=id, center=request.user)
-
-
-    attendances = Attendance.objects.filter(student=student, center=request.user)
-    latest_status = Attendance.objects.filter(student=student, center=request.user).order_by('-time')[:1]
+        attendances = Attendance.objects.filter(student=student, center=request.user)
+        latest_status = Attendance.objects.filter(student=student, center=request.user).order_by('-time')[:1]
+        raw_counts = Attendance.objects.filter(student_id=id, center=request.user).values('status').annotate(
+            count=Count('id'))
+        attendance_records = Attendance.objects.filter(student=student, center=request.user)
 
     today = date.today()
     year, month = today.year, today.month
@@ -147,7 +155,7 @@ def student_details(request, id):
         'Mon': 0, 'Tue': 1, 'Wed': 2, 'Thu': 3,
         'Fri': 4, 'Sat': 5, 'Sun': 6,
     }
-    raw_days = student.course.days  # MultiSelectField returns a list like ['Mon', 'Thu']
+    raw_days = student.course.days
     target_weekdays = [day_map[d] for d in raw_days]
 
     # Build calendar grid
@@ -159,8 +167,6 @@ def student_details(request, id):
             status = attendance_map.get(day) if is_course_day else None
             week.append((day, is_course_day, status))
         calendar_weeks.append(week)
-
-    raw_counts = Attendance.objects.filter(student_id=id, center=request.user).values('status').annotate(count=Count('id'))
 
     counts = defaultdict(int)
     for item in raw_counts:
@@ -182,7 +188,7 @@ def student_details(request, id):
         "year": year,
         "today": today,
         "chart_data": chart_data,
-        "attendance_records": Attendance.objects.filter(student=student, center=request.user),
+        "attendance_records": attendance_records,
         "role": role
     }
     return render(request, "students/student_details.html", data)
