@@ -132,7 +132,6 @@
                                     <span class="ml-4">Students</span>
                                 </a>
                             </li>
-                            {% if role == "admin" %}
                             <li>
                                 <a href="{% url 'teachers-list' %}" class="svg-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="var(--main-color)" stroke-width="1" viewBox="0 0 20 20">
@@ -144,7 +143,6 @@
                                     <span class="ml-4">Teachers</span>
                                 </a>
                             </li>
-                            {% endif %}
                             <li>
                                 <a href="{% url 'course-list' %}" class="svg-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
