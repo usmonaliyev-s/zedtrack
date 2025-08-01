@@ -16,10 +16,13 @@ import calendar
 @login_required
 def courses_list(request):
     courses = Course.objects.annotate(num_students=Count('student', distinct=True)).filter(center=request.user)
+    role = "admin"
     if hasattr(request.user, 'teacher_user'):
         courses = Course.objects.filter(course_teacher__user=request.user)
+        role = "teacher"
     data = {
         "courses": courses,
+        "role": role,
     }
     return render(request, "courses/courses_list.html", data)
 
@@ -27,8 +30,13 @@ def courses_list(request):
 def add_course(request):
     if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
         return redirect('dashboard')
+    role = "admin"
+    if hasattr(request.user, 'teacher_user'):
+        courses = Course.objects.filter(course_teacher__user=request.user)
+        role = "teacher"
     data = {
         "teachers": Teacher.objects.filter(center=request.user),
+        "role": role,
     }
     if request.method == "POST":
         Course.objects.create(

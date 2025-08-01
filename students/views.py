@@ -25,7 +25,9 @@ def students_list(request):
             output_field=FloatField()
         )
     ).filter(center=request.user)
+    role = "admin"
     if hasattr(request.user, 'teacher_user'):
+        role = "teacher"
         students = Student.objects.annotate(
             total=Count('attendance'),
             present=Count('attendance', filter=Q(attendance__status=True)),
@@ -38,13 +40,20 @@ def students_list(request):
 
     data = {
         "students": students,
+        "role": role,
     }
     return render(request, "students/students_list.html", data)
 
 @login_required
 def add_student(request):
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        return redirect('dashboard')
+    role = "admin"
+    if hasattr(request.user, 'teacher_user'):
+        role = "teacher"
     data = {
         "courses": Course.objects.filter(center=request.user),
+        "role": role,
     }
     if request.method == "POST":
         user = User.objects.create_user(username=request.POST["username"], password=request.POST["password"])
@@ -63,6 +72,8 @@ def add_student(request):
 
 @login_required
 def edit_student(request, id):
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        return redirect('dashboard')
     if request.method == "POST":
         student = Student.objects.get(pk=id, center=request.user)
         student.first_name = request.POST.get('first_name')
@@ -83,6 +94,8 @@ def edit_student(request, id):
 
 @login_required
 def delete_confirmation_student(request, id):
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        return redirect('dashboard')
     student = Student.objects.get(pk=id, center=request.user)
     data = {
         "student": student,
@@ -91,6 +104,8 @@ def delete_confirmation_student(request, id):
 
 @login_required
 def delete_student(request, id):
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        return redirect('dashboard')
     Student.objects.get(pk=id, center=request.user).delete()
     return redirect('student-list')
 
