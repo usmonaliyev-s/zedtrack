@@ -117,16 +117,23 @@ def select_course(request):
     today = date.today()
     weekday = today.strftime("%a")
     courses = Course.objects.filter(days__contains=weekday, center=request.user)
+    if hasattr(request.user, 'teacher_user'):
+        courses = Course.objects.filter(days__contains=weekday, course_teacher__user=request.user)
     marked_courses = []
     for course in courses:
         has_attendance = Attendance.objects.filter(course=course, time__date=today, center=request.user).exists()
+        if hasattr(request.user, 'teacher_user'):
+            has_attendance = Attendance.objects.filter(course=course, time__date=today, course__course_teacher__user=request.user).exists()
         marked_courses.append({
             "course": course,
             "status": has_attendance,
             })
-
+    role = "admin"
+    if hasattr(request.user, 'teacher_user'):
+        role = "teacher"
     data = {
         "courses": marked_courses,
+        "role": role,
     }
     return render(request, "marking-attendance/select_course.html", data)
 
@@ -141,6 +148,16 @@ def marking(request, id):
             output_field=FloatField()
         )
     ).filter(course__id=id, center=request.user)
+    if hasattr(request.user, 'teacher_user'):
+        students = Student.objects.annotate(
+            total=Count('attendance'),
+            present=Count('attendance', filter=Q(attendance__status=True)),
+        ).annotate(
+            attendance_rate=ExpressionWrapper(
+                100.0 * F('present') / NullIf(F('total'), 0),
+                output_field=FloatField()
+            )
+        ).filter(course__id=id, course__course_teacher__user=request.user)
     if request.method == "POST":
         for i in students:
             status = request.POST.get(f'status-{i.id}')
@@ -148,6 +165,7 @@ def marking(request, id):
                 status = True
             elif status == "absent":
                 status = False
+
             Attendance.objects.create(student_id=i.id, course_id=id, status=status, center=request.user)
         return redirect("select-course")
     attendances = Attendance.objects.filter(course_id=id, time__date=date.today(), center=request.user)
@@ -155,10 +173,20 @@ def marking(request, id):
         attendances = attendances
     else:
         attendances = None
+
+    if hasattr(request.user, 'teacher_user'):
+        course = Course.objects.get(pk=id, course_teacher__user=request.user)
+    else:
+        course = Course.objects.get(pk=id, center=request.user)
+
+    role = "admin"
+    if hasattr(request.user, 'teacher_user'):
+        role = "teacher"
     data = {
         "students": students,
-        "course": Course.objects.get(pk=id, center=request.user),
+        "course": course,
         "attendances": attendances,
-        "date": date.today()
+        "date": date.today(),
+        "role": role,
     }
     return render(request, "marking-attendance/marking.html", data)

@@ -25,6 +25,16 @@ def students_list(request):
             output_field=FloatField()
         )
     ).filter(center=request.user)
+    if hasattr(request.user, 'teacher_user'):
+        students = Student.objects.annotate(
+            total=Count('attendance'),
+            present=Count('attendance', filter=Q(attendance__status=True)),
+        ).annotate(
+            attendance_rate=ExpressionWrapper(
+                100.0 * F('present') / NullIf(F('total'), 0),
+                output_field=FloatField()
+            )
+        ).filter(course__course_teacher__user=request.user)
 
     data = {
         "students": students,
@@ -86,15 +96,27 @@ def delete_student(request, id):
 
 @login_required
 def student_details(request, id):
-    student = Student.objects.annotate(
-        total=Count('attendance'),
-        present=Count('attendance', filter=Q(attendance__status=True)),
-    ).annotate(
-        attendance_rate=ExpressionWrapper(
-            100.0 * F('present') / NullIf(F('total'), 0),
-            output_field=FloatField()
-        )
-    ).get(id=id, center=request.user)
+    if hasattr(request.user, 'teacher_user'):
+        student = Student.objects.annotate(
+            total=Count('attendance'),
+            present=Count('attendance', filter=Q(attendance__status=True)),
+        ).annotate(
+            attendance_rate=ExpressionWrapper(
+                100.0 * F('present') / NullIf(F('total'), 0),
+                output_field=FloatField()
+            )
+        ).get(id=id, course__course_teacher__user=request.user)
+    else:
+        student = Student.objects.annotate(
+            total=Count('attendance'),
+            present=Count('attendance', filter=Q(attendance__status=True)),
+        ).annotate(
+            attendance_rate=ExpressionWrapper(
+                100.0 * F('present') / NullIf(F('total'), 0),
+                output_field=FloatField()
+            )
+        ).get(id=id, center=request.user)
+
 
     attendances = Attendance.objects.filter(student=student, center=request.user)
     latest_status = Attendance.objects.filter(student=student, center=request.user).order_by('-time')[:1]
@@ -133,7 +155,9 @@ def student_details(request, id):
         "labels": ["Present", "Absent"],
         "values": [counts[True], counts[False]],
     }
-
+    role = "admin"
+    if hasattr(request.user, 'teacher_user'):
+        role = "teacher"
     data = {
         "student": student,
         "attendances": attendances,
@@ -143,6 +167,7 @@ def student_details(request, id):
         "year": year,
         "today": today,
         "chart_data": chart_data,
-        "attendance_records": Attendance.objects.filter(student=student, center=request.user)
+        "attendance_records": Attendance.objects.filter(student=student, center=request.user),
+        "role": role
     }
     return render(request, "students/student_details.html", data)
