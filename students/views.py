@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.db.models import ExpressionWrapper, FloatField, F, Count, Q
 from django.db.models.functions import NullIf
 from django.shortcuts import render, redirect
@@ -23,26 +24,47 @@ def students_list(request):
             100.0 * F('present') / NullIf(F('total'), 0),
             output_field=FloatField()
         )
-    ).filter(user=request.user)
+    ).filter(center=request.user)
+    role = "admin"
+    if hasattr(request.user, 'teacher_user'):
+        role = "teacher"
+        students = Student.objects.annotate(
+            total=Count('attendance'),
+            present=Count('attendance', filter=Q(attendance__status=True)),
+        ).annotate(
+            attendance_rate=ExpressionWrapper(
+                100.0 * F('present') / NullIf(F('total'), 0),
+                output_field=FloatField()
+            )
+        ).filter(course__course_teacher__user=request.user)
 
     data = {
         "students": students,
+        "role": role,
     }
     return render(request, "students/students_list.html", data)
 
 @login_required
 def add_student(request):
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        return redirect('dashboard')
+    role = "admin"
+    if hasattr(request.user, 'teacher_user'):
+        role = "teacher"
     data = {
-        "courses": Course.objects.filter(user=request.user),
+        "courses": Course.objects.filter(center=request.user),
+        "role": role,
     }
     if request.method == "POST":
+        user = User.objects.create_user(username=request.POST["username"], password=request.POST["password"])
         Student.objects.create(
             first_name=request.POST.get('first_name'),
             last_name=request.POST.get('last_name'),
             gender=request.POST.get('gender'),
             course_id=request.POST.get('course'),
             registration_date=timezone.now().date(),
-            user=request.user
+            center=request.user,
+            user=user,
         )
         return redirect('student-list')
 
@@ -50,8 +72,10 @@ def add_student(request):
 
 @login_required
 def edit_student(request, id):
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        return redirect('dashboard')
     if request.method == "POST":
-        student = Student.objects.get(pk=id, user=request.user)
+        student = Student.objects.get(pk=id, center=request.user)
         student.first_name = request.POST.get('first_name')
         student.last_name = request.POST.get('last_name')
         student.gender = request.POST.get('gender')
@@ -59,8 +83,8 @@ def edit_student(request, id):
         student.user = request.user
         student.save()
         return redirect('student-list')
-    student = Student.objects.get(id=id, user=request.user)
-    courses = Course.objects.filter(user=request.user)
+    student = Student.objects.get(id=id, center=request.user)
+    courses = Course.objects.filter(center=request.user)
     # print(student.gender)
     data = {
         "student": student,
@@ -70,7 +94,9 @@ def edit_student(request, id):
 
 @login_required
 def delete_confirmation_student(request, id):
-    student = Student.objects.get(pk=id, user=request.user)
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        return redirect('dashboard')
+    student = Student.objects.get(pk=id, center=request.user)
     data = {
         "student": student,
     }
@@ -78,23 +104,45 @@ def delete_confirmation_student(request, id):
 
 @login_required
 def delete_student(request, id):
-    Student.objects.get(pk=id, user=request.user).delete()
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        return redirect('dashboard')
+    Student.objects.get(pk=id, center=request.user).delete()
     return redirect('student-list')
 
 @login_required
 def student_details(request, id):
-    student = Student.objects.annotate(
-        total=Count('attendance'),
-        present=Count('attendance', filter=Q(attendance__status=True)),
-    ).annotate(
-        attendance_rate=ExpressionWrapper(
-            100.0 * F('present') / NullIf(F('total'), 0),
-            output_field=FloatField()
-        )
-    ).get(id=id, user=request.user)
-
-    attendances = Attendance.objects.filter(student=student, user=request.user)
-    latest_status = Attendance.objects.filter(student=student, user=request.user).order_by('-time')[:1]
+    if hasattr(request.user, 'teacher_user'):
+        student = Student.objects.annotate(
+            total=Count('attendance'),
+            present=Count('attendance', filter=Q(attendance__status=True)),
+        ).annotate(
+            attendance_rate=ExpressionWrapper(
+                100.0 * F('present') / NullIf(F('total'), 0),
+                output_field=FloatField()
+            )
+        ).get(id=id, course__course_teacher__user=request.user)
+        attendances = Attendance.objects.filter(student=student, course__course_teacher__user=request.user)
+        latest_status = Attendance.objects.filter(
+            student=student,
+            course__course_teacher__user=request.user).order_by('-time')[:1]
+        raw_counts = Attendance.objects.filter(
+            student_id=id, course__course_teacher__user=request.user).values('status').annotate(count=Count('id'))
+        attendance_records = Attendance.objects.filter(student=student, course__course_teacher__user=request.user)
+    else:
+        student = Student.objects.annotate(
+            total=Count('attendance'),
+            present=Count('attendance', filter=Q(attendance__status=True)),
+        ).annotate(
+            attendance_rate=ExpressionWrapper(
+                100.0 * F('present') / NullIf(F('total'), 0),
+                output_field=FloatField()
+            )
+        ).get(id=id, center=request.user)
+        attendances = Attendance.objects.filter(student=student, center=request.user)
+        latest_status = Attendance.objects.filter(student=student, center=request.user).order_by('-time')[:1]
+        raw_counts = Attendance.objects.filter(student_id=id, center=request.user).values('status').annotate(
+            count=Count('id'))
+        attendance_records = Attendance.objects.filter(student=student, center=request.user)
 
     today = date.today()
     year, month = today.year, today.month
@@ -107,7 +155,7 @@ def student_details(request, id):
         'Mon': 0, 'Tue': 1, 'Wed': 2, 'Thu': 3,
         'Fri': 4, 'Sat': 5, 'Sun': 6,
     }
-    raw_days = student.course.days  # MultiSelectField returns a list like ['Mon', 'Thu']
+    raw_days = student.course.days
     target_weekdays = [day_map[d] for d in raw_days]
 
     # Build calendar grid
@@ -120,8 +168,6 @@ def student_details(request, id):
             week.append((day, is_course_day, status))
         calendar_weeks.append(week)
 
-    raw_counts = Attendance.objects.filter(student_id=id, user=request.user).values('status').annotate(count=Count('id'))
-
     counts = defaultdict(int)
     for item in raw_counts:
         counts[item['status']] = item['count']
@@ -130,7 +176,9 @@ def student_details(request, id):
         "labels": ["Present", "Absent"],
         "values": [counts[True], counts[False]],
     }
-
+    role = "admin"
+    if hasattr(request.user, 'teacher_user'):
+        role = "teacher"
     data = {
         "student": student,
         "attendances": attendances,
@@ -140,6 +188,7 @@ def student_details(request, id):
         "year": year,
         "today": today,
         "chart_data": chart_data,
-        "attendance_records": Attendance.objects.filter(student=student, user=request.user)
+        "attendance_records": attendance_records,
+        "role": role
     }
     return render(request, "students/student_details.html", data)

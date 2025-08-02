@@ -132,6 +132,7 @@
                                     <span class="ml-4">Students</span>
                                 </a>
                             </li>
+                            {% if role == "admin" %}
                             <li>
                                 <a href="{% url 'teachers-list' %}" class="svg-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="var(--main-color)" stroke-width="1" viewBox="0 0 20 20">
@@ -143,6 +144,7 @@
                                     <span class="ml-4">Teachers</span>
                                 </a>
                             </li>
+                            {% endif %}
                             <li>
                                 <a href="{% url 'course-list' %}" class="svg-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
@@ -242,7 +244,12 @@
                                                 <td style="background-color: var(--background-color); color: var(--text-color); text-align: left;">
                                                     <a style="color: var(--text-color);" href="{% url 'student-details' student.id %}">{{ student.first_name }} {{ student.last_name }}</a>
                                                 </td>
-                                                <td style="background-color: var(--background-color); color: var(--text-color); text-align: left;">{{ student.attendance_rate|floatformat:2 }}%</td>
+                                                <td style="background-color: var(--background-color); color: var(--text-color); text-align: left;">
+                                                    {% if student.attendance_rate == None %}
+                                                    0%
+                                                    {% else %}
+                                                      {{ student.attendance_rate|floatformat:2 }}%
+                                                    {% endif %}</td>
                                                 <td style="text-align: left;">
                                                     <div class="marking-toggle-wrapper">
                                                         {% if attendances %} {% for attendace in attendances %} {% if attendace.student == student %} {% if attendace.status %}
