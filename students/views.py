@@ -4,6 +4,7 @@ from django.db.models import ExpressionWrapper, FloatField, F, Count, Q
 from django.db.models.functions import NullIf
 from django.shortcuts import render, redirect
 from django.utils import timezone
+from django.contrib import messages
 
 from attendance_tracker.models import Attendance
 from courses.models import Course
@@ -47,6 +48,7 @@ def students_list(request):
 @login_required
 def add_student(request):
     if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
         return redirect('dashboard')
     role = "admin"
     if hasattr(request.user, 'teacher_user'):
@@ -73,6 +75,7 @@ def add_student(request):
 @login_required
 def edit_student(request, id):
     if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
         return redirect('dashboard')
     if request.method == "POST":
         student = Student.objects.get(pk=id, center=request.user)
@@ -95,6 +98,7 @@ def edit_student(request, id):
 @login_required
 def delete_confirmation_student(request, id):
     if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
         return redirect('dashboard')
     student = Student.objects.get(pk=id, center=request.user)
     data = {
@@ -105,6 +109,7 @@ def delete_confirmation_student(request, id):
 @login_required
 def delete_student(request, id):
     if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
         return redirect('dashboard')
     Student.objects.get(pk=id, center=request.user).delete()
     return redirect('student-list')

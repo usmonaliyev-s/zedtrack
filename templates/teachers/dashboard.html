@@ -17,6 +17,85 @@
         <link href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
         </head>
+    	<style>
+		.errbox {
+		  display: flex;
+		  align-items: flex-start;
+		  background-color: #ffecec;
+		  color: #a30000;
+		  border: 1px solid #f5c2c2;
+		  border-radius: 8px;
+		  padding: 16px;
+		  gap: 12px;
+		  position: relative;
+		  font-family: inherit;
+		  margin-top: -15px;
+		  margin-left: -1px;
+		  margin-bottom: 20px;
+		  padding-right: -50px;
+		  box-sizing: border-box;
+
+		  /* Responsive width */
+		  width: 90%;
+		  max-width: 570px;
+		}
+
+		.errbox-icon {
+		  font-size: 20px;
+		  margin-top: 2px;
+		  flex-shrink: 0;
+		}
+
+		.errbox-content {
+		  flex-grow: 1;
+		}
+
+		.errbox h4 {
+		  margin: 0;
+		  font-size: 16px;
+		  font-weight: bold;
+		}
+
+		.errbox p {
+		  margin: 4px 0;
+		  font-size: 14px;
+		}
+
+		.errbox ul {
+		  margin: 8px 0 0 16px;
+		  padding: 0;
+		  font-size: 14px;
+		}
+
+		.errbox-close {
+		  position: absolute;
+		  top: 8px;
+		  right: 10px;
+		  background: none;
+		  border: none;
+		  font-size: 20px;
+		  color: #a30000;
+		  cursor: pointer;
+		  padding: 0;
+		  line-height: 1;
+		}
+
+		.errbox-close:hover {
+		  color: #ff0000;
+		}
+
+		/* Optional: mobile tweaks */
+		@media (max-width: 600px) {
+		  .errbox {
+		    flex-direction: column;
+		  }
+
+		  .errbox-close {
+		    top: 4px;
+		    right: 6px;
+		  }
+		}
+	</style>
     <style>
     #sidebar.collapsed #user-info {
         display: none;
@@ -159,6 +238,17 @@
                     <div class="card-header-toolbar d-flex align-items-center"></div>
                     <div class="row">
                         <div class="col-lg-12">
+                            {% if messages %}
+							<div id="errbox" class="errbox">
+								{% for message in messages %}
+                                <div class="errbox-icon">&#9888;</div>
+								<div class="errbox-content">
+									<p style="font-size: 15px;">{{ message }}</p>
+								</div>
+								<button class="errbox-close" onclick="document.getElementById('errbox').style.display='none'">&times;</button>
+                                {% endfor %}
+							</div>
+                            {% endif %}
                             <h5 style="margin-bottom: 25px; margin-top: -18px; font-weight: 600; color: #333;">General Statistics</h5>
                             <div class="row" style="position: relative; top: -20px;">
                                 <div style="height: 130px;" class="col-lg-4 col-md-3">
