@@ -13,6 +13,7 @@ class Attendance(models.Model):
     status = models.BooleanField(verbose_name='Attence status', default=False)
     center = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name="user")
+    marked_by = models.ForeignKey(setting.AUTH_USER_MODEL, )
 
     def __str__(self):
         return f"{self.student.first_name} {self.student.last_name} - {self.time} - {self.course} - {self.status}"

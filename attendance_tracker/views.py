@@ -178,8 +178,8 @@ def marking(request, id):
                 center = Teacher.objects.get(user=request.user).center
                 Attendance.objects.create(student_id=i.id, course_id=id, status=status, center=center, user=request.user)
             else:
-                user = Course.objects.get(pk=id, center=request.user).course_teacher
-                Attendance.objects.create(student_id=i.id, course_id=id, status=status, center=center, user=user)
+                user = Course.objects.get(pk=id, center=request.user).course_teacher.user
+                Attendance.objects.create(student_id=i.id, course_id=id, status=status, center=request.user, user=user)
         return redirect("select-course")
 
     if attendances.exists():

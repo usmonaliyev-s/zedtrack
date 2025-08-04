@@ -219,6 +219,9 @@
                                 <div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
                                     <div>
                                         <h4 class="mb-3">Course: {{ course.course_name }} | Date: {{ date }}</h4>
+                                        {% if attendances %}
+                                        <h4 class="mb-3">Marked by: {% for attendance in attendances %}{{ attendance.center }}{% endfor %}</h4>
+                                        {% endif %}
                                     </div>
                                     {% if not attendances %}
                                     <button type="submit" class="btn btn-primary add-list">
