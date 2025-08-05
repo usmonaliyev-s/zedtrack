@@ -176,6 +176,7 @@
 									<span class="ml-4">Students</span>
 								</a>
 							</li>
+							{% if role != "teacher" %}
 							<li {% if request.resolver_match.url_name == "teachers-list" or request.resolver_match.url_name == "add-teacher" or request.resolver_match.url_name == "teacher-details" or request.resolver_match.url_name == "edit-teacher" %}class="active"{% endif %}>
 								<a href="{% url 'teachers-list' %}" class="svg-icon">
 									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="var(--main-color)" stroke-width="1" viewBox="0 0 20 20">
@@ -187,6 +188,7 @@
 									<span class="ml-4">Teachers</span>
 								</a>
 							</li>
+							{% endif %}
 							<li {% if request.resolver_match.url_name == "course-list" or request.resolver_match.url_name == "add-course" or request.resolver_match.url_name == "course-details" or request.resolver_match.url_name == "edit-course" %}class="active"{% endif %}>
 								<a href="{% url 'course-list' %}" class="svg-icon">
 									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">

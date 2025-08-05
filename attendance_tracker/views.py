@@ -92,6 +92,9 @@ def dashboard(request, a=None, b=None, c=None):
             (present_today / total_today) * 100
             if total_today > 0 else 0
         )
+        role = "admin"
+        if hasattr(request.user, 'teacher_user'):
+            role = "teacher"
         data = {
             "students": Student.objects.filter(center=request.user),
             "top_students": students,
@@ -107,6 +110,7 @@ def dashboard(request, a=None, b=None, c=None):
             "present_student": present_student,
             "date": date.today(),
             "attendance_records": Attendance.objects.filter(center=request.user).order_by('-time')[:10],
+            "role": role,
         }
         return render(request, 'dashboard.html', data)
     else:
