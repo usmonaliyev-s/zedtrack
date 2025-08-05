@@ -1,673 +1,335 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-		<title>ZEDTRACK</title>
+{% extends 'base.html' %}
 
-		<!-- Favicon -->
-		<link rel="shortcut icon" href="{% static 'logo_rounded.png' %}" />
-		<link rel="stylesheet" href="{% static 'assets/css/backend-plugin.min.css' %}" />
-		<link rel="stylesheet" href="{% static 'assets/css/backend.css?v=1.0.0' %}" />
-		<link rel="stylesheet" href="{% static 'assets/css/custom.css' %}" />
-		<link rel="stylesheet" href="{% static 'assets/vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" />
-		<link rel="stylesheet" href="{% static 'assets/vendor/remixicon/fonts/remixicon.css' %}" />
-		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-		<link href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-	</head>
-	<style>
-		.errbox {
-		  display: flex;
-		  align-items: flex-start;
-		  background-color: #ffecec;
-		  color: #a30000;
-		  border: 1px solid #f5c2c2;
-		  border-radius: 8px;
-		  padding: 16px;
-		  gap: 12px;
-		  position: relative;
-		  font-family: inherit;
-		  margin-top: -15px;
-		  margin-left: -1px;
-		  margin-bottom: 20px;
-		  padding-right: -50px;
-		  box-sizing: border-box;
+{% block content %}
 
-		  /* Responsive width */
-		  width: 90%;
-		  max-width: 570px;
-		}
-
-		.errbox-icon {
-		  font-size: 20px;
-		  margin-top: 2px;
-		  flex-shrink: 0;
-		}
-
-		.errbox-content {
-		  flex-grow: 1;
-		}
-
-		.errbox h4 {
-		  margin: 0;
-		  font-size: 16px;
-		  font-weight: bold;
-		}
-
-		.errbox p {
-		  margin: 4px 0;
-		  font-size: 14px;
-		}
-
-		.errbox ul {
-		  margin: 8px 0 0 16px;
-		  padding: 0;
-		  font-size: 14px;
-		}
-
-		.errbox-close {
-		  position: absolute;
-		  top: 8px;
-		  right: 10px;
-		  background: none;
-		  border: none;
-		  font-size: 20px;
-		  color: #a30000;
-		  cursor: pointer;
-		  padding: 0;
-		  line-height: 1;
-		}
-
-		.errbox-close:hover {
-		  color: #ff0000;
-		}
-
-		/* Optional: mobile tweaks */
-		@media (max-width: 600px) {
-		  .errbox {
-		    flex-direction: column;
-		  }
-
-		  .errbox-close {
-		    top: 4px;
-		    right: 6px;
-		  }
-		}
-	</style>
-	<style>
-		#sidebar.collapsed #user-info {
-		    display: none;
-		}
-	</style>
-	<body style="background-color: var(--main-background-color)">
-		<div class="wrapper">
-			<div class="iq-sidebar sidebar-default" style="display: flex; flex-direction: column; height: 100vh;" id="sidebar">
-				<!-- Sidebar logo and toggle -->
-				<div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
-					<a href="/" class="header-logo">
-						<img src="{% static 'zed.png' %}" class="img-fluid rounded-normal light-logo" alt="logo" />
-						<h6 class="logo-title light-logo ml-3" style="color: var(--text-color);">ZEDTRACK</h6>
-					</a>
-					<div class="iq-menu-bt-sidebar ml-0">
-						<i class="wrapper-menu">
-							<svg fill="var(--text-color)" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-								<path d="M4 6H20M4 12H20M4 18H20" stroke="var(--text-color)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-							</svg>
-						</i>
+<div class="content-page">
+	<div class="container-fluid">
+		<div class="card-header-toolbar d-flex align-items-center"></div>
+		<div class="row">
+			<div class="col-lg-12">
+				{% if messages %}
+				<div id="errbox" class="errbox">
+					{% for message in messages %}
+					<div class="errbox-icon">&#9888;</div>
+					<div class="errbox-content">
+						<h4>Error loading data</h4>
+						<p>There was a problem fetching the dashboard data. Please try again later.</p>
+					</div>
+					<button class="errbox-close" onclick="document.getElementById('errbox').style.display='none'">&times;</button>
+					{% endfor %}
+				</div>
+				{% endif %}
+				<h5 style="margin-bottom: 25px; margin-top: -18px; font-weight: 600; color: #333;">General Statistics</h5>
+				<div class="row" style="position: relative; top: -20px;">
+					<div style="height: 130px;" class="col-lg-3 col-md-3">
+						<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
+							<div class="card-body">
+								<a href="{% url 'student-list' %}">
+									<div class="d-flex align-items-center mb-4 card-total-sale">
+										<div class="icon iq-icon-box-2 bg-info-light" style="background-color: white !important;">
+											<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 768">
+												<path
+													fill="var(--main-color)"
+													d="M1024 736q0 13-9.5 22.5T992 768t-22.5-9.5T960 736V315L607 492q-40 20-95 20t-95-20L39 303Q0 283 0 255.5T39 209L417 20q40-20 95-20t95 20l378 189q34 17 38 42q1 1 1 4v481zM639 556l193-97v141q0 43-93.5 73.5T512 704t-226.5-30.5T192 600V459l193 97q40 20 127 20t127-20z"
+												></path>
+											</svg>
+										</div>
+										<div>
+											<p class="mb-2" style="color: white;">Students</p>
+											<h4 style="color: white;">{{ students.count }}</h4>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div style="height: 130px;" class="col-lg-3 col-md-3">
+						<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
+							<div class="card-body">
+								<a href="{% url 'teachers-list' %}">
+									<div title="Total Teachers" class="d-flex align-items-center mb-4 card-total-sale">
+										<div class="icon iq-icon-box-2 bg-success-light" style="background-color: white !important;">
+											<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" stroke="var(--main-color)" stroke-width="0.5" viewBox="0 0 20 20">
+												<path
+													fill="var(--main-color)"
+													d="M8.75 3.75a2.75 2.75 0 1 0-5.5 0a2.75 2.75 0 0 0 5.5 0Zm-4.5 0a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0ZM2.5 7.5h4.183c-.164.31-.286.646-.358 1H2.5A.5.5 0 0 0 2 9v.5c0 1.26 1.099 2.614 3.096 2.93c-.322.22-.59.513-.781.854C2.205 12.713 1 11.087 1 9.5V9a1.5 1.5 0 0 1 1.5-1.5Zm5.379 0c.504-.61 1.267-1 2.121-1a2.744 2.744 0 0 1 2.646 2a2.753 2.753 0 0 1-3.893 3.202A2.75 2.75 0 0 1 7.88 7.5Zm.54 1a1.75 1.75 0 1 0 3.164 1.5a1.75 1.75 0 0 0-3.165-1.5Zm7.266 4.784a2.513 2.513 0 0 0-.781-.853C16.9 12.114 18 10.759 18 9.5V9a.5.5 0 0 0-.5-.5h-3.825a3.726 3.726 0 0 0-.357-1H17.5A1.5 1.5 0 0 1 19 9v.5c0 1.587-1.206 3.212-3.315 3.784Zm-1.198.087A1.493 1.493 0 0 0 13.5 13h-7A1.496 1.496 0 0 0 5 14.5v.5c0 1.971 1.86 4 5 4c3.14 0 5-2.029 5-4v-.5c0-.45-.198-.854-.513-1.13ZM6 14.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v.5c0 1.438-1.432 3-4 3s-4-1.562-4-3v-.5ZM14 1a2.75 2.75 0 1 1 0 5.5A2.75 2.75 0 0 1 14 1Zm0 1a1.75 1.75 0 1 0 0 3.5A1.75 1.75 0 0 0 14 2Z"
+												></path>
+											</svg>
+										</div>
+										<div>
+											<p class="mb-2" style="color: white;">Teachers</p>
+											<h4 style="color: white;">{{ teachers.count }}</h4>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div style="height: 130px;" class="col-lg-3 col-md-3">
+						<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
+							<div class="card-body">
+								<a href="{% url 'course-list' %}">
+									<div class="d-flex align-items-center mb-4 card-total-sale">
+										<div class="icon iq-icon-box-2 bg-danger-light" style="background-color: white !important;">
+											<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+												<path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
+											</svg>
+										</div>
+										<div>
+											<p class="mb-2" style="color: white;">Courses</p>
+											<h4 style="color: white;">{{ courses.count }}</h4>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div style="height: 130px;" class="col-lg-3 col-md-3">
+						<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
+							<div class="card-body">
+								<a href="{% url 'select-course' %}">
+									<div class="d-flex align-items-center mb-4 card-total-sale">
+										<div class="icon iq-icon-box-2 bg-success-light" style="background-color: white !important;">
+											<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+												<path
+													fill="var(--main-color)"
+													d="M17.5 12a5.5 5.5 0 1 1 0 11a5.5 5.5 0 0 1 0-11Zm-2.646 5.147a.5.5 0 1 0-.707.707l2 2a.5.5 0 0 0 .707 0l4-4a.5.5 0 1 0-.707-.707L16.5 18.793l-1.646-1.646ZM12.023 14a6.47 6.47 0 0 0-.709 1.5H4.253a.749.749 0 0 0-.75.75v.577c0 .535.192 1.053.54 1.46c1.253 1.469 3.22 2.214 5.957 2.214c.597 0 1.157-.035 1.68-.106c.246.495.553.954.912 1.367c-.795.16-1.66.24-2.592.24c-3.146 0-5.532-.906-7.098-2.74a3.75 3.75 0 0 1-.898-2.435v-.578A2.249 2.249 0 0 1 4.253 14h7.77ZM10 2.005a5 5 0 1 1 0 10a5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7Z"
+												></path>
+											</svg>
+										</div>
+										<div>
+											<p class="mb-2" style="color: white;">Rate</p>
+											<h4 style="color: white;">{{ attendance_rate|floatformat:2 }}%</h4>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
 					</div>
 				</div>
-
-				<!-- Sidebar menu scrollable area -->
-				<div class="data-scrollbar" data-scroll="1" style="flex: 1; overflow-y: auto;">
-					<nav class="iq-sidebar-menu">
-						<ul id="iq-sidebar-toggle" class="iq-menu">
-							<li class="active">
-								<a href="/" class="svg-icon">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										xmlns:xlink="http://www.w3.org/1999/xlink"
-										x="0px"
-										y="0px"
-										width="20px"
-										height="20px"
-										viewBox="0 0 122.88 122.566"
-										enable-background="new 0 0 122.88 122.566"
-										xml:space="preserve"
-									>
-										<g>
+				<h5 style="margin-bottom: 25px; margin-top: -38px; font-weight: 600; color: #333;">Today’s Statistics</h5>
+				<div class="row" style="position: relative; top: -20px;">
+					<div style="height: 130px;" class="col-lg-3 col-md-3">
+						<div class="card card-block card-stretch card-height" style=" background-color: white;">
+							<div class="card-body">
+								<div class="d-flex align-items-center mb-4 card-total-sale">
+									<div class="icon iq-icon-box-2 bg-success-light" style="background-color: var(--main-color) !important;">
+										<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 10 10">
 											<path
-												fill-rule="evenodd"
-												clip-rule="evenodd"
-												d="M3.78,66.082h47.875c2.045,0,3.717,1.988,3.717,4.414v46.479 c0,2.43-1.671,4.416-3.717,4.416H3.78c-2.043,0-3.717-1.986-3.717-4.416V70.496C0.063,68.07,1.737,66.082,3.78,66.082L3.78,66.082z M71.224,0H119.1c2.046,0,3.717,1.986,3.717,4.415v46.479c0,2.429-1.671,4.413-3.717,4.413H71.224 c-2.045,0-3.714-1.984-3.714-4.413V4.415C67.51,1.986,69.179,0,71.224,0L71.224,0z M3.714,0h47.878 c2.045,0,3.717,1.986,3.717,4.415v46.479c0,2.429-1.671,4.413-3.717,4.413H3.714C1.671,55.307,0,53.323,0,50.894V4.415 C0,1.986,1.671,0,3.714,0L3.714,0z M71.287,67.26h47.876c2.043,0,3.717,1.986,3.717,4.416v46.479c0,2.426-1.674,4.412-3.717,4.412 H71.287c-2.045,0-3.717-1.986-3.717-4.412V71.676C67.57,69.246,69.242,67.26,71.287,67.26L71.287,67.26z"
+												fill="white"
+												d="M4.998 0a4.998 4.998 0 1 0 0 9.995a4.998 4.998 0 0 0 0-9.995ZM1 4.998a3.998 3.998 0 1 1 7.995 0a3.998 3.998 0 0 1-7.995 0Zm6.104-1.602a.5.5 0 0 1 0 .708l-2.25 2.25a.5.5 0 0 1-.708 0l-1-1a.5.5 0 1 1 .708-.708l.646.647l1.896-1.897a.5.5 0 0 1 .708 0Z"
 											></path>
-										</g>
-									</svg>
-									<span class="ml-4">Dashboard</span>
-								</a>
-							</li>
-							<li>
-								<a href="{% url 'select-course' %}" class="svg-icon">
-									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-										<path
-											fill="var(--main-color)"
-											d="M20 16v-6h2v6a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2h8v2H8v12h12m-9.09-8.92L14 10.17l6.59-6.59L22 5l-8 8l-4.5-4.5l1.41-1.42M16 20v2H4a2 2 0 0 1-2-2V7h2v13h12Z"
-										></path>
-									</svg>
-									<span class="ml-4">Mark Attendance</span>
-								</a>
-							</li>
-							<li>
-								<a href="{% url 'student-list' %}" class="svg-icon">
-									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 1024 768">
-										<path
-											fill="var(--main-color)"
-											d="M1024 736q0 13-9.5 22.5T992 768t-22.5-9.5T960 736V315L607 492q-40 20-95 20t-95-20L39 303Q0 283 0 255.5T39 209L417 20q40-20 95-20t95 20l378 189q34 17 38 42q1 1 1 4v481zM639 556l193-97v141q0 43-93.5 73.5T512 704t-226.5-30.5T192 600V459l193 97q40 20 127 20t127-20z"
-										>
-											>
-										</path>
-									</svg>
-									<span class="ml-4">Students</span>
-								</a>
-							</li>
-							<li>
-								<a href="{% url 'teachers-list' %}" class="svg-icon">
-									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="var(--main-color)" stroke-width="1" viewBox="0 0 20 20">
-										<path
-											fill="var(--main-color)"
-											d="M8.75 3.75a2.75 2.75 0 1 0-5.5 0a2.75 2.75 0 0 0 5.5 0Zm-4.5 0a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0ZM2.5 7.5h4.183c-.164.31-.286.646-.358 1H2.5A.5.5 0 0 0 2 9v.5c0 1.26 1.099 2.614 3.096 2.93c-.322.22-.59.513-.781.854C2.205 12.713 1 11.087 1 9.5V9a1.5 1.5 0 0 1 1.5-1.5Zm5.379 0c.504-.61 1.267-1 2.121-1a2.744 2.744 0 0 1 2.646 2a2.753 2.753 0 0 1-3.893 3.202A2.75 2.75 0 0 1 7.88 7.5Zm.54 1a1.75 1.75 0 1 0 3.164 1.5a1.75 1.75 0 0 0-3.165-1.5Zm7.266 4.784a2.513 2.513 0 0 0-.781-.853C16.9 12.114 18 10.759 18 9.5V9a.5.5 0 0 0-.5-.5h-3.825a3.726 3.726 0 0 0-.357-1H17.5A1.5 1.5 0 0 1 19 9v.5c0 1.587-1.206 3.212-3.315 3.784Zm-1.198.087A1.493 1.493 0 0 0 13.5 13h-7A1.496 1.496 0 0 0 5 14.5v.5c0 1.971 1.86 4 5 4c3.14 0 5-2.029 5-4v-.5c0-.45-.198-.854-.513-1.13ZM6 14.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v.5c0 1.438-1.432 3-4 3s-4-1.562-4-3v-.5ZM14 1a2.75 2.75 0 1 1 0 5.5A2.75 2.75 0 0 1 14 1Zm0 1a1.75 1.75 0 1 0 0 3.5A1.75 1.75 0 0 0 14 2Z"
-										></path>
-									</svg>
-									<span class="ml-4">Teachers</span>
-								</a>
-							</li>
-							<li>
-								<a href="{% url 'course-list' %}" class="svg-icon">
-									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-										<path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
-									</svg>
-									<span class="ml-4">Courses</span>
-								</a>
-							</li>
-						</ul>
-					</nav>
-				</div>
-
-				<!-- User info fixed at bottom -->
-				<div class="p-3 border-top" id="user-info" style="background-color: var(--main-color);">
-					<div class="user-profile d-flex align-items-center">
-						<img src="{% static 'assets/images/profile.png' %}" alt="profile" class="img-fluid rounded-circle" width="40" height="40" />
-						<div class="ml-3">
-							<h6 style="color: white; word-break: break-all; white-space: normal;">{{ user.username }}</h6>
-							<small style="color: white; word-break: break-all; white-space: normal;">{{ user.email }}</small>
+										</svg>
+									</div>
+									<div>
+										<p class="mb-2" style="color: black;">Present</p>
+										<h4 style="color: black;">{{ present_student.count }}</h4>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style="height: 130px;" class="col-lg-3 col-md-3">
+						<div class="card card-block card-stretch card-height" style=" background-color: white;">
+							<div class="card-body">
+								<div class="d-flex align-items-center mb-4 card-total-sale">
+									<div class="icon iq-icon-box-2 bg-success-light" style="background-color: var(--main-color) !important;">
+										<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16">
+											<path
+												fill="white"
+												fill-rule="evenodd"
+												d="M14.1 13.2c1.2-1.4 1.92-3.21 1.92-5.2c0-4.42-3.58-8-8-8s-8 3.58-8 8s3.58 8 8 8a7.98 7.98 0 0 0 6.084-2.804zm-1.59.174a6.96 6.96 0 0 1-4.49 1.63c-3.87 0-7-3.13-7-7c0-1.71.612-3.27 1.63-4.49zm.884-.884l-9.86-9.86A6.96 6.96 0 0 1 8.024 1c3.87 0 7 3.13 7 7c0 1.71-.612 3.27-1.63 4.49"
+												clip-rule="evenodd"
+											></path>
+										</svg>
+									</div>
+									<div>
+										<p class="mb-2" style="color: black;">Absent</p>
+										<h4 style="color: black;">{{ absent_students.count }}</h4>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style="height: 130px;" class="col-lg-3 col-md-3">
+						<div class="card card-block card-stretch card-height" style=" background-color: white;">
+							<div class="card-body">
+								<div class="d-flex align-items-center mb-4 card-total-sale">
+									<div class="icon iq-icon-box-2 bg-success-light" style="background-color: var(--main-color) !important;">
+										<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+											<path fill="white" d="M12 21.934A9.934 9.934 0 1 1 21.933 12A9.945 9.945 0 0 1 12 21.934Zm0-18.868A8.934 8.934 0 1 0 20.933 12A8.944 8.944 0 0 0 12 3.066Z" />
+											<path
+												fill="white"
+												d="M9 10.258a1.5 1.5 0 1 1 1.061-.439A1.5 1.5 0 0 1 9 10.258Zm0-2a.5.5 0 1 0 .353.146A.5.5 0 0 0 9 8.259Zm-1.242 8.485a.5.5 0 0 1-.358-.853l8.489-8.49a.5.5 0 0 1 .707.707L8.111 16.6a.5.5 0 0 1-.353.143ZM15 16.742a1.5 1.5 0 1 1 1.061-.438a1.493 1.493 0 0 1-1.061.438Zm0-2a.5.5 0 0 0-.354.147a.5.5 0 0 0-.146.352a.5.5 0 1 0 1 0a.5.5 0 0 0-.5-.5Z"
+											></path>
+										</svg>
+									</div>
+									<div>
+										<p class="mb-2" style="color: black;">Rate</p>
+										<h4 style="color: black;">{{ attendance_rate_today|floatformat:2 }}%</h4>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style="height: 130px;" class="col-lg-3 col-md-3">
+						<div class="card card-block card-stretch card-height" style=" background-color: white;">
+							<div class="card-body">
+								<div class="d-flex align-items-center mb-4 card-total-sale">
+									<div class="icon iq-icon-box-2 bg-success-light" style="background-color: var(--main-color) !important;">
+										<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+											<path fill="white" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
+										</svg>
+									</div>
+									<div>
+										<p class="mb-2" style="color: black;">Courses</p>
+										<h4 style="color: black;">{{ todays_courses }}</h4>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
-			<div class="iq-top-navbar">
-				<div class="iq-navbar-custom">
-					<nav class="navbar navbar-expand-lg navbar-light p-0 d-flex align-items-center justify-content-between">
-						<div class="iq-navbar-logo d-flex align-items-center justify-content-between">
-							<i class="wrapper-menu">
-								<svg fill="var(--text-color)" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-									<path d="M4 6H20M4 12H20M4 18H20" stroke="var(--text-color)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-								</svg>
-							</i>
-							<a href="/" class="header-logo d-flex align-items-center">
-								<img src="{% static 'zed.png' %}" class="img-fluid rounded-normal" alt="logo" />
-								<h5 class="logo-title ml-3" style="color: var(--text-color);">ZEDTRACK</h5>
+			<div class="col-lg-6" style="position: relative; top: -20px; ">
+				<div class="card card-block card-stretch" style=" background-color: var(--background-color);">
+					<div class="card-header d-flex align-items-center justify-content-between" style="">
+						<div class="header-title">
+							<h4 class="card-title">Attendance Records</h4>
+						</div>
+						{% with request.path as current_url %}
+						<div style="position: relative; top: -35px; left: 17px">
+							<a
+								href="{% url 'dashboard' 7 %}"
+								style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/7/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %}; position: relative; top: 35px; left: -25px; padding: 8px;"
+							>
+								7 days
+							</a>
+							<a
+								href="{% url 'dashboard' 30 %}"
+								style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/30/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %}; position: relative; top: 35px; left: -25px; padding: 8px;"
+							>
+								30 days
+							</a>
+							<a
+								href="{% url 'dashboard' 365 %}"
+								style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/365/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %}; position: relative; top: 35px; left: -25px; padding: 8px;"
+							>
+								1 year
+							</a>
+							<a
+								href="{% url 'dashboard' %}"
+								style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %};position: relative; top: 35px; left: -25px; padding: 8px;"
+							>
+								Total
 							</a>
 						</div>
-
-						<div class="d-flex align-items-center">
-							<div style="margin-left: auto; margin-top: 12px;">
-								<a id="theme-toggle" style="position: absolute; top: 40%; right: 20px; cursor: pointer; z-index: 1000;">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 122.88" width="26" height="26" fill="var(--text-color)">
-										<style>
-											.st0 {
-											    fill-rule: evenodd;
-											    clip-rule: evenodd;
-											}
-										</style>
-										<path
-											class="st0"
-											d="M122.88,61.44c0,8.47-1.5,16.34-4.5,23.58c-0.49,1.19-1.02,2.35-1.59,3.49
-        c-2.92,5.89-6.89,11.35-11.92,16.36c-1.67,1.68-3.4,3.24-5.17,4.68c-1.78,1.45-3.61,2.78-5.48,3.98
-        c-9.65,6.23-20.58,9.34-32.78,9.34c-8.47,0-16.33-1.5-23.58-4.5c-1.19-0.49-2.35-1.02-3.49-1.59
-        c-5.89-2.92-11.35-6.89-16.36-11.92c-1.68-1.67-3.24-3.4-4.68-5.17c-1.45-1.78-2.78-3.61-3.98-5.48
-        C3.11,84.58,0,73.64,0,61.44c0-8.47,1.5-16.33,4.5-23.58c0.49-1.19,1.02-2.35,1.59-3.49c2.92-5.89,6.89-11.35,11.92-16.36
-        c1.67-1.68,3.4-3.24,5.17-4.68c1.78-1.45,3.61-2.78,5.48-3.98C38.3,3.11,49.24,0,61.44,0c8.47,0,16.33,1.5,23.58,4.5
-        c1.19,0.49,2.35,1.02,3.49,1.59c5.89,2.92,11.35,6.89,16.36,11.92c1.68,1.67,3.24,3.4,4.68,5.17c1.45,1.78,2.78,3.61,3.98,5.48
-        C119.77,38.3,122.88,49.24,122.88,61.44z M61.44,10.96v100.96c-27.88,0-50.48-22.6-50.48-50.48C10.96,33.56,33.56,10.96,61.44,10.96z"
-										></path>
-									</svg>
-								</a>
-							</div>
+						{% endwith %}
+					</div>
+					<div class="card-body">
+						<div>
+							<canvas id="lineChart"></canvas>
 						</div>
-					</nav>
+					</div>
 				</div>
 			</div>
-			<div class="content-page">
-				<div class="container-fluid">
-					<div class="card-header-toolbar d-flex align-items-center"></div>
-					<div class="row">
-						<div class="col-lg-12">
-                            {% if messages %}
-							<div id="errbox" class="errbox">
-								{% for message in messages %}
-                                <div class="errbox-icon">&#9888;</div>
-								<div class="errbox-content">
-									<h4>Error loading data</h4>
-									<p>There was a problem fetching the dashboard data. Please try again later.</p>
-								</div>
-								<button class="errbox-close" onclick="document.getElementById('errbox').style.display='none'">&times;</button>
-                                {% endfor %}
-							</div>
-                            {% endif %}
-							<h5 style="margin-bottom: 25px; margin-top: -18px; font-weight: 600; color: #333;">General Statistics</h5>
-							<div class="row" style="position: relative; top: -20px;">
-								<div style="height: 130px;" class="col-lg-3 col-md-3">
-									<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
-										<div class="card-body">
-											<a href="{% url 'student-list' %}">
-												<div class="d-flex align-items-center mb-4 card-total-sale">
-													<div class="icon iq-icon-box-2 bg-info-light" style="background-color: white !important;">
-														<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 768">
-															<path
-																fill="var(--main-color)"
-																d="M1024 736q0 13-9.5 22.5T992 768t-22.5-9.5T960 736V315L607 492q-40 20-95 20t-95-20L39 303Q0 283 0 255.5T39 209L417 20q40-20 95-20t95 20l378 189q34 17 38 42q1 1 1 4v481zM639 556l193-97v141q0 43-93.5 73.5T512 704t-226.5-30.5T192 600V459l193 97q40 20 127 20t127-20z"
-															></path>
-														</svg>
-													</div>
-													<div>
-														<p class="mb-2" style="color: white;">Students</p>
-														<h4 style="color: white;">{{ students.count }}</h4>
-													</div>
-												</div>
-											</a>
-										</div>
-									</div>
-								</div>
-								<div style="height: 130px;" class="col-lg-3 col-md-3">
-									<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
-										<div class="card-body">
-											<a href="{% url 'teachers-list' %}">
-												<div title="Total Teachers" class="d-flex align-items-center mb-4 card-total-sale">
-													<div class="icon iq-icon-box-2 bg-success-light" style="background-color: white !important;">
-														<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" stroke="var(--main-color)" stroke-width="0.5" viewBox="0 0 20 20">
-															<path
-																fill="var(--main-color)"
-																d="M8.75 3.75a2.75 2.75 0 1 0-5.5 0a2.75 2.75 0 0 0 5.5 0Zm-4.5 0a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0ZM2.5 7.5h4.183c-.164.31-.286.646-.358 1H2.5A.5.5 0 0 0 2 9v.5c0 1.26 1.099 2.614 3.096 2.93c-.322.22-.59.513-.781.854C2.205 12.713 1 11.087 1 9.5V9a1.5 1.5 0 0 1 1.5-1.5Zm5.379 0c.504-.61 1.267-1 2.121-1a2.744 2.744 0 0 1 2.646 2a2.753 2.753 0 0 1-3.893 3.202A2.75 2.75 0 0 1 7.88 7.5Zm.54 1a1.75 1.75 0 1 0 3.164 1.5a1.75 1.75 0 0 0-3.165-1.5Zm7.266 4.784a2.513 2.513 0 0 0-.781-.853C16.9 12.114 18 10.759 18 9.5V9a.5.5 0 0 0-.5-.5h-3.825a3.726 3.726 0 0 0-.357-1H17.5A1.5 1.5 0 0 1 19 9v.5c0 1.587-1.206 3.212-3.315 3.784Zm-1.198.087A1.493 1.493 0 0 0 13.5 13h-7A1.496 1.496 0 0 0 5 14.5v.5c0 1.971 1.86 4 5 4c3.14 0 5-2.029 5-4v-.5c0-.45-.198-.854-.513-1.13ZM6 14.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v.5c0 1.438-1.432 3-4 3s-4-1.562-4-3v-.5ZM14 1a2.75 2.75 0 1 1 0 5.5A2.75 2.75 0 0 1 14 1Zm0 1a1.75 1.75 0 1 0 0 3.5A1.75 1.75 0 0 0 14 2Z"
-															></path>
-														</svg>
-													</div>
-													<div>
-														<p class="mb-2" style="color: white;">Teachers</p>
-														<h4 style="color: white;">{{ teachers.count }}</h4>
-													</div>
-												</div>
-											</a>
-										</div>
-									</div>
-								</div>
-								<div style="height: 130px;" class="col-lg-3 col-md-3">
-									<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
-										<div class="card-body">
-											<a href="{% url 'course-list' %}">
-												<div class="d-flex align-items-center mb-4 card-total-sale">
-													<div class="icon iq-icon-box-2 bg-danger-light" style="background-color: white !important;">
-														<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
-															<path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
-														</svg>
-													</div>
-													<div>
-														<p class="mb-2" style="color: white;">Courses</p>
-														<h4 style="color: white;">{{ courses.count }}</h4>
-													</div>
-												</div>
-											</a>
-										</div>
-									</div>
-								</div>
-								<div style="height: 130px;" class="col-lg-3 col-md-3">
-									<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
-										<div class="card-body">
-											<a href="{% url 'select-course' %}">
-												<div class="d-flex align-items-center mb-4 card-total-sale">
-													<div class="icon iq-icon-box-2 bg-success-light" style="background-color: white !important;">
-														<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
-															<path
-																fill="var(--main-color)"
-																d="M17.5 12a5.5 5.5 0 1 1 0 11a5.5 5.5 0 0 1 0-11Zm-2.646 5.147a.5.5 0 1 0-.707.707l2 2a.5.5 0 0 0 .707 0l4-4a.5.5 0 1 0-.707-.707L16.5 18.793l-1.646-1.646ZM12.023 14a6.47 6.47 0 0 0-.709 1.5H4.253a.749.749 0 0 0-.75.75v.577c0 .535.192 1.053.54 1.46c1.253 1.469 3.22 2.214 5.957 2.214c.597 0 1.157-.035 1.68-.106c.246.495.553.954.912 1.367c-.795.16-1.66.24-2.592.24c-3.146 0-5.532-.906-7.098-2.74a3.75 3.75 0 0 1-.898-2.435v-.578A2.249 2.249 0 0 1 4.253 14h7.77ZM10 2.005a5 5 0 1 1 0 10a5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7Z"
-															></path>
-														</svg>
-													</div>
-													<div>
-														<p class="mb-2" style="color: white;">Rate</p>
-														<h4 style="color: white;">{{ attendance_rate|floatformat:2 }}%</h4>
-													</div>
-												</div>
-											</a>
-										</div>
-									</div>
-								</div>
-							</div>
-							<h5 style="margin-bottom: 25px; margin-top: -38px; font-weight: 600; color: #333;">Today’s Statistics</h5>
-							<div class="row" style="position: relative; top: -20px;">
-								<div style="height: 130px;" class="col-lg-3 col-md-3">
-									<div class="card card-block card-stretch card-height" style=" background-color: white;">
-										<div class="card-body">
-											<div class="d-flex align-items-center mb-4 card-total-sale">
-												<div class="icon iq-icon-box-2 bg-success-light" style="background-color: var(--main-color) !important;">
-													<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 10 10">
-														<path
-															fill="white"
-															d="M4.998 0a4.998 4.998 0 1 0 0 9.995a4.998 4.998 0 0 0 0-9.995ZM1 4.998a3.998 3.998 0 1 1 7.995 0a3.998 3.998 0 0 1-7.995 0Zm6.104-1.602a.5.5 0 0 1 0 .708l-2.25 2.25a.5.5 0 0 1-.708 0l-1-1a.5.5 0 1 1 .708-.708l.646.647l1.896-1.897a.5.5 0 0 1 .708 0Z"
-														></path>
-													</svg>
-												</div>
-												<div>
-													<p class="mb-2" style="color: black;">Present</p>
-													<h4 style="color: black;">{{ present_student.count }}</h4>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div style="height: 130px;" class="col-lg-3 col-md-3">
-									<div class="card card-block card-stretch card-height" style=" background-color: white;">
-										<div class="card-body">
-											<div class="d-flex align-items-center mb-4 card-total-sale">
-												<div class="icon iq-icon-box-2 bg-success-light" style="background-color: var(--main-color) !important;">
-													<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16">
-														<path
-															fill="white"
-															fill-rule="evenodd"
-															d="M14.1 13.2c1.2-1.4 1.92-3.21 1.92-5.2c0-4.42-3.58-8-8-8s-8 3.58-8 8s3.58 8 8 8a7.98 7.98 0 0 0 6.084-2.804zm-1.59.174a6.96 6.96 0 0 1-4.49 1.63c-3.87 0-7-3.13-7-7c0-1.71.612-3.27 1.63-4.49zm.884-.884l-9.86-9.86A6.96 6.96 0 0 1 8.024 1c3.87 0 7 3.13 7 7c0 1.71-.612 3.27-1.63 4.49"
-															clip-rule="evenodd"
-														></path>
-													</svg>
-												</div>
-												<div>
-													<p class="mb-2" style="color: black;">Absent</p>
-													<h4 style="color: black;">{{ absent_students.count }}</h4>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div style="height: 130px;" class="col-lg-3 col-md-3">
-									<div class="card card-block card-stretch card-height" style=" background-color: white;">
-										<div class="card-body">
-											<div class="d-flex align-items-center mb-4 card-total-sale">
-												<div class="icon iq-icon-box-2 bg-success-light" style="background-color: var(--main-color) !important;">
-													<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
-														<path fill="white" d="M12 21.934A9.934 9.934 0 1 1 21.933 12A9.945 9.945 0 0 1 12 21.934Zm0-18.868A8.934 8.934 0 1 0 20.933 12A8.944 8.944 0 0 0 12 3.066Z" />
-														<path
-															fill="white"
-															d="M9 10.258a1.5 1.5 0 1 1 1.061-.439A1.5 1.5 0 0 1 9 10.258Zm0-2a.5.5 0 1 0 .353.146A.5.5 0 0 0 9 8.259Zm-1.242 8.485a.5.5 0 0 1-.358-.853l8.489-8.49a.5.5 0 0 1 .707.707L8.111 16.6a.5.5 0 0 1-.353.143ZM15 16.742a1.5 1.5 0 1 1 1.061-.438a1.493 1.493 0 0 1-1.061.438Zm0-2a.5.5 0 0 0-.354.147a.5.5 0 0 0-.146.352a.5.5 0 1 0 1 0a.5.5 0 0 0-.5-.5Z"
-														></path>
-													</svg>
-												</div>
-												<div>
-													<p class="mb-2" style="color: black;">Rate</p>
-													<h4 style="color: black;">{{ attendance_rate_today|floatformat:2 }}%</h4>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div style="height: 130px;" class="col-lg-3 col-md-3">
-									<div class="card card-block card-stretch card-height" style=" background-color: white;">
-										<div class="card-body">
-											<div class="d-flex align-items-center mb-4 card-total-sale">
-												<div class="icon iq-icon-box-2 bg-success-light" style="background-color: var(--main-color) !important;">
-													<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
-														<path fill="white" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
-													</svg>
-												</div>
-												<div>
-													<p class="mb-2" style="color: black;">Courses</p>
-													<h4 style="color: black;">{{ todays_courses }}</h4>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+			<div class="col-lg-3" style="position: relative; top: -20px;">
+				<div class="card card-block card-stretch" style="">
+					<div class="card-header d-flex align-items-center justify-content-between" style="">
+						<div class="header-title">
+							<h4 class="card-title">Top Students</h4>
 						</div>
-						<div class="col-lg-6" style="position: relative; top: -20px; ">
-							<div class="card card-block card-stretch" style=" background-color: var(--background-color);">
-								<div class="card-header d-flex align-items-center justify-content-between" style="">
-									<div class="header-title">
-										<h4 class="card-title">Attendance Records</h4>
-									</div>
-									{% with request.path as current_url %}
-									<div style="position: relative; top: -35px; left: 17px">
-										<a
-											href="{% url 'dashboard' 7 %}"
-											style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/7/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %}; position: relative; top: 35px; left: -25px; padding: 8px;"
-										>
-											7 days
+					</div>
+					<div style="overflow: auto; height: 308px;">
+						<div class="card-body card-item-right">
+							{% for student in top_students %}
+							<div class="d-flex align-items-top">
+								<div class="style-text text-left">
+									<h5 class="mb-2">
+										<a style="color: var(--text-color)" title="Details" href="{% url 'student-details' student.id %}">
+											{{ student.first_name }} {{ student.last_name }}
 										</a>
-										<a
-											href="{% url 'dashboard' 30 %}"
-											style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/30/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %}; position: relative; top: 35px; left: -25px; padding: 8px;"
-										>
-											30 days
+									</h5>
+									<p class="mb-2">
+										<a title="Details" style="color: var(--text-color)" href="{% url 'course-details' student.course.id %}">
+											Course : {{ student.course }}
 										</a>
-										<a
-											href="{% url 'dashboard' 365 %}"
-											style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/365/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %}; position: relative; top: 35px; left: -25px; padding: 8px;"
-										>
-											1 year
-										</a>
-										<a
-											href="{% url 'dashboard' %}"
-											style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %};position: relative; top: 35px; left: -25px; padding: 8px;"
-										>
-											Total
-										</a>
-									</div>
-									{% endwith %}
-								</div>
-								<div class="card-body">
-									<div>
-										<canvas id="lineChart"></canvas>
-									</div>
+									</p>
+									<p class="mb-0">Attendance : {{ student.total_lessons }}</p>
+									<p class="mb-0">Absence: {{ student.absent }}</p>
 								</div>
 							</div>
+							<hr style="background-color: var(--text-color);" />
+							{% endfor %}
 						</div>
-						<div class="col-lg-3" style="position: relative; top: -20px;">
-							<div class="card card-block card-stretch" style="">
-								<div class="card-header d-flex align-items-center justify-content-between" style="">
-									<div class="header-title">
-										<h4 class="card-title">Top Students</h4>
-									</div>
-								</div>
-								<div style="overflow: auto; height: 308px;">
-									<div class="card-body card-item-right">
-										{% for student in top_students %}
-										<div class="d-flex align-items-top">
-											<div class="style-text text-left">
-												<h5 class="mb-2">
-													<a style="color: var(--text-color)" title="Details" href="{% url 'student-details' student.id %}">
-														{{ student.first_name }} {{ student.last_name }}
-													</a>
-												</h5>
-												<p class="mb-2">
-													<a title="Details" style="color: var(--text-color)" href="{% url 'course-details' student.course.id %}">
-														Course : {{ student.course }}
-													</a>
-												</p>
-												<p class="mb-0">Attendance : {{ student.total_lessons }}</p>
-												<p class="mb-0">Absence: {{ student.absent }}</p>
-											</div>
-										</div>
-										<hr style="background-color: var(--text-color);" />
-										{% endfor %}
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-lg-3" style="position: relative; top: -20px;">
-							<div class="card card-block card-stretch" style="">
-								<div class="card-header d-flex align-items-center justify-content-between" style="">
-									<div class="header-title">
-										<h4 class="card-title">Students</h4>
-									</div>
-								</div>
-								<div class="card-body">
-									<div style="overflow: auto; height: 270px;">
-										<canvas id="pieChart"></canvas>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-12" style="position: relative; top: -20px;">
-							<div class="card card-block card-stretch" style="">
-								<div class="card-header d-flex align-items-center justify-content-between" style="">
-									<div class="header-title">
-										<h4 class="card-title">Recent Attendance Records</h4>
-									</div>
-								</div>
-								<div class="card-body">
-									<div style="overflow: auto; height: 370px;">
-										<table class="table">
-											<thead class=" ">
-												<tr class="ligth ligth-data">
-													<th style="text-align: start;">Student</th>
-													<th style="text-align: left">Course</th>
-													<th style="text-align: left">Course Time</th>
-													<th style="text-align: left">Record Time</th>
-													<th style="text-align: left">Teacher</th>
-													<th style="text-align: left">Status</th>
-												</tr>
-											</thead>
-											<tbody class="ligth-body">
-												{% for record in attendance_records %}
-												<tr>
-													<td style="text-align: start;">
-														<a title="Details" style="color: var(--text-color);" href="{% url 'student-details' record.student.id %}">{{ record.student.first_name }} {{ record.student.last_name }}</a>
-													</td>
-													<td style="text-align: start;"><a title="Details" style="color: var(--text-color);" href="{% url 'course-details' record.course.id %}">{{ record.course }}</a></td>
-													<td style="color: var(--text-color);">{{ record.course.course_time }}</td>
-													<td style="color: var(--text-color);">{{ record.time }}</td>
-													<td style="color: var(--text-color);">
-														<a title="Details" style="color: var(--text-color);" href="{% url 'teacher-details' record.student.course.course_teacher.id %}">
-															{{ record.student.course.course_teacher.first_name }} {{ record.student.course.course_teacher.last_name }}
-														</a>
-													</td>
-													{% if record.status %}
-													<td style="color: var(--text-color);">✅ Present</td>
-													{% else %}
-													<td style="color: var(--text-color);">❌ Absent</td>
-													{% endif %}
-												</tr>
-												{% endfor %}
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- Page end  -->
 					</div>
 				</div>
 			</div>
 
-			<script>
-				// Retrieve data passed from the view
-				var data = {{ gender_data|safe }};
-
-				// Get the canvas element
-				var canvas = document.getElementById('pieChart');
-
-				// Create the chart
-				new Chart(canvas, {
-				    type: 'doughnut',
-				    data: {
-				        labels: data.labels,
-				        datasets: [{
-				            data: data.values,
-				            borderColor: ['rgb(60 25 220)', 'blue', 'green', "grey", "rgb(92 11 214)"],
-				            backgroundColor: 'white'
-				        }]
-				    }
-				});
-			</script>
-			<script>
-				// Retrieve the data points from the Django template context
-				var dataPoints = {{ line_chart_data|safe }};
-
-				// Get the canvas element
-				var ctx = document.getElementById('lineChart').getContext('2d');
-
-				// Create the line chart
-				var chart = new Chart(ctx, {
-				    type: 'line',
-				    data: {
-				        labels: dataPoints.labels,  // Example labels
-				        datasets: [{
-				            label: 'Attendance Records',
-				            data: dataPoints.values,
-				            backgroundColor: 'rgb(92 11 214)',
-				            borderColor: 'rgb(92 11 214)',
-				            borderWidth: 1
-				        }]
-				    },
-				    options: {
-				        responsive: true,
-				        scales: {
-				            y: {
-				                beginAtZero: true
-				            }
-				        }
-				    }
-				});
-			</script>
-			<script>
-				document.addEventListener("DOMContentLoaded", function () {
-				  const sidebar = document.getElementById("sidebar");
-				  const toggleBtn = document.querySelector(".iq-menu-bt-sidebar");
-
-				  toggleBtn.addEventListener("click", function () {
-				    sidebar.classList.toggle("collapsed");
-				  });
-				});
-			</script>
-			<script src="{% static 'assets/js/backend-bundle.min.js' %}"></script>
-
-			<!-- Table Treeview JavaScript -->
-			<script src="{% static 'assets/js/table-treeview.js' %}"></script>
-
-			<!-- Chart Custom JavaScript -->
-			<script src="{% static 'assets/js/customizer.js' %}"></script>
-
-			<!-- app JavaScript -->
-			<script src="{% static 'assets/js/app.js' %}"></script>
-			<script>
-				const toggleBtn = document.getElementById("theme-toggle");
-				const currentTheme = localStorage.getItem("theme") || "light";
-
-				document.documentElement.setAttribute("data-theme", currentTheme);
-
-				toggleBtn.addEventListener("click", () => {
-				    const newTheme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
-				    document.documentElement.setAttribute("data-theme", newTheme);
-				    localStorage.setItem("theme", newTheme);
-				});
-			</script>
-
-			<script>
-				function closeError() {
-				  const box = document.getElementById('dashboard-error');
-				  if (box) box.style.display = 'none';
-				}
-			</script>
+			<div class="col-lg-3" style="position: relative; top: -20px;">
+				<div class="card card-block card-stretch" style="">
+					<div class="card-header d-flex align-items-center justify-content-between" style="">
+						<div class="header-title">
+							<h4 class="card-title">Students</h4>
+						</div>
+					</div>
+					<div class="card-body">
+						<div style="overflow: auto; height: 270px;">
+							<canvas id="pieChart"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-12" style="position: relative; top: -20px;">
+				<div class="card card-block card-stretch" style="">
+					<div class="card-header d-flex align-items-center justify-content-between" style="">
+						<div class="header-title">
+							<h4 class="card-title">Recent Attendance Records</h4>
+						</div>
+					</div>
+					<div class="card-body">
+						<div style="overflow: auto; height: 370px;">
+							<table class="table">
+								<thead class=" ">
+									<tr class="ligth ligth-data">
+										<th style="text-align: start;">Student</th>
+										<th style="text-align: left">Course</th>
+										<th style="text-align: left">Course Time</th>
+										<th style="text-align: left">Record Time</th>
+										<th style="text-align: left">Teacher</th>
+										<th style="text-align: left">Status</th>
+									</tr>
+								</thead>
+								<tbody class="ligth-body">
+									{% for record in attendance_records %}
+									<tr>
+										<td style="text-align: start;">
+											<a title="Details" style="color: var(--text-color);" href="{% url 'student-details' record.student.id %}">{{ record.student.first_name }} {{ record.student.last_name }}</a>
+										</td>
+										<td style="text-align: start;"><a title="Details" style="color: var(--text-color);" href="{% url 'course-details' record.course.id %}">{{ record.course }}</a></td>
+										<td style="color: var(--text-color);">{{ record.course.course_time }}</td>
+										<td style="color: var(--text-color);">{{ record.time }}</td>
+										<td style="color: var(--text-color);">
+											<a title="Details" style="color: var(--text-color);" href="{% url 'teacher-details' record.student.course.course_teacher.id %}">
+												{{ record.student.course.course_teacher.first_name }} {{ record.student.course.course_teacher.last_name }}
+											</a>
+										</td>
+										{% if record.status %}
+										<td style="color: var(--text-color);">✅ Present</td>
+										{% else %}
+										<td style="color: var(--text-color);">❌ Absent</td>
+										{% endif %}
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Page end  -->
 		</div>
-	</body>
-</html>
+	</div>
+</div>
+
+{% endblock %}
