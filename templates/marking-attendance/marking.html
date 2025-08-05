@@ -220,7 +220,7 @@
                                     <div>
                                         <h4 class="mb-3">Course: {{ course.course_name }} | Date: {{ date }}</h4>
                                         {% if attendances %}
-                                        <h4 class="mb-3">Marked by: {% for attendance in attendances %}{{ attendance.center }}{% endfor %}</h4>
+                                        <h5 class="mb-3" style="padding-bottom: 8px;">Marked by: {{ marked_by }}</h5>
                                         {% endif %}
                                     </div>
                                     {% if not attendances %}

@@ -176,16 +176,18 @@ def marking(request, id):
                 status = False
             if hasattr(request.user, 'teacher_user'):
                 center = Teacher.objects.get(user=request.user).center
-                Attendance.objects.create(student_id=i.id, course_id=id, status=status, center=center, user=request.user)
+                Attendance.objects.create(student_id=i.id, course_id=id, status=status, center=center, user=request.user, marked_by=request.user)
             else:
                 user = Course.objects.get(pk=id, center=request.user).course_teacher.user
-                Attendance.objects.create(student_id=i.id, course_id=id, status=status, center=request.user, user=user)
+                Attendance.objects.create(student_id=i.id, course_id=id, status=status, center=request.user, user=user, marked_by=request.user)
         return redirect("select-course")
 
     if attendances.exists():
         attendances = attendances
+        marked_by = attendances[0].marked_by
     else:
         attendances = None
+        marked_by = None
 
     data = {
         "students": students,
@@ -193,5 +195,6 @@ def marking(request, id):
         "attendances": attendances,
         "date": date.today(),
         "role": role,
+        "marked_by": marked_by
     }
     return render(request, "marking-attendance/marking.html", data)
