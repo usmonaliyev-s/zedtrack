@@ -129,7 +129,7 @@
 				<div class="data-scrollbar" data-scroll="1" style="flex: 1; overflow-y: auto;">
 					<nav class="iq-sidebar-menu">
 						<ul id="iq-sidebar-toggle" class="iq-menu">
-							<li class="active">
+							<li {% if request.resolver_match.url_name == "dashboard" %}class="active"{% endif %}>
 								<a href="/" class="svg-icon">
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +153,7 @@
 									<span class="ml-4">Dashboard</span>
 								</a>
 							</li>
-							<li>
+							<li {% if request.resolver_match.url_name == "select-course" or request.resolver_match.url_name == "selected-course" %}class="active"{% endif %}>
 								<a href="{% url 'select-course' %}" class="svg-icon">
 									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
 										<path
@@ -164,20 +164,19 @@
 									<span class="ml-4">Mark Attendance</span>
 								</a>
 							</li>
-							<li>
+							<li {% if request.resolver_match.url_name == "student-list" or request.resolver_match.url_name == "add-student" or request.resolver_match.url_name == "student-details" or request.resolver_match.url_name == "edit-student" %}class="active"{% endif %}>
 								<a href="{% url 'student-list' %}" class="svg-icon">
 									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 1024 768">
 										<path
 											fill="var(--main-color)"
 											d="M1024 736q0 13-9.5 22.5T992 768t-22.5-9.5T960 736V315L607 492q-40 20-95 20t-95-20L39 303Q0 283 0 255.5T39 209L417 20q40-20 95-20t95 20l378 189q34 17 38 42q1 1 1 4v481zM639 556l193-97v141q0 43-93.5 73.5T512 704t-226.5-30.5T192 600V459l193 97q40 20 127 20t127-20z"
 										>
-											>
 										</path>
 									</svg>
 									<span class="ml-4">Students</span>
 								</a>
 							</li>
-							<li>
+							<li {% if request.resolver_match.url_name == "teachers-list" or request.resolver_match.url_name == "add-teacher" or request.resolver_match.url_name == "teacher-details" or request.resolver_match.url_name == "edit-teacher" %}class="active"{% endif %}>
 								<a href="{% url 'teachers-list' %}" class="svg-icon">
 									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="var(--main-color)" stroke-width="1" viewBox="0 0 20 20">
 										<path
@@ -188,7 +187,7 @@
 									<span class="ml-4">Teachers</span>
 								</a>
 							</li>
-							<li>
+							<li {% if request.resolver_match.url_name == "course-list" or request.resolver_match.url_name == "add-course" or request.resolver_match.url_name == "course-details" or request.resolver_match.url_name == "edit-course" %}class="active"{% endif %}>
 								<a href="{% url 'course-list' %}" class="svg-icon">
 									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
 										<path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
@@ -250,7 +249,7 @@
 										></path>
 									</svg>
 								</a>
-								<a class="left-nav-menu" style="position: absolute; right: 0px; padding-top: 2px; cursor: pointer; z-index: 1000;"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 8V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2v-2"/><path d="M9 12h12l-3-3m0 6l3-3"/></g></svg></a>
+								<a href="{% url 'logout' %}" class="left-nav-menu" style="position: absolute; right: 0px; padding-top: 2px; cursor: pointer; z-index: 1000;"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24"><g fill="none" stroke="var(--text-color)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 8V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2v-2"/><path d="M9 12h12l-3-3m0 6l3-3"/></g></svg></a>
 							</div>
 						</div>
 					</nav>
