@@ -18,6 +18,8 @@ def dashboard(request, a=None, b=None, c=None):
     if request.user.is_authenticated:
         if hasattr(request.user, 'teacher_user'):
             return redirect('teacher-dashboard')
+        elif hasattr(request.user, 'student_user'):
+            return redirect('student-dashboard')
         students = Student.objects.annotate(
             total=Count('attendance'),
             total_lessons=Count('attendance'),

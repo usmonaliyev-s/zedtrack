@@ -197,3 +197,6 @@ def student_details(request, id):
         "role": role
     }
     return render(request, "students/student_details.html", data)
+
+def student_dashboard(request):
+    return None
