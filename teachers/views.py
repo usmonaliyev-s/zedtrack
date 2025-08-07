@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.db.models.functions import NullIf, TruncDate
 from django.shortcuts import render, redirect
 from django.db.models import ExpressionWrapper, FloatField, F, Count, Q
+from django.contrib import messages
 
 from attendance_tracker.views import index
 from courses.models import Course

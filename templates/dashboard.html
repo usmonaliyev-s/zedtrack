@@ -12,8 +12,8 @@
 					{% for message in messages %}
 					<div class="errbox-icon">&#9888;</div>
 					<div class="errbox-content">
-						<h4>Error loading data</h4>
-						<p>There was a problem fetching the dashboard data. Please try again later.</p>
+						<h4>Error</h4>
+						<p>{{ messages }}</p>
 					</div>
 					<button class="errbox-close" onclick="document.getElementById('errbox').style.display='none'">&times;</button>
 					{% endfor %}

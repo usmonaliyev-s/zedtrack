@@ -6,6 +6,18 @@
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-lg-12">
+							{% if messages %}
+				<div id="errbox" class="errbox">
+					{% for message in messages %}
+					<div class="errbox-icon">&#9888;</div>
+					<div class="errbox-content">
+						<h4>Error</h4>
+						<p>{{ message }}</p>
+					</div>
+					<button class="errbox-close" onclick="document.getElementById('errbox').style.display='none'">&times;</button>
+					{% endfor %}
+				</div>
+				{% endif %}
 							<div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
 								<div>
 									<h4 class="mb-3">Student: {{ student.first_name }} {{ student.last_name }}</h4>

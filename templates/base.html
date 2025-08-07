@@ -127,78 +127,80 @@
 
 				<!-- Sidebar menu scrollable area -->
 				<div class="data-scrollbar" data-scroll="1" style="flex: 1; overflow-y: auto;">
-					<nav class="iq-sidebar-menu">
-						<ul id="iq-sidebar-toggle" class="iq-menu">
-							<li {% if request.resolver_match.url_name == "dashboard" %}class="active"{% endif %}>
-								<a href="/" class="svg-icon">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										xmlns:xlink="http://www.w3.org/1999/xlink"
-										x="0px"
-										y="0px"
-										width="20px"
-										height="20px"
-										viewBox="0 0 122.88 122.566"
-										enable-background="new 0 0 122.88 122.566"
-										xml:space="preserve"
-									>
-										<g>
-											<path
-												fill-rule="evenodd"
-												clip-rule="evenodd"
-												d="M3.78,66.082h47.875c2.045,0,3.717,1.988,3.717,4.414v46.479 c0,2.43-1.671,4.416-3.717,4.416H3.78c-2.043,0-3.717-1.986-3.717-4.416V70.496C0.063,68.07,1.737,66.082,3.78,66.082L3.78,66.082z M71.224,0H119.1c2.046,0,3.717,1.986,3.717,4.415v46.479c0,2.429-1.671,4.413-3.717,4.413H71.224 c-2.045,0-3.714-1.984-3.714-4.413V4.415C67.51,1.986,69.179,0,71.224,0L71.224,0z M3.714,0h47.878 c2.045,0,3.717,1.986,3.717,4.415v46.479c0,2.429-1.671,4.413-3.717,4.413H3.714C1.671,55.307,0,53.323,0,50.894V4.415 C0,1.986,1.671,0,3.714,0L3.714,0z M71.287,67.26h47.876c2.043,0,3.717,1.986,3.717,4.416v46.479c0,2.426-1.674,4.412-3.717,4.412 H71.287c-2.045,0-3.717-1.986-3.717-4.412V71.676C67.57,69.246,69.242,67.26,71.287,67.26L71.287,67.26z"
-											></path>
-										</g>
-									</svg>
-									<span class="ml-4">Dashboard</span>
-								</a>
-							</li>
-							<li {% if request.resolver_match.url_name == "select-course" or request.resolver_match.url_name == "selected-course" %}class="active"{% endif %}>
-								<a href="{% url 'select-course' %}" class="svg-icon">
-									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-										<path
-											fill="var(--main-color)"
-											d="M20 16v-6h2v6a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2h8v2H8v12h12m-9.09-8.92L14 10.17l6.59-6.59L22 5l-8 8l-4.5-4.5l1.41-1.42M16 20v2H4a2 2 0 0 1-2-2V7h2v13h12Z"
-										></path>
-									</svg>
-									<span class="ml-4">Mark Attendance</span>
-								</a>
-							</li>
-							<li {% if request.resolver_match.url_name == "student-list" or request.resolver_match.url_name == "add-student" or request.resolver_match.url_name == "student-details" or request.resolver_match.url_name == "edit-student" %}class="active"{% endif %}>
-								<a href="{% url 'student-list' %}" class="svg-icon">
-									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 1024 768">
-										<path
-											fill="var(--main-color)"
-											d="M1024 736q0 13-9.5 22.5T992 768t-22.5-9.5T960 736V315L607 492q-40 20-95 20t-95-20L39 303Q0 283 0 255.5T39 209L417 20q40-20 95-20t95 20l378 189q34 17 38 42q1 1 1 4v481zM639 556l193-97v141q0 43-93.5 73.5T512 704t-226.5-30.5T192 600V459l193 97q40 20 127 20t127-20z"
+					{% if role != 'student' %}
+						<nav class="iq-sidebar-menu">
+							<ul id="iq-sidebar-toggle" class="iq-menu">
+								<li {% if request.resolver_match.url_name == "dashboard" %}class="active"{% endif %}>
+									<a href="/" class="svg-icon">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											xmlns:xlink="http://www.w3.org/1999/xlink"
+											x="0px"
+											y="0px"
+											width="20px"
+											height="20px"
+											viewBox="0 0 122.88 122.566"
+											enable-background="new 0 0 122.88 122.566"
+											xml:space="preserve"
 										>
-										</path>
-									</svg>
-									<span class="ml-4">Students</span>
-								</a>
-							</li>
-							{% if role != "teacher" %}
-							<li {% if request.resolver_match.url_name == "teachers-list" or request.resolver_match.url_name == "add-teacher" or request.resolver_match.url_name == "teacher-details" or request.resolver_match.url_name == "edit-teacher" %}class="active"{% endif %}>
-								<a href="{% url 'teachers-list' %}" class="svg-icon">
-									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="var(--main-color)" stroke-width="1" viewBox="0 0 20 20">
-										<path
-											fill="var(--main-color)"
-											d="M8.75 3.75a2.75 2.75 0 1 0-5.5 0a2.75 2.75 0 0 0 5.5 0Zm-4.5 0a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0ZM2.5 7.5h4.183c-.164.31-.286.646-.358 1H2.5A.5.5 0 0 0 2 9v.5c0 1.26 1.099 2.614 3.096 2.93c-.322.22-.59.513-.781.854C2.205 12.713 1 11.087 1 9.5V9a1.5 1.5 0 0 1 1.5-1.5Zm5.379 0c.504-.61 1.267-1 2.121-1a2.744 2.744 0 0 1 2.646 2a2.753 2.753 0 0 1-3.893 3.202A2.75 2.75 0 0 1 7.88 7.5Zm.54 1a1.75 1.75 0 1 0 3.164 1.5a1.75 1.75 0 0 0-3.165-1.5Zm7.266 4.784a2.513 2.513 0 0 0-.781-.853C16.9 12.114 18 10.759 18 9.5V9a.5.5 0 0 0-.5-.5h-3.825a3.726 3.726 0 0 0-.357-1H17.5A1.5 1.5 0 0 1 19 9v.5c0 1.587-1.206 3.212-3.315 3.784Zm-1.198.087A1.493 1.493 0 0 0 13.5 13h-7A1.496 1.496 0 0 0 5 14.5v.5c0 1.971 1.86 4 5 4c3.14 0 5-2.029 5-4v-.5c0-.45-.198-.854-.513-1.13ZM6 14.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v.5c0 1.438-1.432 3-4 3s-4-1.562-4-3v-.5ZM14 1a2.75 2.75 0 1 1 0 5.5A2.75 2.75 0 0 1 14 1Zm0 1a1.75 1.75 0 1 0 0 3.5A1.75 1.75 0 0 0 14 2Z"
-										></path>
-									</svg>
-									<span class="ml-4">Teachers</span>
-								</a>
-							</li>
-							{% endif %}
-							<li {% if request.resolver_match.url_name == "course-list" or request.resolver_match.url_name == "add-course" or request.resolver_match.url_name == "course-details" or request.resolver_match.url_name == "edit-course" %}class="active"{% endif %}>
-								<a href="{% url 'course-list' %}" class="svg-icon">
-									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-										<path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
-									</svg>
-									<span class="ml-4">Courses</span>
-								</a>
-							</li>
-						</ul>
-					</nav>
+											<g>
+												<path
+													fill-rule="evenodd"
+													clip-rule="evenodd"
+													d="M3.78,66.082h47.875c2.045,0,3.717,1.988,3.717,4.414v46.479 c0,2.43-1.671,4.416-3.717,4.416H3.78c-2.043,0-3.717-1.986-3.717-4.416V70.496C0.063,68.07,1.737,66.082,3.78,66.082L3.78,66.082z M71.224,0H119.1c2.046,0,3.717,1.986,3.717,4.415v46.479c0,2.429-1.671,4.413-3.717,4.413H71.224 c-2.045,0-3.714-1.984-3.714-4.413V4.415C67.51,1.986,69.179,0,71.224,0L71.224,0z M3.714,0h47.878 c2.045,0,3.717,1.986,3.717,4.415v46.479c0,2.429-1.671,4.413-3.717,4.413H3.714C1.671,55.307,0,53.323,0,50.894V4.415 C0,1.986,1.671,0,3.714,0L3.714,0z M71.287,67.26h47.876c2.043,0,3.717,1.986,3.717,4.416v46.479c0,2.426-1.674,4.412-3.717,4.412 H71.287c-2.045,0-3.717-1.986-3.717-4.412V71.676C67.57,69.246,69.242,67.26,71.287,67.26L71.287,67.26z"
+												></path>
+											</g>
+										</svg>
+										<span class="ml-4">Dashboard</span>
+									</a>
+								</li>
+								<li {% if request.resolver_match.url_name == "select-course" or request.resolver_match.url_name == "selected-course" %}class="active"{% endif %}>
+									<a href="{% url 'select-course' %}" class="svg-icon">
+										<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+											<path
+												fill="var(--main-color)"
+												d="M20 16v-6h2v6a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2h8v2H8v12h12m-9.09-8.92L14 10.17l6.59-6.59L22 5l-8 8l-4.5-4.5l1.41-1.42M16 20v2H4a2 2 0 0 1-2-2V7h2v13h12Z"
+											></path>
+										</svg>
+										<span class="ml-4">Mark Attendance</span>
+									</a>
+								</li>
+								<li {% if request.resolver_match.url_name == "student-list" or request.resolver_match.url_name == "add-student" or request.resolver_match.url_name == "student-details" or request.resolver_match.url_name == "edit-student" %}class="active"{% endif %}>
+									<a href="{% url 'student-list' %}" class="svg-icon">
+										<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 1024 768">
+											<path
+												fill="var(--main-color)"
+												d="M1024 736q0 13-9.5 22.5T992 768t-22.5-9.5T960 736V315L607 492q-40 20-95 20t-95-20L39 303Q0 283 0 255.5T39 209L417 20q40-20 95-20t95 20l378 189q34 17 38 42q1 1 1 4v481zM639 556l193-97v141q0 43-93.5 73.5T512 704t-226.5-30.5T192 600V459l193 97q40 20 127 20t127-20z"
+											>
+											</path>
+										</svg>
+										<span class="ml-4">Students</span>
+									</a>
+								</li>
+								{% if role != "teacher" %}
+								<li {% if request.resolver_match.url_name == "teachers-list" or request.resolver_match.url_name == "add-teacher" or request.resolver_match.url_name == "teacher-details" or request.resolver_match.url_name == "edit-teacher" %}class="active"{% endif %}>
+									<a href="{% url 'teachers-list' %}" class="svg-icon">
+										<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="var(--main-color)" stroke-width="1" viewBox="0 0 20 20">
+											<path
+												fill="var(--main-color)"
+												d="M8.75 3.75a2.75 2.75 0 1 0-5.5 0a2.75 2.75 0 0 0 5.5 0Zm-4.5 0a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0ZM2.5 7.5h4.183c-.164.31-.286.646-.358 1H2.5A.5.5 0 0 0 2 9v.5c0 1.26 1.099 2.614 3.096 2.93c-.322.22-.59.513-.781.854C2.205 12.713 1 11.087 1 9.5V9a1.5 1.5 0 0 1 1.5-1.5Zm5.379 0c.504-.61 1.267-1 2.121-1a2.744 2.744 0 0 1 2.646 2a2.753 2.753 0 0 1-3.893 3.202A2.75 2.75 0 0 1 7.88 7.5Zm.54 1a1.75 1.75 0 1 0 3.164 1.5a1.75 1.75 0 0 0-3.165-1.5Zm7.266 4.784a2.513 2.513 0 0 0-.781-.853C16.9 12.114 18 10.759 18 9.5V9a.5.5 0 0 0-.5-.5h-3.825a3.726 3.726 0 0 0-.357-1H17.5A1.5 1.5 0 0 1 19 9v.5c0 1.587-1.206 3.212-3.315 3.784Zm-1.198.087A1.493 1.493 0 0 0 13.5 13h-7A1.496 1.496 0 0 0 5 14.5v.5c0 1.971 1.86 4 5 4c3.14 0 5-2.029 5-4v-.5c0-.45-.198-.854-.513-1.13ZM6 14.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v.5c0 1.438-1.432 3-4 3s-4-1.562-4-3v-.5ZM14 1a2.75 2.75 0 1 1 0 5.5A2.75 2.75 0 0 1 14 1Zm0 1a1.75 1.75 0 1 0 0 3.5A1.75 1.75 0 0 0 14 2Z"
+											></path>
+										</svg>
+										<span class="ml-4">Teachers</span>
+									</a>
+								</li>
+								{% endif %}
+								<li {% if request.resolver_match.url_name == "course-list" or request.resolver_match.url_name == "add-course" or request.resolver_match.url_name == "course-details" or request.resolver_match.url_name == "edit-course" %}class="active"{% endif %}>
+									<a href="{% url 'course-list' %}" class="svg-icon">
+										<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+											<path fill="var(--main-color)" d="M19 3h-2v6.5l-3-2.25l-3 2.25V3H5v18h14V3Zm-6 0v2.5l1-.75l1 .75V3h-2Zm8 20H3V1h18v22Z"></path>
+										</svg>
+										<span class="ml-4">Courses</span>
+									</a>
+								</li>
+							</ul>
+						</nav>
+					{% endif %}
 				</div>
 
 				<!-- User info fixed at bottom -->
