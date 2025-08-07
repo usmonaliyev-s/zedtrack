@@ -16,6 +16,9 @@ import calendar
 # Create your views here.
 @login_required
 def courses_list(request):
+    if hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
+        return redirect('dashboard')
     courses = Course.objects.annotate(num_students=Count('student', distinct=True)).filter(center=request.user)
     role = "admin"
     if hasattr(request.user, 'teacher_user'):

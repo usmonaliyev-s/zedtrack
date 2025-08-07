@@ -16,8 +16,9 @@ from teachers.models import Teacher
 # Create your views here.
 @login_required
 def teachers_list(request):
-    if hasattr(request.user, 'teacher_user'):
-        return redirect('teacher-dashboard')
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
+        return redirect('dashboard')
     teachers = Teacher.objects.annotate(
     num_students=Count('course__student', distinct=True),
     num_courses=Count("course", distinct=True)
@@ -29,8 +30,9 @@ def teachers_list(request):
 
 @login_required
 def add_teacher(request):
-    if hasattr(request.user, 'teacher_user'):
-        return redirect('teacher-dashboard')
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
+        return redirect('dashboard')
     if request.method == "POST":
         user = User.objects.create_user(username=request.POST['username'], password=request.POST['password'])
         Teacher.objects.create(
@@ -46,8 +48,9 @@ def add_teacher(request):
 
 @login_required
 def edit_teacher(request, id):
-    if hasattr(request.user, 'teacher_user'):
-        return redirect('teacher-dashboard')
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
+        return redirect('dashboard')
     if request.method == "POST":
         teacher = Teacher.objects.get(pk=id, center=request.user)
         teacher.first_name = request.POST.get('first_name')
@@ -63,8 +66,9 @@ def edit_teacher(request, id):
 
 @login_required
 def delete_confirmation_teacher(request, id):
-    if hasattr(request.user, 'teacher_user'):
-        return redirect('teacher-dashboard')
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
+        return redirect('dashboard')
     teacher = Teacher.objects.get(pk=id, center=request.user)
     data = {
         "teacher": teacher,
@@ -73,15 +77,17 @@ def delete_confirmation_teacher(request, id):
 
 @login_required
 def delete_teacher(request, id):
-    if hasattr(request.user, 'teacher_user'):
-        return redirect('teacher-dashboard')
+    if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
+        return redirect('dashboard')
     Teacher.objects.get(pk=id, center=request.user).delete()
     return redirect('teachers-list')
 
 @login_required
 def teacher_details(request, id):
-    if hasattr(request.user, 'teacher_user'):
-        return redirect('teacher-dashboard')
+    if hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
+        return redirect('dashboard')
     teacher = Teacher.objects.get(pk=id, center=request.user)
     courses = Course.objects.filter(course_teacher=teacher, center=request.user)
     students = Student.objects.annotate(
@@ -102,6 +108,9 @@ def teacher_details(request, id):
 
 @login_required
 def teacher_dashboard(request, a=None):
+    if hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
+        return redirect('dashboard')
     if request.user.is_authenticated and hasattr(request.user, 'teacher_user'):
         students = Student.objects.annotate(
             total=Count('attendance'),

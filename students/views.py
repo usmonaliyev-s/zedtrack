@@ -17,6 +17,9 @@ from datetime import date
 # Create your views here.
 @login_required
 def students_list(request):
+    if hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
+        return redirect('dashboard')
     students = Student.objects.annotate(
         total=Count('attendance'),
         present=Count('attendance', filter=Q(attendance__status=True)),
@@ -184,6 +187,8 @@ def student_details(request, id):
     role = "admin"
     if hasattr(request.user, 'teacher_user'):
         role = "teacher"
+    elif hasattr(request.user, 'student_user'):
+        role = "student"
     data = {
         "student": student,
         "attendances": attendances,

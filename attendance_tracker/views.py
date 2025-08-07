@@ -120,6 +120,9 @@ def dashboard(request, a=None, b=None, c=None):
 
 @login_required
 def select_course(request):
+    if hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
+        return redirect('dashboard')
     today = date.today()
     weekday = today.strftime("%a")
     courses = Course.objects.filter(days__contains=weekday, center=request.user)
@@ -145,6 +148,9 @@ def select_course(request):
 
 @login_required
 def marking(request, id):
+    if hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
+        return redirect('dashboard')
     role = "admin"
     if hasattr(request.user, 'teacher_user'):
         students = Student.objects.annotate(
