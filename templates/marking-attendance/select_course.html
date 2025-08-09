@@ -34,7 +34,7 @@
                                             <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">
                                                 {% for day in course.course.days %} {{ day }}, {% endfor %}
                                             </td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{{ course.status }}</td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left">{% if course.status %}Marked{% else %}Not marked{% endif %}</td>
                                             <td>
                                                 <a href="{% url 'selected-course' course.course.id %}" style="display: inline-block; background-color: var(--main-color); width: 65px; height: 30px; border-radius: 8px; color: white">
                                                     Select
