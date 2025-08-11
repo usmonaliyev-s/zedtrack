@@ -14,6 +14,19 @@ import calendar
 from collections import defaultdict
 from datetime import date
 
+import csv
+from django.http import HttpResponse
+
+def export_to_csv(filename, headers, rows):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="{filename}.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(headers)
+    for row in rows:
+        writer.writerow(row)
+    return response
+
 # Create your views here.
 @login_required
 def students_list(request):
