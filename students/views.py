@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import ExpressionWrapper, FloatField, F, Count, Q
 from django.db.models.functions import NullIf
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.contrib import messages
 
@@ -27,13 +27,12 @@ def export_to_csv(filename, headers, rows):
         writer.writerow(row)
     return response
 
-# Create your views here.
-@login_required
-def students_list(request):
-    if hasattr(request.user, 'student_user'):
-        messages.error(request, 'You do not have a permission.')
-        return redirect('dashboard')
-    students = Student.objects.annotate(
+def no_permission(request):
+    messages.error(request, 'You do not have a permission.')
+    return redirect('dashboard')
+
+def attendance_annotate(qs):
+    return qs.annotate(
         total=Count('attendance'),
         present=Count('attendance', filter=Q(attendance__status=True)),
     ).annotate(
@@ -41,34 +40,33 @@ def students_list(request):
             100.0 * F('present') / NullIf(F('total'), 0),
             output_field=FloatField()
         )
-    ).filter(center=request.user)
+    )
+
+@login_required
+def students_list(request):
+    if hasattr(request.user, 'student_user'):
+        return no_permission(request)
+
     role = "admin"
+    students = attendance_annotate(Student.objects.all())
+
     if hasattr(request.user, 'teacher_user'):
         role = "teacher"
-        students = Student.objects.annotate(
-            total=Count('attendance'),
-            present=Count('attendance', filter=Q(attendance__status=True)),
-        ).annotate(
-            attendance_rate=ExpressionWrapper(
-                100.0 * F('present') / NullIf(F('total'), 0),
-                output_field=FloatField()
-            )
-        ).filter(course__course_teacher__user=request.user)
+        students = students.filter(course__course_teacher__user=request.user)
+    else:
+        students = students.filter(center=request.user)
+
     if 'download-csv' in request.path:
         headers = ["First Name", "Last Name", "Course", "Phone Number", "Registration Date", "Gender"]
         rows = [[s.first_name, s.last_name, s.course, s.phone_number, s.registration_date, s.gender] for s in students]
         return export_to_csv('students', headers, rows)
-    data = {
-        "students": students,
-        "role": role,
-    }
-    return render(request, "students/students_list.html", data)
+
+    return render(request, "students/students_list.html", {"students": students, "role": role})
 
 @login_required
 def add_student(request):
     if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
-        messages.error(request, 'You do not have a permission.')
-        return redirect('dashboard')
+        return no_permission(request)
     data = {
         "courses": Course.objects.filter(center=request.user),
     }
@@ -90,10 +88,10 @@ def add_student(request):
 @login_required
 def edit_student(request, id):
     if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
-        messages.error(request, 'You do not have a permission.')
-        return redirect('dashboard')
+        return no_permission(request)
+
     if request.method == "POST":
-        student = Student.objects.get(pk=id, center=request.user)
+        student = get_object_or_404(Student, pk=id, center=request.user)
         student.first_name = request.POST.get('first_name')
         student.last_name = request.POST.get('last_name')
         student.gender = request.POST.get('gender')
@@ -101,9 +99,9 @@ def edit_student(request, id):
         student.user = request.user
         student.save()
         return redirect('student-list')
-    student = Student.objects.get(id=id, center=request.user)
-    courses = Course.objects.filter(center=request.user)
-    # print(student.gender)
+    student = get_object_or_404(Student, pk=id, center=request.user)
+    courses = get_object_or_404(Course, center=request.user)
+
     data = {
         "student": student,
         "courses": courses,
@@ -113,9 +111,10 @@ def edit_student(request, id):
 @login_required
 def delete_confirmation_student(request, id):
     if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
-        messages.error(request, 'You do not have a permission.')
-        return redirect('dashboard')
-    student = Student.objects.get(pk=id, center=request.user)
+        return no_permission(request)
+
+    student = get_object_or_404(Student, pk=id, center=request.user)
+
     data = {
         "student": student,
     }
@@ -124,9 +123,9 @@ def delete_confirmation_student(request, id):
 @login_required
 def delete_student(request, id):
     if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
-        messages.error(request, 'You do not have a permission.')
-        return redirect('dashboard')
-    Student.objects.get(pk=id, center=request.user).delete()
+        return no_permission(request)
+
+    student = get_object_or_404(Student, pk=id, center=request.user).delete()
     return redirect('student-list')
 
 @login_required
@@ -142,12 +141,7 @@ def student_details(request, id):
             )
         ).get(id=id, course__course_teacher__user=request.user)
         attendances = Attendance.objects.filter(student=student, course__course_teacher__user=request.user)
-        latest_status = Attendance.objects.filter(
-            student=student,
-            course__course_teacher__user=request.user).order_by('-time')[:1]
-        raw_counts = Attendance.objects.filter(
-            student_id=id, course__course_teacher__user=request.user).values('status').annotate(count=Count('id'))
-        attendance_records = Attendance.objects.filter(student=student, course__course_teacher__user=request.user)
+        raw_counts = Attendance.objects.filter(student_id=id, course__course_teacher__user=request.user).values('status').annotate(count=Count('id'))
     else:
         student = Student.objects.annotate(
             total=Count('attendance'),
@@ -159,15 +153,12 @@ def student_details(request, id):
             )
         ).get(id=id, center=request.user)
         attendances = Attendance.objects.filter(student=student, center=request.user)
-        latest_status = Attendance.objects.filter(student=student, center=request.user).order_by('-time')[:1]
-        raw_counts = Attendance.objects.filter(student_id=id, center=request.user).values('status').annotate(
-            count=Count('id'))
-        attendance_records = Attendance.objects.filter(student=student, center=request.user)
+        raw_counts = Attendance.objects.filter(student_id=id, center=request.user).values('status').annotate(count=Count('id'))
 
     today = date.today()
     year, month = today.year, today.month
     cal = calendar.Calendar(firstweekday=0)
-    month_days = list(cal.itermonthdates(year, month))  # Full weeks
+    month_days = list(cal.itermonthdates(year, month))
 
     attendance_map = {a.time.date(): a.status for a in attendances}
 
@@ -204,13 +195,13 @@ def student_details(request, id):
     data = {
         "student": student,
         "attendances": attendances,
-        "latest_status": latest_status,
+        "latest_status": attendances.order_by('-time')[:1],
         "calendar_weeks": calendar_weeks,
         "month_name": today.strftime("%B"),
         "year": year,
         "today": today,
         "chart_data": chart_data,
-        "attendance_records": attendance_records,
+        "attendance_records": attendances,
         "role": role
     }
     return render(request, "students/student_details.html", data)

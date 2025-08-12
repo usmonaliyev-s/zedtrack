@@ -13,8 +13,6 @@ from courses.models import Course
 from students.models import Student
 from teachers.models import Teacher
 
-
-# Create your views here.
 @login_required
 def teachers_list(request):
     if hasattr(request.user, 'teacher_user') or hasattr(request.user, 'student_user'):
