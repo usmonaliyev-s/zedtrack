@@ -9,9 +9,10 @@
                                 <div>
                                     <h4 class="mb-3">Students List</h4>
                                 </div>
-                                {% if role == 'admin' %}
-                                <a href="{% url 'add-student' %}" class="btn btn-primary add-list">
-                                    <svg width="25" height="25" style="padding-right: 7px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+                                <div>
+                                    {% if role == "admin" %}
+                                    <a href="{% url 'add-student' %}" class="btn btn-primary add-list">
+                                        <svg width="25" height="25" style="padding-right: 7px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
                                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                         <g id="SVGRepo_iconCarrier">
@@ -23,9 +24,14 @@
                                             ></path>
                                         </g>
                                     </svg>
-                                    Add Student
-                                </a>
-                                {% endif %}
+                                        Add Student
+                                    </a>
+                                    {% endif %}
+                                    <a href="{% url 'student-list-csv' %}" class="btn btn-primary add-list">
+                                        <svg xmlns="http://www.w3.org/2000/svg" style="padding-right: 7px;" width="25" height="25" viewBox="0 0 16 16"><g fill="currentColor"><path d="M9 7.826V1H7v6.826L4.392 5.59L3.09 7.108L8 11.318l4.91-4.21l-1.302-1.518z"/><path d="M3 13v-3H1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3h-2v3z"/></g></svg>
+                                        Download data
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-12">

@@ -54,7 +54,10 @@ def students_list(request):
                 output_field=FloatField()
             )
         ).filter(course__course_teacher__user=request.user)
-
+    if 'download-csv' in request.path:
+        headers = ["First Name", "Last Name", "Course", "Phone Number", "Registration Date", "Gender"]
+        rows = [[s.first_name, s.last_name, s.course, s.phone_number, s.registration_date, s.gender] for s in students]
+        return export_to_csv('students', headers, rows)
     data = {
         "students": students,
         "role": role,
