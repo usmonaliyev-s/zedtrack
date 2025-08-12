@@ -131,27 +131,11 @@ def delete_student(request, id):
 @login_required
 def student_details(request, id):
     if hasattr(request.user, 'teacher_user'):
-        student = Student.objects.annotate(
-            total=Count('attendance'),
-            present=Count('attendance', filter=Q(attendance__status=True)),
-        ).annotate(
-            attendance_rate=ExpressionWrapper(
-                100.0 * F('present') / NullIf(F('total'), 0),
-                output_field=FloatField()
-            )
-        ).get(id=id, course__course_teacher__user=request.user)
+        student = attendance_annotate(Student.objects.filter(course__course_teacher__user=request.user)).get(id=id)
         attendances = Attendance.objects.filter(student=student, course__course_teacher__user=request.user)
         raw_counts = Attendance.objects.filter(student_id=id, course__course_teacher__user=request.user).values('status').annotate(count=Count('id'))
     else:
-        student = Student.objects.annotate(
-            total=Count('attendance'),
-            present=Count('attendance', filter=Q(attendance__status=True)),
-        ).annotate(
-            attendance_rate=ExpressionWrapper(
-                100.0 * F('present') / NullIf(F('total'), 0),
-                output_field=FloatField()
-            )
-        ).get(id=id, center=request.user)
+        student = attendance_annotate(Student.objects.filter(center=request.user)).get(id=id)
         attendances = Attendance.objects.filter(student=student, center=request.user)
         raw_counts = Attendance.objects.filter(student_id=id, center=request.user).values('status').annotate(count=Count('id'))
 
@@ -208,69 +192,4 @@ def student_details(request, id):
 
 @login_required
 def student_dashboard(request):
-    id = Student.objects.get(user=request.user).id
-    student = Student.objects.annotate(
-        total=Count('attendance'),
-        present=Count('attendance', filter=Q(attendance__status=True)),
-    ).annotate(
-        attendance_rate=ExpressionWrapper(
-            100.0 * F('present') / NullIf(F('total'), 0),
-            output_field=FloatField()
-        )
-    ).get(id=id)
-    attendances = Attendance.objects.filter(student=student)
-    latest_status = Attendance.objects.filter(student=student).order_by('-time')[:1]
-    raw_counts = Attendance.objects.filter(student_id=id).values('status').annotate(
-        count=Count('id'))
-    attendance_records = Attendance.objects.filter(student=student)
-
-    today = date.today()
-    year, month = today.year, today.month
-    cal = calendar.Calendar(firstweekday=0)
-    month_days = list(cal.itermonthdates(year, month))  # Full weeks
-
-    attendance_map = {a.time.date(): a.status for a in attendances}
-
-    day_map = {
-        'Mon': 0, 'Tue': 1, 'Wed': 2, 'Thu': 3,
-        'Fri': 4, 'Sat': 5, 'Sun': 6,
-    }
-    raw_days = student.course.days
-    target_weekdays = [day_map[d] for d in raw_days]
-
-    # Build calendar grid
-    calendar_weeks = []
-    for i in range(0, len(month_days), 7):
-        week = []
-        for day in month_days[i:i+7]:
-            is_course_day = day.weekday() in target_weekdays and day.month == month
-            status = attendance_map.get(day) if is_course_day else None
-            week.append((day, is_course_day, status))
-        calendar_weeks.append(week)
-
-    counts = defaultdict(int)
-    for item in raw_counts:
-        counts[item['status']] = item['count']
-
-    chart_data = {
-        "labels": ["Present", "Absent"],
-        "values": [counts[True], counts[False]],
-    }
-    role = "admin"
-    if hasattr(request.user, 'teacher_user'):
-        role = "teacher"
-    elif hasattr(request.user, 'student_user'):
-        role = "student"
-    data = {
-        "student": student,
-        "attendances": attendances,
-        "latest_status": latest_status,
-        "calendar_weeks": calendar_weeks,
-        "month_name": today.strftime("%B"),
-        "year": year,
-        "today": today,
-        "chart_data": chart_data,
-        "attendance_records": attendance_records,
-        "role": role
-    }
-    return render(request, "students/student_details.html", data)
+    return student_details(request, Student.objects.get(user=request.user).id)
