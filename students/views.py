@@ -100,7 +100,7 @@ def edit_student(request, id):
         student.save()
         return redirect('student-list')
     student = get_object_or_404(Student, pk=id, center=request.user)
-    courses = get_object_or_404(Course, center=request.user)
+    courses = Course.objects.filter(center=request.user)
 
     data = {
         "student": student,

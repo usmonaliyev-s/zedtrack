@@ -72,42 +72,4 @@
                 </div>
             </div>
         </div>
-        <!-- Wrapper End-->
-        <script>
-            const toggleBtn = document.getElementById("theme-toggle");
-            const currentTheme = localStorage.getItem("theme") || "light";
-
-            document.documentElement.setAttribute("data-theme", currentTheme);
-
-            toggleBtn.addEventListener("click", () => {
-                const newTheme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
-                document.documentElement.setAttribute("data-theme", newTheme);
-                localStorage.setItem("theme", newTheme);
-            });
-        </script>
-        <!-- Backend Bundle JavaScript -->
-        <script>
-              document.addEventListener("DOMContentLoaded", function () {
-                const sidebar = document.getElementById("sidebar");
-                const toggleBtn = document.querySelector(".iq-menu-bt-sidebar");
-
-                toggleBtn.addEventListener("click", function () {
-                  sidebar.classList.toggle("collapsed");
-                });
-              });
-            </script>
-            <script src="{% static 'assets/js/backend-bundle.min.js' %}"></script>
-
-        <!-- Table Treeview JavaScript -->
-        <script src="{% static 'assets/js/table-treeview.js' %}"></script>
-
-        <!-- Chart Custom JavaScript -->
-        <script src="{% static 'assets/js/customizer.js' %}"></script>
-
-        <!-- Chart Custom JavaScript -->
-        <script async src="{% static 'assets/js/chart-custom.js' %}"></script>
-
-        <!-- app JavaScript -->
-        <script src="{% static 'assets/js/app.js' %}"></script>
-    </body>
-</html>
+{% endblock %}
