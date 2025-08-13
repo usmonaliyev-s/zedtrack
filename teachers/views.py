@@ -12,6 +12,18 @@ from courses.models import Course
 from students.models import Student
 from teachers.models import Teacher
 
+import csv
+from django.http import HttpResponse
+
+def export_to_csv(filename, headers, rows):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="{filename}.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(headers)
+    for row in rows:
+        writer.writerow(row)
+    return response
 
 def no_permission(request):
     messages.error(request, 'You do not have permission.')
@@ -31,6 +43,12 @@ def teachers_list(request):
         num_students=Count('course__student', distinct=True),
         num_courses=Count('course', distinct=True)
     ).filter(center=request.user)
+
+    if 'download-csv' in request.path:
+        headers = ["First Name", "Last Name", "Phone Number"]
+        rows = [[s.first_name, s.last_name, s.phone_number] for s in teachers]
+        return export_to_csv('teachers-list', headers, rows)
+
     return render(request, "teachers/teachers_list.html", {"teachers": teachers})
 
 @login_required
