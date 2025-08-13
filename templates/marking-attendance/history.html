@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+            <div class="content-page">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
+                                <div>
+                                    <h4 class="mb-3">Students List</h4>
+                                </div>
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="table-responsive rounded mb-3">
+                                <table class="data-table table mb-0 tbl-server-info">
+                                    <thead class="bg-white text-uppercase">
+                                        <tr class="ligth ligth-data">
+                                            <th style="text-align: left">Student</th>
+                                            <th style="text-align: left">Time</th>
+                                            <th style="text-align: left">Course</th>
+                                            <th style="text-align: left">Status</th>
+                                            <th style="text-align: left">Marked By</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="ligth-body">
+                                        {% for attendance in attendances %}
+                                        <tr style="background-color: var(--background-color); color: var(--text-color);">
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" title="Student">{{ attendance.student }}</a></td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" title="Student Details">{{ attendance.time }}</a></td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" title="Student Details">{{ attendance.course }}</a></td>
+                                            {% if attendance.status %}
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: green;" title="Student Details">Present</a></td>
+                                            {% else %}
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: red;" title="Student Details">Absent</a></td>
+                                            {% endif %}
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" title="Student Details">{{ attendance.marked_by }}</a></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page end  -->
+                </div>
+
+{% endblock %}

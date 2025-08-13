@@ -210,3 +210,12 @@ def marking(request, id):
         "marked_by": marked_by
     }
     return render(request, "marking-attendance/marking.html", data)
+
+def history(request):
+    if hasattr(request.user, 'student_user'):
+        messages.error(request, 'You do not have a permission.')
+        return redirect('dashboard')
+    data = {
+        'attendances': Attendance.objects.filter(center=request.user).order_by('-time'),
+    }
+    return render(request, "marking-attendance/history.html", data)
