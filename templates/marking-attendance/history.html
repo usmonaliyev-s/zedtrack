@@ -28,15 +28,15 @@
                                     <tbody class="ligth-body">
                                         {% for attendance in attendances %}
                                         <tr style="background-color: var(--background-color); color: var(--text-color);">
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" title="Student">{{ attendance.student }}</a></td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" title="Student Details">{{ attendance.time }}</a></td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" title="Student Details">{{ attendance.course }}</a></td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" href="{% url 'student-details' attendance.student.id %}" title="Student">{{ attendance.student }}</a></td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" title="Time">{{ attendance.time }}</a></td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" href="{% url 'course-details' attendance.course.id %}" title="Course">{{ attendance.course }}</a></td>
                                             {% if attendance.status %}
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: green;" title="Student Details">Present</a></td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: green;" title="Status">Present</a></td>
                                             {% else %}
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: red;" title="Student Details">Absent</a></td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: red;" title="Status">Absent</a></td>
                                             {% endif %}
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" title="Student Details">{{ attendance.marked_by }}</a></td>
+                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" title="Marked By">{{ attendance.marked_by }}</a></td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
