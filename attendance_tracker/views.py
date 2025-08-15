@@ -13,7 +13,6 @@ from teachers.models import Teacher
 def index(request):
     return render(request, 'index.html')
 
-@login_required
 def dashboard(request, a=None, b=None, c=None):
     if request.user.is_authenticated:
         if hasattr(request.user, 'teacher_user'):
