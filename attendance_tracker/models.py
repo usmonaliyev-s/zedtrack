@@ -15,5 +15,13 @@ class Attendance(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name="user")
     marked_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name="Created_by")
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['student', 'course', 'time'],
+                name='unique_attendance_record'
+            )
+        ]
+
     def __str__(self):
         return f"{self.student.first_name} {self.student.last_name} - {self.time} - {self.course} - {self.status}"
