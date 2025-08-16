@@ -104,11 +104,12 @@
 }
 
 .content-page {
-    background: rgba(149, 149, 149, 0.333);
+background: rgba(255, 255, 255, 0.39);
+border-radius: 16px;
 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(14.2px);
--webkit-backdrop-filter: blur(14.2px);
-border: 1px solid rgba(255, 255, 255, 0.79);
+backdrop-filter: blur(3.2px);
+-webkit-backdrop-filter: blur(3.2px);
+border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .iq-top-navbar {
