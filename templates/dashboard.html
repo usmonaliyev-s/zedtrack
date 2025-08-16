@@ -36,7 +36,7 @@
 										</div>
 										<div>
 											<p class="mb-2" style="color: white;">Students</p>
-											<h4 style="color: white;">{{ students.count }}</h4>
+											<h4 style="color: white;" class="count" data-type="number" data-target="{{ students.count }}">0</h4>
 										</div>
 									</div>
 								</a>
@@ -58,7 +58,7 @@
 										</div>
 										<div>
 											<p class="mb-2" style="color: white;">Teachers</p>
-											<h4 style="color: white;">{{ teachers.count }}</h4>
+											<h4 style="color: white;" class="count" data-type="number" data-target="{{ teachers.count }}">0</h4>
 										</div>
 									</div>
 								</a>
@@ -77,7 +77,7 @@
 										</div>
 										<div>
 											<p class="mb-2" style="color: white;">Courses</p>
-											<h4 style="color: white;">{{ courses.count }}</h4>
+											<h4 style="color: white;" class="count" data-type="number" data-target="{{ courses.count }}">0</h4>
 										</div>
 									</div>
 								</a>
@@ -99,7 +99,7 @@
 										</div>
 										<div>
 											<p class="mb-2" style="color: white;">Rate</p>
-											<h4 style="color: white;">{{ attendance_rate|floatformat:2 }}%</h4>
+											<h4 style="color: white;" class="count" data-type="percent" data-target="{{ attendance_rate|floatformat:2 }}">0%</h4>
 										</div>
 									</div>
 								</a>
@@ -123,7 +123,7 @@
 									</div>
 									<div>
 										<p class="mb-2" style="color: black;">Present</p>
-										<h4 style="color: black;">{{ present_student.count }}</h4>
+										<h4 style="color: black;" class="count" data-type="number" data-target="{{ present_student.count }}">0</h4>
 									</div>
 								</div>
 							</div>
@@ -145,7 +145,7 @@
 									</div>
 									<div>
 										<p class="mb-2" style="color: black;">Absent</p>
-										<h4 style="color: black;">{{ absent_students.count }}</h4>
+										<h4 style="color: black;" class="count" data-type="number" data-target="{{ absent_students.count }}">0</h4>
 									</div>
 								</div>
 							</div>
@@ -166,7 +166,7 @@
 									</div>
 									<div>
 										<p class="mb-2" style="color: black;">Rate</p>
-										<h4 style="color: black;">{{ attendance_rate_today|floatformat:2 }}%</h4>
+										<h4 style="color: black;" class="count" data-type="percent" data-target="{{ attendance_rate_today|floatformat:2 }}">0%</h4>
 									</div>
 								</div>
 							</div>
@@ -183,7 +183,7 @@
 									</div>
 									<div>
 										<p class="mb-2" style="color: black;">Courses</p>
-										<h4 style="color: black;">{{ todays_courses }}</h4>
+										<h4 style="color: black;" class="count" data-type="number" data-target="{{ todays_courses }}"></h4>
 									</div>
 								</div>
 							</div>
@@ -331,5 +331,34 @@
 		</div>
 	</div>
 </div>
+<script>
+let counters = document.querySelectorAll(".count");
 
+counters.forEach(item => {
+  let start = 0;
+  let target = parseInt(item.dataset.target);
+  let type = item.dataset.type; // "number" or "percent"
+
+  let duration = 2000; // total animation time (ms)
+  let step = Math.ceil(target / (duration / 50));
+
+  function counterup() {
+    start += step;
+    if (start >= target) {
+      start = target; // prevent overshoot
+      clearInterval(stop);
+    }
+
+    // ✅ Choose display format
+    if (type === "percent") {
+      item.innerHTML = start + "%";
+    } else {
+      item.innerHTML = start;
+    }
+  }
+
+  let stop = setInterval(counterup, 50);
+});
+
+</script>
 {% endblock %}
