@@ -95,6 +95,7 @@
      --text-color: #f7fafc;
 }
  body {
+    background-color: var(--background-color);
      color: var(--text-color);
      transition: background-color 0.3s ease, color 0.3s ease;
      
@@ -103,14 +104,6 @@
      color: var(--text-color);
 }
 
-.content-page {
-background: rgba(255, 255, 255, 0.39);
-border-radius: 16px;
-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(3.2px);
--webkit-backdrop-filter: blur(3.2px);
-border: 1px solid rgba(255, 255, 255, 0.3);
-}
 
 .iq-top-navbar {
   background: rgba(255, 255, 255, 0.333);
