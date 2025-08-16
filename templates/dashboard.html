@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="content-page">
+<div class="content-page" style="position: relative; z-index: 1;">
 	<div class="container-fluid">
 		<div class="card-header-toolbar d-flex align-items-center"></div>
 		<div class="row">
@@ -22,7 +22,7 @@
 				<h5 style="margin-bottom: 25px; margin-top: -18px; font-weight: 600; color: #333;">General Statistics</h5>
 				<div class="row" style="position: relative; top: -20px;">
 					<div style="height: 130px;" class="col-lg-3 col-md-3">
-						<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
+						<div class="card card-block card-stretch card-height" style=" background-color: var(--main-color);">
 							<div class="card-body">
 								<a href="{% url 'student-list' %}">
 									<div class="d-flex align-items-center mb-4 card-total-sale">
@@ -44,7 +44,7 @@
 						</div>
 					</div>
 					<div style="height: 130px;" class="col-lg-3 col-md-3">
-						<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
+						<div class="card card-block card-stretch card-height" style=" background-color: var(--main-color);">
 							<div class="card-body">
 								<a href="{% url 'teachers-list' %}">
 									<div title="Total Teachers" class="d-flex align-items-center mb-4 card-total-sale">
@@ -66,7 +66,7 @@
 						</div>
 					</div>
 					<div style="height: 130px;" class="col-lg-3 col-md-3">
-						<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
+						<div class="card card-block card-stretch card-height" style=" background-color: var(--main-color);">
 							<div class="card-body">
 								<a href="{% url 'course-list' %}">
 									<div class="d-flex align-items-center mb-4 card-total-sale">
@@ -85,7 +85,7 @@
 						</div>
 					</div>
 					<div style="height: 130px;" class="col-lg-3 col-md-3">
-						<div class="card card-block card-stretch card-height" style="background-color: var(--main-color); ">
+						<div class="card card-block card-stretch card-height" style="background-color: var(--main-color);">
 							<div class="card-body">
 								<a href="{% url 'select-course' %}">
 									<div class="d-flex align-items-center mb-4 card-total-sale">

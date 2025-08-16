@@ -95,12 +95,20 @@
      --text-color: #f7fafc;
 }
  body {
-     background-color: var(--background-color);
      color: var(--text-color);
      transition: background-color 0.3s ease, color 0.3s ease;
+     
 }
  .iq-sidebar, .iq-top-navbar, .sidebar-footer {  
      color: var(--text-color);
+}
+
+.content-page {
+    background: rgba(149, 149, 149, 0.333);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(14.2px);
+-webkit-backdrop-filter: blur(14.2px);
+border: 1px solid rgba(255, 255, 255, 0.79);
 }
 
 .iq-top-navbar {
@@ -110,6 +118,7 @@ backdrop-filter: blur(14.2px);
 -webkit-backdrop-filter: blur(14.2px);
 border: 1px solid rgba(255, 255, 255, 0.79);
 }
+
 
  .iq-menu li a span, .iq-menu li a svg {
      color: var(--text-color);
@@ -260,7 +269,9 @@ margin: 40px auto;
     background-color: var(--main-color);
 }
 
-
-.card {
-    background-color: var(--background-color)
+#backgroundCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
 }
