@@ -284,6 +284,53 @@
 				<div class="card card-block card-stretch" style="background-color: var(--background-color);">
 					<div class="card-header d-flex align-items-center justify-content-between" style="">
 						<div class="header-title">
+							<h4 class="card-title">Students with low attendance</h4>
+						</div>
+					</div>
+					<div class="card-body">
+						<div style="overflow: auto; height: 370px;">
+							<table class="table">
+								<thead class=" ">
+									<tr class="ligth ligth-data">
+										<th style="text-align: start; color: var(--text-color);">Student</th>
+										<th style="text-align: left; color: var(--text-color);">Course</th>
+										<th style="text-align: left; color: var(--text-color);">Course Time</th>
+										<th style="text-align: left; color: var(--text-color);">Record Time</th>
+										<th style="text-align: left; color: var(--text-color);">Teacher</th>
+										<th style="text-align: left; color: var(--text-color);">Status</th>
+									</tr>
+								</thead>
+								<tbody class="ligth-body">
+									{% for record in low_attendances %}
+									<tr>
+										<td style="text-align: start;">
+											<a title="Details" style="color: var(--text-color);" href="{% url 'student-details' record.student.id %}">{{ record.student.first_name }} {{ record.student.last_name }}</a>
+										</td>
+										<td style="text-align: start;"><a title="Details" style="color: var(--text-color);" href="{% url 'course-details' record.course.id %}">{{ record.course }}</a></td>
+										<td style="color: var(--text-color);">{{ record.course.course_time }}</td>
+										<td style="color: var(--text-color);">{{ record.time }}</td>
+										<td style="color: var(--text-color);">
+											<a title="Details" style="color: var(--text-color);" href="{% url 'teacher-details' record.student.course.course_teacher.id %}">
+												{{ record.student.course.course_teacher.first_name }} {{ record.student.course.course_teacher.last_name }}
+											</a>
+										</td>
+										{% if record.status %}
+										<td style="color: var(--text-color);">✅ Present</td>
+										{% else %}
+										<td style="color: var(--text-color);">❌ Absent</td>
+										{% endif %}
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-12" style="position: relative; top: -20px;">
+				<div class="card card-block card-stretch" style="background-color: var(--background-color);">
+					<div class="card-header d-flex align-items-center justify-content-between" style="">
+						<div class="header-title">
 							<h4 class="card-title">Recent Attendance Records</h4>
 						</div>
 					</div>

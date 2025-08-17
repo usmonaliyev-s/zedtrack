@@ -96,6 +96,7 @@ def dashboard(request, a=None, b=None, c=None):
         role = "admin"
         if hasattr(request.user, 'teacher_user'):
             role = "teacher"
+        print()
         data = {
             "students": Student.objects.filter(center=request.user),
             "top_students": students,
@@ -106,6 +107,7 @@ def dashboard(request, a=None, b=None, c=None):
             "gender_data": gender_data,
             "line_chart_data":line_chart_data,
             "attendance_rate": attendance_rate,
+            "low_attendances": students.filter(atte),
             "attendance_rate_today": attendance_rate_today,
             "todays_courses": todays_courses,
             "present_student": present_student,
