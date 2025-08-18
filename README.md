@@ -1,5 +1,6 @@
 # 📊 ZEDTRACK — Effortless Attendance. Powerful Insights
 
+<image src="static/image.png">
 ZedTrack is a web-based attendance management system built with **Django** that helps educational centers track student attendance, analyze behavior, and visualize key metrics. It is built for your university portfolio and follows clean, modular practices with a responsive interface.
 
 > ⚡ This project reuses and adapts a front-end template originally built for a POS system, redesigned specifically for attendance tracking in educational contexts.
