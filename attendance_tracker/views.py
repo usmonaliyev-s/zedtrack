@@ -13,6 +13,17 @@ from teachers.models import Teacher
 def index(request):
     return render(request, 'index.html')
 
+def attendance_annotate(qs):
+    return qs.annotate(
+        total=Count('attendance'),
+        present=Count('attendance', filter=Q(attendance__status=True)),
+    ).annotate(
+        attendance_rate=ExpressionWrapper(
+            100.0 * F('present') / NullIf(F('total'), 0),
+            output_field=FloatField()
+        )
+    )
+
 def dashboard(request, a=None, b=None, c=None):
     if request.user.is_authenticated:
         if hasattr(request.user, 'teacher_user'):
@@ -28,6 +39,8 @@ def dashboard(request, a=None, b=None, c=None):
             total__gt=0, center=request.user
             # absent__lt=2
         ).order_by('absent', '-present')[:5]
+
+        students_low_attendance = attendance_annotate(Student.objects.all()).order_by('attendance_rate')[:10]
 
         gender_counts = Student.objects.filter(center=request.user).values('gender').annotate(count=Count('id'))
 
@@ -96,10 +109,10 @@ def dashboard(request, a=None, b=None, c=None):
         role = "admin"
         if hasattr(request.user, 'teacher_user'):
             role = "teacher"
-        print()
         data = {
             "students": Student.objects.filter(center=request.user),
             "top_students": students,
+            "students_low_attendance": students_low_attendance,
             "teachers": Teacher.objects.filter(center=request.user),
             "courses": Course.objects.filter(center=request.user),
             "absent_students": absent_students,
@@ -107,7 +120,6 @@ def dashboard(request, a=None, b=None, c=None):
             "gender_data": gender_data,
             "line_chart_data":line_chart_data,
             "attendance_rate": attendance_rate,
-            "low_attendances": students.filter(atte),
             "attendance_rate_today": attendance_rate_today,
             "todays_courses": todays_courses,
             "present_student": present_student,
