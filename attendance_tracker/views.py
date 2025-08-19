@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q, ExpressionWrapper, F, FloatField
 from django.db.models.functions import TruncDate, NullIf
@@ -9,6 +11,8 @@ from attendance_tracker.models import Attendance
 from courses.models import Course
 from students.models import Student
 from teachers.models import Teacher
+
+from attendance_tracker.utilities import insights
 
 def index(request):
     return render(request, 'index.html')
@@ -30,6 +34,7 @@ def dashboard(request, a=None, b=None, c=None):
             return redirect('teacher-dashboard')
         elif hasattr(request.user, 'student_user'):
             return redirect('student-dashboard')
+        predicted_attendance_rate = insights(request)
         students = Student.objects.annotate(
             total=Count('attendance'),
             total_lessons=Count('attendance'),
@@ -41,6 +46,8 @@ def dashboard(request, a=None, b=None, c=None):
         ).order_by('absent', '-present')[:5]
 
         students_low_attendance = attendance_annotate(Student.objects.all()).order_by('attendance_rate')[:10]
+        top_student = attendance_annotate(Student.objects.all()).order_by('-attendance_rate')[:10]
+
 
         gender_counts = Student.objects.filter(center=request.user).values('gender').annotate(count=Count('id'))
 
@@ -109,9 +116,11 @@ def dashboard(request, a=None, b=None, c=None):
         role = "admin"
         if hasattr(request.user, 'teacher_user'):
             role = "teacher"
+        predicted_attendance_rate = insights(request)
+        predicted_attendance_rate = json.loads(predicted_attendance_rate.content)
         data = {
             "students": Student.objects.filter(center=request.user),
-            "top_students": students,
+            "top_students": top_student,
             "students_low_attendance": students_low_attendance,
             "teachers": Teacher.objects.filter(center=request.user),
             "courses": Course.objects.filter(center=request.user),
@@ -126,6 +135,7 @@ def dashboard(request, a=None, b=None, c=None):
             "date": date.today(),
             "attendance_records": Attendance.objects.filter(center=request.user).order_by('-time')[:10],
             "role": role,
+            "predicted_attendance_rate":predicted_attendance_rate,
         }
         return render(request, 'dashboard.html', data)
     else:
