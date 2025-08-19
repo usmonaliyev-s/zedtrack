@@ -190,101 +190,64 @@
 						</div>
 					</div>
 				</div>
+
 			</div>
-			<div class="col-lg-6" style="position: relative; top: -20px; ">
-				<div class="card card-block card-stretch" style=" background-color: var(--background-color);">
-					<div class="card-header d-flex align-items-center justify-content-between" style="">
-						<div class="header-title">
-							<h4 class="card-title">Attendance Records</h4>
-						</div>
-						{% with request.path as current_url %}
-						<div style="position: relative; top: -35px; left: 17px">
-							<a
-								href="{% url 'dashboard' 7 %}"
-								style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/7/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %}; position: relative; top: 35px; left: -25px; padding: 8px; margin-right: 5px;"
-							>
-								7 days
-							</a>
-							<a
-								href="{% url 'dashboard' 30 %}"
-								style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/30/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %}; position: relative; top: 35px; left: -25px; padding: 8px; margin-right: 5px;"
-							>
-								30 days
-							</a>
-							<a
-								href="{% url 'dashboard' 365 %}"
-								style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/365/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %}; position: relative; top: 35px; left: -25px; padding: 8px; margin-right: 5px;"
-							>
-								1 year
-							</a>
-							<a
-								href="{% url 'dashboard' %}"
-								style="border: 2px solid var(--main-color); border-radius: 5px; {% if current_url == '/' %} background-color: var(--main-color); color: white;{% else %}background-color: white; color: var(--main-color); {% endif %};position: relative; top: 35px; left: -25px; padding: 8px;"
-							>
-								Total
-							</a>
-						</div>
-						{% endwith %}
-					</div>
-					<div class="card-body">
-						<div>
-							<canvas id="lineChart"></canvas>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3" style="position: relative; top: -20px;">
-				<div class="card card-block card-stretch" style="background-color: var(--background-color);">
-					<div class="card-header d-flex align-items-center justify-content-between" style="">
-						<div class="header-title">
-							<h4 class="card-title">Top Students</h4>
-						</div>
-					</div>
-					<div style="overflow: auto; height: 308px;">
-						<div class="card-body card-item-right">
-							{% for student in top_students %}
-							<div class="d-flex align-items-top">
-								<div class="style-text text-left">
-									<h5 class="mb-2">
-										<a style="color: var(--text-color)" title="Details" href="{% url 'student-details' student.id %}">
-											{{ student.first_name }} {{ student.last_name }}
-										</a>
-									</h5>
-									<p class="mb-2">
-										<a title="Details" style="color: var(--text-color)" href="{% url 'course-details' student.course.id %}">
-											Course : {{ student.course }}
-										</a>
-									</p>
-									<p class="mb-0">Attendance : {{ student.total_lessons }}</p>
-									<p class="mb-0">Absence: {{ student.absent }}</p>
-								</div>
-							</div>
-							<hr style="background-color: var(--text-color);" />
-							{% endfor %}
-						</div>
-					</div>
-				</div>
-			</div>
+			<div class="col-lg-6 col-md-3" style="position: relative; top: -20px;">
+    <div class="card card-block card-stretch" style="background-color: var(--background-color); height: 370px;"> <!-- 👈 set your desired height -->
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <div class="header-title">
+                <h4 class="card-title">Attendance Records</h4>
+            </div>
+            <!-- your buttons here -->
+        </div>
+        <div class="card-body" style="height: calc(100% - 60px);"> <!-- 👈 subtract header height -->
+            <div style="height: 100%;">
+                <canvas id="lineChart" style="height:100% !important; width:100% !important;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
 
 			<div class="col-lg-3" style="position: relative; top: -20px;">
-				<div class="card card-block card-stretch" style="background-color: var(--background-color);">
+				<div class="card card-block card-stretch" style="background-color: var(--background-color); height: 370px;">
 					<div class="card-header d-flex align-items-center justify-content-between" style="">
 						<div class="header-title">
 							<h4 class="card-title">Students</h4>
 						</div>
 					</div>
-					<div class="card-body">
-						<div style="overflow: auto; height: 270px;">
+					<div  class="card-body" style="height: calc(100% - 60px);">
+						<div style="overflow: auto; height: 100%;">
 							<canvas id="pieChart"></canvas>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-12" style="position: relative; top: -20px;">
+
+						<div class="col-lg-3 col-md-3" style="position: relative; top: -20px;">
+    <div class="card card-block card-stretch" style="background-color: var(--background-color); height: 370px;"> <!-- 👈 set your desired height -->
+        <div class="card-header d-flex align-items-center justify-content-between"  style="background-color: #3321d745; border-radius: 9.5px;">
+            <div class="header-title">
+                <h4 class="card-title" style="font-family: 'Nunito', sans-serif;"><b>zed<span style="color: var(--main-color); font-size: 25px;">AI</span></b></h4>
+            </div>
+            <!-- your buttons here -->
+        </div>
+        <div class="card-body" style="height: calc(100% - 60px);"> <!-- 👈 subtract header height -->
+            <div style="height: 100%;">
+				<ul style="padding-left: 5px; ">
+					<li style="">
+						<p style="font-size: 16px;">Predicted attendance for the next week: <span style="font-size: 20px; color: var(--main-color);"><b>{{ predicted_attendance_rate.predicted_attendance_rate }}%</b></span> </p>
+
+					</li>
+				</ul>
+            </div>
+        </div>
+    </div>
+</div>
+			<div class="col-lg-6" style="position: relative; top: -20px;">
 				<div class="card card-block card-stretch" style="background-color: var(--background-color);">
 					<div class="card-header d-flex align-items-center justify-content-between" style="">
 						<div class="header-title">
-							<h4 class="card-title">Students with low attendance</h4>
+							<h4 class="card-title">High Attendance</h4>
 						</div>
 					</div>
 					<div class="card-body">
@@ -294,26 +257,18 @@
 									<tr class="ligth ligth-data">
 										<th style="text-align: start; color: var(--text-color);">Student</th>
 										<th style="text-align: left; color: var(--text-color);">Course</th>
-										<th style="text-align: left; color: var(--text-color);">Course Time</th>
-										<th style="text-align: left; color: var(--text-color);">Attendance Rate</th>
-										<th style="text-align: left; color: var(--text-color);">Teacher</th>
+										<th style="text-align: left; color: var(--text-color);">Rate</th>
 										<th style="text-align: left; color: var(--text-color);">Status</th>
 									</tr>
 								</thead>
 								<tbody class="ligth-body">
-									{% for record in students_low_attendance %}
+									{% for record in top_students %}
 									<tr>
 										<td style="text-align: start;">
 											<a title="Details" style="color: var(--text-color);" href="{% url 'student-details' record.id %}">{{ record.first_name }} {{ record.last_name }}</a>
 										</td>
 										<td style="text-align: start;"><a title="Details" style="color: var(--text-color);" href="{% url 'course-details' record.course.id %}">{{ record.course }}</a></td>
-										<td style="color: var(--text-color);">{{ record.course.course_time }}</td>
 										<td style="color: var(--text-color);">{{ record.attendance_rate|floatformat:2 }}%</td>
-										<td style="color: var(--text-color);">
-											<a title="Details" style="color: var(--text-color);" href="{% url 'teacher-details' record.course.course_teacher.id %}">
-												{{ record.course.course_teacher.first_name }} {{ record.course.course_teacher.last_name }}
-											</a>
-										</td>
 										{% if record.status %}
 										<td style="color: var(--text-color); text-align: left;">✅ Present</td>
 										{% else %}
@@ -327,6 +282,47 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="col-lg-6" style="position: relative; top: -20px;">
+				<div class="card card-block card-stretch" style="background-color: var(--background-color);">
+					<div class="card-header d-flex align-items-center justify-content-between" style="">
+						<div class="header-title">
+							<h4 class="card-title">Low Attendance</h4>
+						</div>
+					</div>
+					<div class="card-body">
+						<div style="overflow: auto; height: 370px;">
+							<table class="table">
+								<thead class=" ">
+									<tr class="ligth ligth-data">
+										<th style="text-align: start; color: var(--text-color);">Student</th>
+										<th style="text-align: left; color: var(--text-color);">Course</th>
+										<th style="text-align: left; color: var(--text-color);">Rate</th>
+										<th style="text-align: left; color: var(--text-color);">Status</th>
+									</tr>
+								</thead>
+								<tbody class="ligth-body">
+									{% for record in students_low_attendance %}
+									<tr>
+										<td style="text-align: start;">
+											<a title="Details" style="color: var(--text-color);" href="{% url 'student-details' record.id %}">{{ record.first_name }} {{ record.last_name }}</a>
+										</td>
+										<td style="text-align: start;"><a title="Details" style="color: var(--text-color);" href="{% url 'course-details' record.course.id %}">{{ record.course }}</a></td>
+										<td style="color: var(--text-color);">{{ record.attendance_rate|floatformat:2 }}%</td>
+										{% if record.status %}
+										<td style="color: var(--text-color); text-align: left;">✅ Present</td>
+										{% else %}
+										<td style="color: var(--text-color); text-align: left;">❌ Absent</td>
+										{% endif %}
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="col-lg-12" style="position: relative; top: -20px;">
 				<div class="card card-block card-stretch" style="background-color: var(--background-color);">
 					<div class="card-header d-flex align-items-center justify-content-between" style="">
@@ -335,7 +331,7 @@
 						</div>
 					</div>
 					<div class="card-body">
-						<div style="overflow: auto; height: 370px;">
+						<div style="overflow: auto; height: 300px;">
 							<table class="table">
 								<thead class=" ">
 									<tr class="ligth ligth-data">
@@ -374,6 +370,7 @@
 					</div>
 				</div>
 			</div>
+
 			<!-- Page end  -->
 		</div>
 	</div>
