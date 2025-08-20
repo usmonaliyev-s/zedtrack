@@ -84,18 +84,18 @@
 }
  :root {
      --background-color: #ffffff;
-     --main-background-color: #ececec;
+     --main-background-color: #a4a4a424;
      --text-color: #1a202c;
      --main-color: #3321d7;
      --main-hover-color: #2a1ab4;
 }
  [data-theme="dark"] {
-     --background-color: #1a202c;
-     --main-background-color: #010115;
+     --background-color: #000000;
+     --main-background-color: #1f2020;
      --text-color: #f7fafc;
 }
  body {
-    background-color: var(--background-color);
+    background-color: var(--main-background-color);
      color: var(--text-color);
      transition: background-color 0.3s ease, color 0.3s ease;
      
