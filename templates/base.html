@@ -118,7 +118,25 @@ font-family: 'Nunito', sans-serif;"
 		  }
 		}
 	</style>
+	<style>
+		#sidebar.collapsed #user-info {
+		    display: none;
+		}
+    /* Default topbar spacing */
+.iq-top-navbar {
+  border-radius: 10px;
+  margin-top: 8px;
+  width: 79.3%;
+  margin-right: 25px;
+  transition: all 0.3s ease;
+}
 
+/* When sidebar is collapsed */
+#sidebar.collapsed ~ .iq-top-navbar {
+  width: 92%;  /* keep only 8px gap */
+}
+
+	</style>
 
 	<body>
 		<div class="wrapper">
