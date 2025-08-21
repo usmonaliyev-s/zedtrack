@@ -101,28 +101,28 @@ font-family: 'Nunito', sans-serif;"
 		  .errbox {
 		    flex-direction: column;
 		  }
-
+		
 		  .errbox-close {
 		    top: 4px;
 		    right: 6px;
 		  }
+		  
 		}
 
 		@media (max-width: 768px) {
 		.left-nav-menu {
 			top: 0px;
 		}
+		.iq-top-navbar {
+			width: 100%;
+		  }
 		}
 	</style>
-	<style>
-		#sidebar.collapsed #user-info {
-		    display: none;
-		}
 
-	</style>
+
 	<body>
 		<div class="wrapper">
-			<div class="iq-sidebar sidebar-default" style="display: flex; flex-direction: column; height: 100vh;" id="sidebar">
+			<div class="iq-sidebar sidebar-default" style="display: flex; flex-direction: column; height: 100vh; border-radius: 8px; margin: 8px; height: 98%;" id="sidebar">
 				<!-- Sidebar logo and toggle -->
 				<div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
 					<a href="/" class="header-logo">
@@ -223,7 +223,7 @@ font-family: 'Nunito', sans-serif;"
 				</div>
 
 				<!-- User info fixed at bottom -->
-				<div class="p-3 border-top" id="user-info" style="background-color: var(--main-color);">
+				<div class="p-3 border-top" id="user-info" style="background-color: var(--main-color); border-radius: 8px;">
 					<div class="user-profile d-flex align-items-center">
 						<img src="{% static 'assets/images/profile.png' %}" alt="profile" class="img-fluid rounded-circle" width="40" height="40" />
 						<div class="ml-3">
@@ -234,7 +234,7 @@ font-family: 'Nunito', sans-serif;"
 				</div>
 			</div>
 
-			<div class="iq-top-navbar">
+			<div class="iq-top-navbar" style="border-radius: 10px; margin-top: 8px; margin-left: 25px; margin-right: 25px;">
 				<div class="iq-navbar-custom">
 					<nav class="navbar navbar-expand-lg navbar-light p-0 d-flex align-items-center justify-content-between">
 						<div class="iq-navbar-logo d-flex align-items-center justify-content-between">

@@ -84,7 +84,7 @@
 }
  :root {
      --background-color: #ffffff;
-     --main-background-color: #a4a4a424;
+     --main-background-color: #e5e3e395;
      --text-color: #1a202c;
      --main-color: #3321d7;
      --main-hover-color: #2a1ab4;
@@ -93,6 +93,11 @@
      --background-color: #000000;
      --main-background-color: #1f2020;
      --text-color: #f7fafc;
+}
+
+.card  {
+margin-left: -5px;
+margin-right: -5px;
 }
  body {
     background-color: var(--main-background-color);
@@ -106,11 +111,11 @@
 
 
 .iq-top-navbar {
-  background: rgba(255, 255, 255, 0.333);
+  background: rgba(255, 255, 255, 0.511);
 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 backdrop-filter: blur(14.2px);
 -webkit-backdrop-filter: blur(14.2px);
-border: 1px solid rgba(255, 255, 255, 0.79);
+border: 1px solid rgb(255, 255, 255);
 }
 
 
