@@ -23,4 +23,4 @@ def insights(request):
     next_week = len(weekly)
     pred = model.predict([[next_week]])
 
-    return JsonResponse({"week": next_week + 1, "predicted_attendance_rate": f"{pred[0]:.1f}",})
+    return JsonResponse({"week": next_week + 1, "predicted_attendance_rate": float(pred[0]),})
