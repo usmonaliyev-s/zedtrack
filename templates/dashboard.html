@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 
-<div class="content-page" style="position: relative; z-index: 1;">
+<div class="content-page" style="position: relative; z-index: 1; margin-top: 14px;">
     <div class="container-fluid">
         <div class="card-header-toolbar d-flex align-items-center"></div>
         <div class="row">
@@ -19,7 +19,7 @@
                 {% endif %}
                 <h5 style="margin-bottom: 25px; margin-top: -18px; font-weight: 600; color: var(--text-color);">General Statistics</h5>
                 <div class="row" style="position: relative; top: -20px;">
-                    <div style="height: 130px;" class="col-lg-3 col-md-3">
+                    <div style="height: 130px;" class="col-lg-3 col-md-3 g-4">
                         <div class="card card-block card-stretch card-height" style="background-color: var(--main-color);">
                             <div class="card-body">
                                 <a href="{% url 'student-list' %}">
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                     </div>
-                    <div style="height: 130px;" class="col-lg-3 col-md-3">
+                    <div style="height: 130px;" class="col-lg-3 col-md-3 g-4">
                         <div class="card card-block card-stretch card-height" style="background-color: var(--main-color);">
                             <div class="card-body">
                                 <a href="{% url 'teachers-list' %}">
@@ -63,7 +63,7 @@
                             </div>
                         </div>
                     </div>
-                    <div style="height: 130px;" class="col-lg-3 col-md-3">
+                    <div style="height: 130px;" class="col-lg-3 col-md-3 g-4">
                         <div class="card card-block card-stretch card-height" style="background-color: var(--main-color);">
                             <div class="card-body">
                                 <a href="{% url 'course-list' %}">
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                     </div>
-                    <div style="height: 130px;" class="col-lg-3 col-md-3">
+                    <div style="height: 130px;" class="col-lg-3 col-md-3 g-4">
                         <div class="card card-block card-stretch card-height" style="background-color: var(--main-color);">
                             <div class="card-body">
                                 <a href="{% url 'select-course' %}">
@@ -107,7 +107,7 @@
                 </div>
                 <h5 style="margin-bottom: 25px; margin-top: -38px; font-weight: 600; color: var(--text-color);">Today’s Statistics</h5>
                 <div class="row" style="position: relative; top: -20px;">
-                    <div style="height: 130px;" class="col-lg-3 col-md-3">
+                    <div style="height: 130px;" class="col-lg-3 col-md-3 ">
                         <div class="card card-block card-stretch card-height" style="background-color: white;">
                             <div class="card-body">
                                 <div class="d-flex align-items-center mb-4 card-total-sale">
@@ -318,7 +318,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div style="overflow: auto; height: 300px;">
+                        <div style="overflow: auto; height: 300px; ">
                             <table class="table">
                                 <thead class=" ">
                                     <tr class="ligth ligth-data">
