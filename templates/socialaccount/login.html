@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>ZEDTRACK | Google Sign In</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+
+    <!-- External CSS libraries -->
+    <link type="text/css" rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'assets/fonts/flaticon/font/flaticon.css' %}" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'logo_rounded.png' %}" />
+
+    <!-- Google fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Poppins:400,500,700|Roboto:400,500,700" />
+
+    <!-- Custom Styles -->
+    <link type="text/css" rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/backend.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}" />
+</head>
+<body>
+    <div class="login-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-section">
+                        <div class="form-inner text-center">
+                            <a href="/" class="logo">
+                                <img src="{% static 'logo_rounded.png' %}" alt="Logo" />
+                            </a>
+                            <h3>Sign in with Google</h3>
+                            <p>You are about to sign in using your <strong>Google account</strong>.</p>
+
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <button type="submit" class="btn w-50" style="background-color:#3321d7; color: white">
+                                        Continue with Google
+                                    </button>
+                                </div>
+                            </form>
+
+                            <p class="mt-3">
+                                Not you? <a href="{% url 'account_login' %}"><strong>Go back to Login</strong></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

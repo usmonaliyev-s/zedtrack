@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <title>ZEDTRACK | Logout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8"/>
+
+    <!-- External CSS libraries -->
+    <link type="text/css" rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'assets/fonts/font-awesome/css/font-awesome.min.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'assets/fonts/flaticon/font/flaticon.css' %}"/>
+    <link rel="shortcut icon" href="{% static 'zed.png' %}" type="image/x-icon"/>
+
+    <!-- Google fonts -->
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800%7CPoppins:400,500,700,800,900%7CRoboto:100,300,400,400i,500,700"/>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet"/>
+
+    <!-- Custom Stylesheet -->
+    <link type="text/css" rel="stylesheet" href="{% static 'assets/css/style.css' %}"/>
+    <link rel="stylesheet" type="text/css" id="style_sheet" href="{% static 'assets/css/skins/default.css' %}"/>
+    <link rel="shortcut icon" href="{% static 'logo_rounded.png' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/css/backend-plugin.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/css/backend.css' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/vendor/@fortawesome/fontawesome-free/css/all.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/vendor/remixicon/fonts/remixicon.css' %}"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+</head>
+<body id="top">
+<div class="page_loader"></div>
+
+<!-- Logout Page Start -->
+<div class="login-1">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-section">
+                    <div class="form-inner">
+                        <a href="/" class="logo">
+                            <img src="{% static 'logo_rounded.png' %}" alt="ZEDTRACK"/>
+                        </a>
+                        <h3>Sign Out</h3>
+                        <p class="mb-4">Are you sure you want to log out?</p>
+                        <form method="post" action="{% url 'account_logout' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <button style="background-color: red; color: white; border: 1px solid red;" type="submit"
+                                        class="btn w-100">
+                                    <span>Yes, Log me out</span>
+                                </button>
+                            </div>
+                        </form>
+                        <div class="form-group">
+                            <a href="/" class="btn w-100" style="color: white;">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- External JS libraries -->
+<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

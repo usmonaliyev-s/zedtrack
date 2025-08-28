@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load socialaccount %}
 <html>
 	<head>
 		<title>ZEDTRACK | Register</title>
@@ -28,6 +29,52 @@
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 		<link href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+	<style>
+		.btn-165 {
+    padding: 10px 25px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 0.5rem;
+    border: 1px solid #bebebe;
+    gap: 10px;
+    color: #414141;
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    user-select: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    /*** full width block ***/
+    /* width: 100%; */
+}
+
+.btn-165 svg {
+    height: 24px;
+}
+
+.btn-165:hover {
+    border: solid 1px #464545;
+}
+
+.btn-165:active {
+    margin-top: 1px;
+}
+
+/*** disabled style ***/
+.btn-165:disabled {
+    pointer-events: none;
+    opacity: .65;
+    color: #7e7e7e;
+    background: #dcdcdc;
+    box-shadow: none;
+    text-shadow: none;
+}
+	</style>
 	</head>
 	<body id="top">
 		<!-- Google Tag Manager (noscript) -->
@@ -55,7 +102,7 @@
 									{% endfor %}
 								</ul>
 								{% endif %}
-								<form action="{% url 'register' %}" method="post">{% csrf_token %}
+								<form action="{% url 'account_signup' %}" method="post">{% csrf_token %}
                                 <div class="form-group form-box clearfix">
                                     <input name="username" type="text" class="form-control" placeholder="Username" aria-label="Username">
                                 </div>
@@ -69,13 +116,21 @@
                                     <input name="password2" type="password" class="form-control" autocomplete="off" placeholder="Confirm Your Password" aria-label="Password">
                                 </div>
                                 <div class="form-group">
-                                    <button style="background-color: #3321d7" type="submit" class="btn btn-lg btn-theme"><span>Sign up</span></button>
+                                    <button style="background-color: #3321d7; color: white;" type="submit" class="btn w-100"><span>Sign up</span></button>
                                 </div>
-
+<a href="{% provider_login_url 'google' %}" class="btn-165 w-100">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 262">
+        <path fill="#4285F4" d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"></path>
+        <path fill="#34A853" d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"></path>
+        <path fill="#FBBC05" d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782"></path>
+        <path fill="#EB4335" d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"></path>
+    </svg>
+    <span>Sign up with Google</span>
+  </a>
                             </form>
 								<div class="clearfix"></div>
 								<p>
-									Already a member? <a href="{% url 'login' %}"><strong>Login</strong></a>
+									Already a member? <a href="{% url 'account_login' %}"><strong>Login</strong></a>
 								</p>
 							</div>
 						</div>

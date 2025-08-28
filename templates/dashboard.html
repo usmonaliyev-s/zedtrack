@@ -10,8 +10,8 @@
                     {% for message in messages %}
                     <div class="errbox-icon">&#9888;</div>
                     <div class="errbox-content">
-                        <h4>Error</h4>
-                        <p>{{ messages }}</p>
+                        <h4 style="color: var(--main-color);">{{ message.tags.title }}</h4>
+                        <p>{{ message }}</p>
                     </div>
                     <button class="errbox-close" onclick="document.getElementById('errbox').style.display='none'">&times;</button>
                     {% endfor %}
