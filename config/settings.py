@@ -109,6 +109,14 @@ AUTHENTICATION_BACKENDS = (
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 SOCIALACCOUNT_LOGIN_ON_GET = True
+# Instead of ACCOUNT_AUTHENTICATION_METHOD
+ACCOUNT_LOGIN_METHODS = {"username", "email"}  # allow login via username OR email
+
+# Instead of ACCOUNT_EMAIL_REQUIRED / ACCOUNT_USERNAME_REQUIRED
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
+
+# Instead of ACCOUNT_EMAIL_VERIFICATION
+ACCOUNT_EMAIL_VERIFICATION = "none"  # can be "optional" or "mandatory"
 
 
 LANGUAGE_CODE = 'en-us'
