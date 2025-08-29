@@ -96,7 +96,6 @@ def edit_student(request, id):
         student.last_name = request.POST.get('last_name')
         student.gender = request.POST.get('gender')
         student.course_id = request.POST.get('course')
-        student.user = request.user
         student.save()
         return redirect('student-list')
     student = get_object_or_404(Student, pk=id, center=request.user)
