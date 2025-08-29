@@ -239,6 +239,9 @@ def history(request):
         messages.error(request, 'You do not have a permission.')
         return redirect('dashboard')
     data = {
+        'students': Student.objects.filter(center=request.user),
+        'teachers': Teacher.objects.filter(center=request.user),
+        'courses': Course.objects.filter(center=request.user),
         'attendances': Attendance.objects.filter(center=request.user).order_by('-time'),
     }
     return render(request, "marking-attendance/history.html", data)

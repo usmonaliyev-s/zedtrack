@@ -1,54 +1,193 @@
 {% extends 'base.html' %}
-
 {% block title %}
 Attendance History |
 {% endblock %}
-
 {% block content %}
-            <div class="content-page">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
-                                <div>
-                                    <h4 class="mb-3">Attendance History</h4>
-                                </div>
-                                <div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="table-responsive rounded mb-3">
-                                <table class="data-table table mb-0 tbl-server-info">
-                                    <thead class="bg-white text-uppercase">
-                                        <tr class="ligth ligth-data">
-                                            <th style="text-align: left">Student</th>
-                                            <th style="text-align: left">Time</th>
-                                            <th style="text-align: left">Course</th>
-                                            <th style="text-align: left">Status</th>
-                                            <th style="text-align: left">Marked By</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="ligth-body">
-                                        {% for attendance in attendances %}
-                                        <tr style="background-color: var(--background-color); color: var(--text-color);">
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" href="{% url 'student-details' attendance.student.id %}" title="Student">{{ attendance.student }}</a></td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" title="Time">{{ attendance.time }}</a></td>
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" href="{% url 'course-details' attendance.course.id %}" title="Course">{{ attendance.course }}</a></td>
-                                            {% if attendance.status %}
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: green;" title="Status">Present</a></td>
-                                            {% else %}
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: red;" title="Status">Absent</a></td>
-                                            {% endif %}
-                                            <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" title="Marked By">{{ attendance.marked_by }}</a></td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Page end  -->
-                </div>
+<div class="content-page">
+<div class="container-fluid">
+   <div class="row">
+      <div class="col-lg-12">
+         <div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
+            <div>
+               <h4 class="mb-3">Attendance History</h4>
+
+            </div>
+            <div>
+               <!-- Filters Dropdown (put this where your Filters button is) -->
+<div class="dropdown">
+  <button class="btn dropdown-toggle" style="border: 2px solid var(--main-color); color: white;" type="button"
+          id="filtersMenu" aria-expanded="false">
+    Filters <span id="filtersBadge" class="badge ms-1" style="display:none;"></span>
+  </button>
+
+  <ul class="dropdown-menu p-3 dropdown-menu-left" aria-labelledby="filtersMenu" id="filtersDropdownMenu" style="min-width: 320px;">
+    <form id="filtersForm" method="post" action="/date-range/">
+      {% csrf_token %}
+      <!-- Date Range -->
+      <label class="form-label">From</label>
+      <input name="a" type="date" class="form-control mb-2" value="{{ a }}">
+      <label class="form-label">To</label>
+      <input name="b" type="date" class="form-control mb-3" value="{{ b }}">
+
+      <!-- Student -->
+      <label class="form-label">Student</label>
+      <select name="student" class="form-select mb-3">
+        <option value="all">All</option>
+        {% for student in students %}
+        <option value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</option>
+        {% endfor %}
+      </select><br/>
+
+      <!-- Teacher -->
+      <label class="form-label">Teacher</label>
+      <select name="teacher" class="form-select mb-3">
+        <option value="">All</option>
+        {% for teacher in teachers %}
+        <option value="{{ teacher.id }}" {% if teacher.id|stringformat:"s" == request.POST.teacher %}selected{% endif %}>{{ teacher }}</option>
+        {% endfor %}
+      </select><br/>
+
+      <!-- Course -->
+      <label class="form-label">Course</label>
+      <select name="course" class="form-select mb-3">
+        <option value="">All</option>
+        {% for course in courses %}
+        <option value="{{ course.id }}" {% if course.id|stringformat:"s" == request.POST.course %}selected{% endif %}>{{ course }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit" class="btn btn-primary w-100">Apply</button>
+    </form>
+  </ul>
+</div>
+
+            </div>
+         </div>
+      </div>
+      <div class="col-lg-12">
+         <div class="table-responsive rounded mb-3">
+            <table class="data-table table mb-0 tbl-server-info">
+               <thead class="bg-white text-uppercase">
+                  <tr class="ligth ligth-data">
+                     <th style="text-align: left">Student</th>
+                     <th style="text-align: left">Time</th>
+                     <th style="text-align: left">Course</th>
+                     <th style="text-align: left">Status</th>
+                     <th style="text-align: left">Marked By</th>
+                  </tr>
+               </thead>
+               <tbody class="ligth-body">
+                  {% for attendance in attendances %}
+                  <tr style="background-color: var(--background-color); color: var(--text-color);">
+                     <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" href="{% url 'student-details' attendance.student.id %}" title="Student">{{ attendance.student }}</a></td>
+                     <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" title="Time">{{ attendance.time }}</a></td>
+                     <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" href="{% url 'course-details' attendance.course.id %}" title="Course">{{ attendance.course }}</a></td>
+                     {% if attendance.status %}
+                     <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" title="Status">Present</a></td>
+                     {% else %}
+                     <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: red;" title="Status">Absent</a></td>
+                     {% endif %}
+                     <td style="background-color: var(--background-color); color: var(--text-color); text-align: left"><a style="background-color: var(--background-color); color: var(--text-color);" title="Marked By">{{ attendance.marked_by }}</a></td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+   <!-- Page end  -->
+</div>
+   <script>
+document.addEventListener('DOMContentLoaded', function () {
+  const filtersBtn = document.getElementById('filtersMenu');
+  const dropdownMenu = document.getElementById('filtersDropdownMenu');
+  const filtersForm = document.getElementById('filtersForm');
+  const tableBody = document.querySelector('.tbl-server-info tbody.ligth-body');
+  const filtersBadge = document.getElementById('filtersBadge');
+
+  // 1) Toggle dropdown (useful if Bootstrap JS isn't loaded)
+  filtersBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle('show');
+  });
+  // close when clicking outside
+  document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+  dropdownMenu.addEventListener('click', (e) => e.stopPropagation());
+
+  // 2) AJAX submit: intercept form submit, POST via fetch, replace tbody
+  filtersForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(filtersForm);
+    // csrf token is already in formData thanks to {% csrf_token %}
+    // but we'll also read it to send in header (Django accepts X-CSRFToken)
+    const csrfInput = filtersForm.querySelector('input[name="csrfmiddlewaretoken"]');
+    const csrfToken = csrfInput ? csrfInput.value : null;
+
+    try {
+      const response = await fetch(filtersForm.action || window.location.href, {
+        method: 'POST',
+        headers: csrfToken ? { 'X-CSRFToken': csrfToken } : {},
+        body: formData
+      });
+
+      if (!response.ok) throw new Error('Network response was not OK');
+
+      const contentType = response.headers.get('Content-Type') || '';
+
+      let newTbodyHTML = null;
+
+      if (contentType.includes('application/json')) {
+        // if your view returns JSON with a field "table_html"
+        const j = await response.json();
+        newTbodyHTML = j.table_html || j.tbody || null;
+      } else {
+        // assume HTML response; parse and extract the tbody.ligth-body
+        const text = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+        const newTbody = doc.querySelector('tbody.ligth-body');
+        if (newTbody) newTbodyHTML = newTbody.innerHTML;
+      }
+
+      if (newTbodyHTML !== null) {
+        tableBody.innerHTML = newTbodyHTML;
+        dropdownMenu.classList.remove('show');
+        updateFilterBadge();
+        // optional: you may want to re-init any JS on the table rows (e.g. tooltips)
+      } else {
+        // fallback: reload page if we can't extract the table
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error('Filter error:', err);
+      alert('Failed to apply filters. See console for details.');
+    }
+  });
+
+  // 3) Badge: show count of active filters (excluding csrf)
+  function updateFilterBadge() {
+    const fd = new FormData(filtersForm);
+    let active = 0;
+    for (const [k, v] of fd.entries()) {
+      if (k === 'csrfmiddlewaretoken') continue;
+      if (v && String(v).trim() !== '') active++;
+    }
+    if (filtersBadge) {
+      if (active > 0) {
+        filtersBadge.style.display = 'inline-block';
+        filtersBadge.textContent = active;
+        filtersBadge.className = 'badge bg-danger ms-1';
+      } else {
+        filtersBadge.style.display = 'none';
+        filtersBadge.textContent = '';
+      }
+    }
+  }
+
+  // init
+  updateFilterBadge();
+});
+</script>
 
 {% endblock %}

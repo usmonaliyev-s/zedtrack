@@ -96,17 +96,17 @@ Marking Attendance |
                                                         <input type="radio" name="status-{{ student.id }}" id="absent-{{ student.id }}" value="absent" class="marking-toggle-input" hidden />
                                                         <label for="absent-{{ student.id }}" class="marking-toggle-btn">❌ Absent</label>
                                                         <input type="radio" name="status-{{ student.id }}" id="present-{{ student.id }}" value="present" class="marking-toggle-input" hidden checked />
-                                                        <label for="present-{{ student.id }}" class="marking-toggle-btn">✅ Present</label>
+                                                        <label for="present-{{ student.id }}" class="marking-toggle-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7L10 17l-5-5"/></svg> Present</label>
                                                         {% else %}
                                                         <input type="radio" name="status-{{ student.id }}" id="absent-{{ student.id }}" value="absent" class="marking-toggle-input" hidden checked />
                                                         <label for="absent-{{ student.id }}" class="marking-toggle-btn">❌ Absent</label>
                                                         <input type="radio" name="status-{{ student.id }}" id="present-{{ student.id }}" value="present" class="marking-toggle-input" hidden />
-                                                        <label for="present-{{ student.id }}" class="marking-toggle-btn">✅ Present</label>
+                                                        <label for="present-{{ student.id }}" class="marking-toggle-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7L10 17l-5-5"/></svg> Present</label>
                                                         {% endif %} {% endif %} {% endfor %} {% else %}
                                                         <input type="radio" name="status-{{ student.id }}" id="absent-{{ student.id }}" value="absent" class="marking-toggle-input" hidden />
                                                         <label for="absent-{{ student.id }}" class="marking-toggle-btn">❌ Absent</label>
                                                         <input type="radio" name="status-{{ student.id }}" id="present-{{ student.id }}" value="present" class="marking-toggle-input" hidden />
-                                                        <label for="present-{{ student.id }}" class="marking-toggle-btn">✅ Present</label>
+                                                        <label for="present-{{ student.id }}" class="marking-toggle-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7L10 17l-5-5"/></svg> Present</label>
                                                         {% endif %}
                                                     <td style="background-color: var(--background-color); color: var(--text-color); text-align: left;">
                                                     </td>
