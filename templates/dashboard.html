@@ -264,7 +264,7 @@
                <div class="card-body" style="height: calc(100% - 60px);">
                   <div style="height: 100%;">
                      <p style="font-size: 16px;">
-                        <span style="color: var(--main-color); font-size: 18px;"><b>> </b></span> Predicted attendance for the next week: <span style="font-size: 20px; color: var(--main-color);"><b>{% if predicted_attendance_rate.predicted_attendance_rate > 100 %}100{% else %}{{ predicted_attendance_rate.predicted_attendance_rate }}{% endif %}%</b></span>
+                        <span style="color: var(--main-color); font-size: 18px;"><b>> </b></span> Predicted attendance for the next week: <span style="font-size: 20px; color: var(--main-color);"><b>{% if predicted_attendance_rate.predicted_attendance_rate > 100 %}100{% else %}{{ predicted_attendance_rate.predicted_attendance_rate|floatformat:2 }}{% endif %}%</b></span>
                      </p>
                   </div>
                </div>
