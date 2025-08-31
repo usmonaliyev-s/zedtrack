@@ -33,13 +33,12 @@ INSTALLED_APPS = [
     'courses',
     'attendance_tracker',
     'accounts',
-    #------------
+
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
 
-    # Providers
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.apple',
     'allauth.socialaccount.providers.microsoft',
@@ -98,7 +97,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = (
@@ -109,13 +107,11 @@ AUTHENTICATION_BACKENDS = (
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 SOCIALACCOUNT_LOGIN_ON_GET = True
-# Instead of ACCOUNT_AUTHENTICATION_METHOD
+
 ACCOUNT_LOGIN_METHODS = {"username", "email"}  # allow login via username OR email
 
-# Instead of ACCOUNT_EMAIL_REQUIRED / ACCOUNT_USERNAME_REQUIRED
 ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
 
-# Instead of ACCOUNT_EMAIL_VERIFICATION
 ACCOUNT_EMAIL_VERIFICATION = "none"  # can be "optional" or "mandatory"
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
