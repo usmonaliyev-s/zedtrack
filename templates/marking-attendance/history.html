@@ -21,7 +21,7 @@ Attendance History |
   </button>
 
   <ul class="dropdown-menu p-3 dropdown-menu-left" aria-labelledby="filtersMenu" id="filtersDropdownMenu" style="min-width: 320px;">
-    <form id="filtersForm" method="post" action="/date-range/">
+    <form id="filtersForm" method="post" action="{% url 'attendance-history' %}">
       {% csrf_token %}
       <!-- Date Range -->
       <label class="form-label">From</label>
@@ -66,7 +66,7 @@ Attendance History |
       </div>
       <div class="col-lg-12">
          <div class="table-responsive rounded mb-3">
-            <table class="data-table table mb-0 tbl-server-info">
+            <table class="table mb-0 tbl-server-info">
                <thead class="bg-white text-uppercase">
                   <tr class="ligth ligth-data">
                      <th style="text-align: left">Student</th>
@@ -113,77 +113,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // close when clicking outside
   document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
   dropdownMenu.addEventListener('click', (e) => e.stopPropagation());
-
-  // 2) AJAX submit: intercept form submit, POST via fetch, replace tbody
-  filtersForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const formData = new FormData(filtersForm);
-    // csrf token is already in formData thanks to {% csrf_token %}
-    // but we'll also read it to send in header (Django accepts X-CSRFToken)
-    const csrfInput = filtersForm.querySelector('input[name="csrfmiddlewaretoken"]');
-    const csrfToken = csrfInput ? csrfInput.value : null;
-
-    try {
-      const response = await fetch(filtersForm.action || window.location.href, {
-        method: 'POST',
-        headers: csrfToken ? { 'X-CSRFToken': csrfToken } : {},
-        body: formData
-      });
-
-      if (!response.ok) throw new Error('Network response was not OK');
-
-      const contentType = response.headers.get('Content-Type') || '';
-
-      let newTbodyHTML = null;
-
-      if (contentType.includes('application/json')) {
-        // if your view returns JSON with a field "table_html"
-        const j = await response.json();
-        newTbodyHTML = j.table_html || j.tbody || null;
-      } else {
-        // assume HTML response; parse and extract the tbody.ligth-body
-        const text = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'text/html');
-        const newTbody = doc.querySelector('tbody.ligth-body');
-        if (newTbody) newTbodyHTML = newTbody.innerHTML;
-      }
-
-      if (newTbodyHTML !== null) {
-        tableBody.innerHTML = newTbodyHTML;
-        dropdownMenu.classList.remove('show');
-        updateFilterBadge();
-        // optional: you may want to re-init any JS on the table rows (e.g. tooltips)
-      } else {
-        // fallback: reload page if we can't extract the table
-        window.location.reload();
-      }
-    } catch (err) {
-      console.error('Filter error:', err);
-      alert('Failed to apply filters. See console for details.');
-    }
-  });
-
-  // 3) Badge: show count of active filters (excluding csrf)
-  function updateFilterBadge() {
-    const fd = new FormData(filtersForm);
-    let active = 0;
-    for (const [k, v] of fd.entries()) {
-      if (k === 'csrfmiddlewaretoken') continue;
-      if (v && String(v).trim() !== '') active++;
-    }
-    if (filtersBadge) {
-      if (active > 0) {
-        filtersBadge.style.display = 'inline-block';
-        filtersBadge.textContent = active;
-        filtersBadge.className = 'badge bg-danger ms-1';
-      } else {
-        filtersBadge.style.display = 'none';
-        filtersBadge.textContent = '';
-      }
-    }
-  }
 
   // init
   updateFilterBadge();
