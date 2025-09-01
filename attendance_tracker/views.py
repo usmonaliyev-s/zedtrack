@@ -5,7 +5,7 @@ from django.db.models import Count, Q, ExpressionWrapper, F, FloatField
 from django.db.models.functions import TruncDate, NullIf
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 
 from attendance_tracker.models import Attendance
 from courses.models import Course
@@ -238,10 +238,32 @@ def history(request):
     if hasattr(request.user, 'student_user'):
         messages.error(request, 'You do not have a permission.')
         return redirect('dashboard')
+
+    attendances = Attendance.objects.filter(center=request.user).order_by('-time')
+    if request.method == "POST":
+        a = request.POST.get('a')
+        b = request.POST.get('b')
+        student = request.POST.get('student')
+        course = request.POST.get('course')
+        teacher = request.POST.get('teacher')
+        if a and b:
+            a = datetime.strptime(a, "%Y-%m-%d").date()
+            b = datetime.strptime(b, "%Y-%m-%d").date()
+            attendances = Attendance.objects.filter(time__range=(a, b), center=request.user).order_by('-time')
+        elif student=="all" or teacher=="all" or course=="all":
+            attendances = Attendance.objects.filter(center=request.user).order_by('-time')
+        elif student:
+            attendances = Attendance.objects.filter(center=request.user, student=student).order_by('-time')
+        elif course:
+            attendances = Attendance.objects.filter(center=request.user, course=course).order_by('-time')
+        elif teacher:
+            attendances = Attendance.objects.filter(center=request.user, course__teacher=teacher).order_by('-time')
+
     data = {
         'students': Student.objects.filter(center=request.user),
         'teachers': Teacher.objects.filter(center=request.user),
         'courses': Course.objects.filter(center=request.user),
-        'attendances': Attendance.objects.filter(center=request.user).order_by('-time'),
+        'attendances': attendances,
     }
+
     return render(request, "marking-attendance/history.html", data)
