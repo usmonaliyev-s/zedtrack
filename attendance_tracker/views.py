@@ -240,24 +240,6 @@ def history(request):
         return redirect('dashboard')
 
     attendances = Attendance.objects.filter(center=request.user).order_by('-time')
-    if request.method == "POST":
-        a = request.POST.get('a')
-        b = request.POST.get('b')
-        student = request.POST.get('student')
-        course = request.POST.get('course')
-        teacher = request.POST.get('teacher')
-        if a and b:
-            a = datetime.strptime(a, "%Y-%m-%d").date()
-            b = datetime.strptime(b, "%Y-%m-%d").date()
-            attendances = Attendance.objects.filter(time__range=(a, b), center=request.user).order_by('-time')
-        elif student=="all" or teacher=="all" or course=="all":
-            attendances = Attendance.objects.filter(center=request.user).order_by('-time')
-        elif student:
-            attendances = Attendance.objects.filter(center=request.user, student=student).order_by('-time')
-        elif course:
-            attendances = Attendance.objects.filter(center=request.user, course=course).order_by('-time')
-        elif teacher:
-            attendances = Attendance.objects.filter(center=request.user, course__teacher=teacher).order_by('-time')
 
     data = {
         'students': Student.objects.filter(center=request.user),
@@ -265,5 +247,36 @@ def history(request):
         'courses': Course.objects.filter(center=request.user),
         'attendances': attendances,
     }
+
+    if request.method == "POST":
+        a = request.GET.get('a')
+        b = request.GET.get('b')
+        student = request.GET.get('student')
+        course = request.GET.get('course')
+        teacher = request.GET.get('teacher')
+
+        # start building query
+        filters = Q(center=request.user)
+
+        if a and b:
+            data['a'] = a
+            data['b'] = b
+            a = datetime.strptime(a, "%Y-%m-%d").date()
+            b = datetime.strptime(b, "%Y-%m-%d").date()
+            filters &= Q(time__range=(a, b))
+
+        if student and student != 'all':
+            filters &= Q(student_id=student)
+            data['student'] = Student.objects.get(pk=student)
+
+        if course and course != 'all':
+            filters &= Q(course_id=course)
+            data['course'] = Course.objects.get(pk=course)
+
+        if teacher and teacher != 'all':
+            filters &= Q(course__course_teacher_id=teacher)
+            data['teacher'] = Teacher.objects.get(pk=teacher)
+
+        data['attendances'] = Attendance.objects.filter(filters).order_by('-time')
 
     return render(request, "marking-attendance/history.html", data)
