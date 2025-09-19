@@ -116,8 +116,11 @@ def dashboard(request, a=None, b=None, c=None):
         role = "admin"
         if hasattr(request.user, 'teacher_user'):
             role = "teacher"
-        predicted_attendance_rate = insights(request)
-        predicted_attendance_rate = json.loads(predicted_attendance_rate.content)
+        # predicted_attendance_rate = insights(request)
+        # predicted_attendance_rate = json.loads(predicted_attendance_rate.content)
+        print("==========================")
+        print(predicted_attendance_rate)
+        print("==========================")
         data = {
             "students": Student.objects.filter(center=request.user),
             "top_students": top_student,
@@ -135,7 +138,7 @@ def dashboard(request, a=None, b=None, c=None):
             "date": date.today(),
             "attendance_records": Attendance.objects.filter(center=request.user).order_by('-time')[:10],
             "role": role,
-            "predicted_attendance_rate":predicted_attendance_rate,
+            # "predicted_attendance_rate":predicted_attendance_rate,
         }
         return render(request, 'dashboard.html', data)
     else:
