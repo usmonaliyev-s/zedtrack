@@ -66,10 +66,23 @@ def insights(request):
     1. Highlight students with attendance below 70%.
     2. Predicted attendance rate for the next week.
     3. Then, compare last and next week attendance rates.
+    4. And, give essential highlights.
         
-    Keep outcomes short and concise
+    Keep outcomes as short as possible and concise. Highlight important numbers with <b></b>.
+    
+    Here is the format:
+    <b>Attendance report:</b><br>
+    <span style="color: var(--main-color);"><b>-</b></span> Attendance rate for last week: <span style="color: var(--main-color);"><b>(percentage)</b></span><br>
+    <span style="color: var(--main-color);"><b>-</b></span> Predicted attendance rate for next week: <span style="color: var(--main-color);"><b>(percentage)</b></span><br>
+    <span style="color: var(--main-color);"><b>-</b></span> Attendance rate increased by <span style="color: var(--main-color);"><b>(percentage)</b></span> compared to last week.
+    <br><br>
+    <b>Essential highlights:</b><br>
+    <span style="color: var(--main-color);"><b>-</b></span> first highlight.<br>
+    <span style="color: var(--main-color);"><b>-</b></span> second highlight.<br>
+    <span style="color: var(--main-color);"><b>-</b></span> third highlight.<br>
+    
+    Don't give any comments or words, just give data in the format I gave.
     """
 
     response = model.generate_content(prompt)
     return response.text
-
