@@ -119,7 +119,7 @@ def dashboard(request, a=None, b=None, c=None):
         # predicted_attendance_rate = insights(request)
         # predicted_attendance_rate = json.loads(predicted_attendance_rate.content)
         print("==========================")
-        print(predicted_attendance_rate)
+        # print(predicted_attendance_rate)
         print("==========================")
         data = {
             "students": Student.objects.filter(center=request.user),
@@ -138,7 +138,7 @@ def dashboard(request, a=None, b=None, c=None):
             "date": date.today(),
             "attendance_records": Attendance.objects.filter(center=request.user).order_by('-time')[:10],
             "role": role,
-            # "predicted_attendance_rate":predicted_attendance_rate,
+            "predicted_attendance_rate":predicted_attendance_rate,
         }
         return render(request, 'dashboard.html', data)
     else:
