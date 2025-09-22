@@ -63,9 +63,9 @@ def insights(request):
     {data_text}
 
     Please calculate:
-    1. Attendance rate (%) per student.
-    2. Highlight students with attendance below 70%.
-    3. Predicted attendance rate for the next week.
+    1. Highlight students with attendance below 70%.
+    2. Predicted attendance rate for the next week.
+    3. Then, compare last and next week attendance rates.
         
     Keep outcomes short and concise
     """
