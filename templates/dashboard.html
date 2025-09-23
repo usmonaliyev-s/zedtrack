@@ -214,8 +214,8 @@
                </div>
             </div>
          </div>
-         <div class="col-lg-6 col-md-3" style="position: relative; top: -20px;">
-            <div class="card card-block card-stretch" style="background-color: var(--background-color); height: 370px;">
+         <div class="col-lg-7 col-md-3" style="position: relative; top: -20px;">
+            <div class="card card-block card-stretch" style="background-color: var(--background-color); height: 430px;">
                <!-- 👈 set your desired height -->
                <div class="card-header d-flex align-items-center justify-content-between">
                   <div class="header-title">
@@ -231,22 +231,8 @@
                </div>
             </div>
          </div>
-         <div class="col-lg-3" style="position: relative; top: -20px;">
-            <div class="card card-block card-stretch" style="background-color: var(--background-color); height: 370px;">
-               <div class="card-header d-flex align-items-center justify-content-between" style="">
-                  <div class="header-title">
-                     <h4 class="card-title">Gender Distribution</h4>
-                  </div>
-               </div>
-               <div class="card-body" style="height: calc(100% - 60px);">
-                  <div style="overflow: auto; height: 100%;">
-                     <canvas id="pieChart"></canvas>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="col-lg-3 col-md-3" style="position: relative; top: -20px;">
-            <div class="card card-block card-stretch" style="background-color: var(--background-color); height: 370px;">
+         <div class="col-lg-5 col-md-3" style="position: relative; top: -20px;">
+            <div class="card card-block card-stretch" style="background-color: var(--background-color); height: 430px;">
                <!-- 👈 set your desired height -->
                <div class="card-header d-flex align-items-center justify-content-between">
                   <div class="header-title" style="display: flex; align-items: center; gap: 2px;">
@@ -263,14 +249,13 @@
                </div>
                <div class="card-body" style="height: calc(100% - 60px);">
                   <div style="height: 100%;">
-                     <p style="font-size: 16px;">
-                        <span style="color: var(--main-color); font-size: 18px;"><b>> </b></span> Predicted attendance for the next week: <span style="font-size: 20px; color: var(--main-color);"><b>{% if predicted_attendance_rate.predicted_attendance_rate > 100 %}100{% else %}{{ predicted_attendance_rate.predicted_attendance_rate|floatformat:2 }}{% endif %}%</b></span>
-                     </p>
+                     <div id="typing" style="color: var(--text-color); font-size: 15px;">
+                     </div>
                   </div>
                </div>
             </div>
          </div>
-         <div class="col-lg-6" style="position: relative; top: -20px;">
+         <div class="col-lg-4" style="position: relative; top: -20px;">
             <div class="card card-block card-stretch" style="background-color: var(--background-color);">
                <div class="card-header d-flex align-items-center justify-content-between" style="">
                   <div class="header-title">
@@ -303,7 +288,7 @@
                </div>
             </div>
          </div>
-         <div class="col-lg-6" style="position: relative; top: -20px;">
+         <div class="col-lg-4" style="position: relative; top: -20px;">
             <div class="card card-block card-stretch" style="background-color: var(--background-color);">
                <div class="card-header d-flex align-items-center justify-content-between" style="">
                   <div class="header-title">
@@ -332,6 +317,20 @@
                            {% endfor %}
                         </tbody>
                      </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-lg-4" style="position: relative; top: -20px;">
+            <div class="card card-block card-stretch" style="background-color: var(--background-color); height: 475px;">
+               <div class="card-header d-flex align-items-center justify-content-between" style="">
+                  <div class="header-title">
+                     <h4 class="card-title">Gender Distribution</h4>
+                  </div>
+               </div>
+               <div class="card-body" style="height: calc(100% - 60px);">
+                  <div style="overflow: auto; height: 100%;">
+                     <canvas id="pieChart"></canvas>
                   </div>
                </div>
             </div>
@@ -387,6 +386,50 @@
       </div>
    </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const element = document.getElementById("typing");
+
+    // 👉 Django inserts HTML safely here
+    const text = `{{ predicted_attendance_rate|safe }}`;
+
+    // Parse HTML into a temporary element
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = text;
+
+    // Extract nodes (text + elements)
+    const nodes = Array.from(tempDiv.childNodes);
+    let nodeIndex = 0;
+    let charIndex = 0;
+
+    function typeEffect() {
+        if (nodeIndex >= nodes.length) return; // finished
+
+        const node = nodes[nodeIndex];
+
+        if (node.nodeType === Node.TEXT_NODE) {
+            // typing plain text
+            if (charIndex < node.textContent.length) {
+                element.innerHTML += node.textContent.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeEffect, 20);
+            } else {
+                charIndex = 0;
+                nodeIndex++;
+                typeEffect();
+            }
+        } else {
+            // append full HTML element instantly
+            element.innerHTML += node.outerHTML;
+            nodeIndex++;
+            typeEffect();
+        }
+    }
+
+    typeEffect();
+});
+</script>
 <script>
    let counters = document.querySelectorAll(".count");
 
