@@ -45,8 +45,8 @@ def dashboard(request, a=None, b=None, c=None):
             # absent__lt=2
         ).order_by('absent', '-present')[:5]
 
-        students_low_attendance = attendance_annotate(Student.objects.all()).order_by('attendance_rate')[:10]
-        top_student = attendance_annotate(Student.objects.all()).order_by('-attendance_rate')[:10]
+        students_low_attendance = attendance_annotate(Student.objects.filter(center=request.user)).order_by('attendance_rate')[:10]
+        top_student = attendance_annotate(Student.objects.filter(center=request.user)).order_by('-attendance_rate')[:10]
 
 
         gender_counts = Student.objects.filter(center=request.user).values('gender').annotate(count=Count('id'))
@@ -133,7 +133,7 @@ def dashboard(request, a=None, b=None, c=None):
             "line_chart_data":line_chart_data,
             "attendance_rate": attendance_rate,
             "attendance_rate_today": attendance_rate_today,
-            "todays_courses": todays_courses,
+            "today_courses": todays_courses,
             "present_student": present_student,
             "date": date.today(),
             "attendance_records": Attendance.objects.filter(center=request.user).order_by('-time')[:10],
