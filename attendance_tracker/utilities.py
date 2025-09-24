@@ -70,7 +70,6 @@ def insights(request):
     <b>Attendance report:</b><br>
     <span style="color: var(--main-color);"><b>-</b></span> Attendance rate for last week: <span style="color: var(--main-color);"><b>{round(predicted_attendance(request)[1], 2)}%</b></span><br>
     <span style="color: var(--main-color);"><b>-</b></span> Predicted attendance rate for next week: <span style="color: var(--main-color);"><b>{round(predicted_attendance(request)[0], 2)}%</b></span><br>
-    <br>
     <b>Essential highlights:</b><br>
     <span style="color: var(--main-color);"><b>-</b></span> first highlight.<br>
     <span style="color: var(--main-color);"><b>-</b></span> second highlight.<br>
