@@ -13,6 +13,7 @@ urlpatterns = [
     path('teachers/', include('teachers.urls')),
     path('students/', include('students.urls')),
     path('marking-attendace/', include('attendance_tracker.urls')),
-    # path('accounts/', include('accounts.urls')),
     path('accounts/', include('allauth.urls')),
+    path('zedai/', zedia, name='zedai'),
+
 ]

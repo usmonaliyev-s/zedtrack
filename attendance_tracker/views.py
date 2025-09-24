@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q, ExpressionWrapper, F, FloatField
 from django.db.models.functions import TruncDate, NullIf
 from django.contrib import messages
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from datetime import date, timedelta, datetime
 
@@ -283,3 +284,6 @@ def history(request):
         data['attendances'] = Attendance.objects.filter(filters).order_by('-time')
 
     return render(request, "marking-attendance/history.html", data)
+
+def zedia(request):
+    return HttpResponse("zedai")
